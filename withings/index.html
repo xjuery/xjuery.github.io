@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <meta charset="UTF-8">
+    <title>WithingsExporter</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script>
+        const params = new URLSearchParams(window.location.search)
+    </script>
+    <body>
+
+        <div id="divCode" class="">
+            <p>La procédure d'autorisation est terminée. Indiquez le code suivant à WithingsExporter:</p>
+            <p id="code"></p>
+        </div>
+
+        <div id="divNoCode" class="">
+            <p>Merci de lancer WithingsExporter et suivre la procédure d'autorisation avant de venir sur cette page.</p>
+        </div>
+
+
+        <script>
+            if (params.has('code')) {
+                document.getElementById("divCode").style.display = "block";
+                document.getElementById("divNoCode").style.display = "none";
+                document.getElementById("code").innerHTML = params.get('code');
+            } else {
+                document.getElementById("divCode").style.display = "none";
+                document.getElementById("divNoCode").style.display = "block";
+            }
+            
+        </script> 
+    </body>
+</html> 
+
+
