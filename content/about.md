@@ -1,6 +1,7 @@
 ---
 title: Xavier
 role: software architect · tech enthusiast
+avatar: /images/face.jpg
 links:
   - name: Twitter/X
     url: https://twitter.com/DarthReivax

@@ -21,6 +21,12 @@ defaultContentLanguageInSubdir = false
 [markup]
   [markup.goldmark.renderer]
     unsafe = true
+  # Let a standalone image take an attribute list on the next line,
+  # e.g. {width="400"} — consumed by _markup/render-image.html.
+  [markup.goldmark.parser]
+    wrapStandAloneImageWithinParagraph = false
+    [markup.goldmark.parser.attribute]
+      block = true
   [markup.highlight]
     noClasses = false
     lineNos = false

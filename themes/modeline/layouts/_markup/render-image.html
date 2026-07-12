@@ -1,0 +1,16 @@
+{{- /*
+  Image render hook. Supports an optional attribute list on the line
+  after a standalone image to control display size (and extra classes):
+
+      ![Alt text](/images/posts/my-post/diagram.png)
+      {width="400"}
+
+  Requires wrapStandAloneImageWithinParagraph=false and
+  goldmark.parser.attribute.block=true (set in hugo.toml).
+  With only width set, the theme CSS (height: auto) keeps the aspect ratio.
+*/ -}}
+<img src="{{ .Destination | safeURL }}" alt="{{ .PlainText }}"
+  {{- with .Title }} title="{{ . }}"{{ end }}
+  {{- with .Attributes.width }} width="{{ . }}"{{ end }}
+  {{- with .Attributes.height }} height="{{ . }}"{{ end }}
+  {{- with .Attributes.class }} class="{{ . }}"{{ end }} loading="lazy" decoding="async">
