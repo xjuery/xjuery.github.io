@@ -3,9 +3,9 @@
 {{- $hasToc := and (.Params.toc | default true) (gt (len (plainify .TableOfContents)) 10) }}
 <div class="wrap article-layout{{ if not $hasToc }} article-layout--no-toc{{ end }}">
   {{- if $hasToc }}
-  <aside class="toc" aria-label="Table of contents">
+  <aside class="toc" aria-label="{{ i18n "tableOfContents" }}">
     <div class="toc-inner">
-      <p class="toc-label">Contents</p>
+      <p class="toc-label">{{ i18n "contents" }}</p>
       {{ .TableOfContents }}
     </div>
   </aside>
@@ -16,7 +16,7 @@
         {{- range .Params.tags }}
           {{ partial "tag-pill.html" (dict "name" .) }}
         {{- end }}
-        <span class="post-meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</span>
+        <span class="post-meta">{{ .Date | time.Format ":date_medium" }} · {{ i18n "readingTime" .ReadingTime }}</span>
       </div>
       <h1 class="article-title">{{ .Title }}</h1>
     </header>
@@ -24,7 +24,7 @@
       {{ .Content }}
     </div>
     {{- if or .PrevInSection .NextInSection }}
-    <nav class="post-nav" aria-label="Post navigation">
+    <nav class="post-nav" aria-label="{{ i18n "postNavigation" }}">
       {{- with .PrevInSection }}
       <a class="post-nav-link post-nav-prev" href="{{ .RelPermalink }}" rel="prev"><span class="post-nav-cmd">:bp</span><span class="post-nav-title">{{ .Title }}</span></a>
       {{- else }}<span></span>{{ end }}

@@ -16,6 +16,14 @@
 {{ range .AlternativeOutputFormats -}}
 <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ site.Title }}">
 {{ end -}}
+{{- if hugo.IsMultilingual }}
+{{- range .AllTranslations }}
+<link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}">
+{{- end }}
+{{- range .AllTranslations }}{{ if eq .Language.Lang hugo.Sites.Default.Language.Lang }}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+{{- end }}{{ end }}
+{{- end }}
 {{- if site.Params.loadGoogleFonts | default true }}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,3 +41,19 @@
     document.documentElement.dataset.theme = t;
   })();
 </script>
+{{- if hugo.IsMultilingual }}
+<script>
+  // Language auto-detection. A stored "lang" preference (set by the header
+  // switcher) wins; otherwise fall back to the browser language. Redirect
+  // only when this page has a translation in the wanted language.
+  (function () {
+    var stored = null;
+    try { stored = localStorage.getItem("lang"); } catch (e) {}
+    var pageLang = "{{ site.Language.Lang }}";
+    var want = stored || (navigator.language || pageLang).slice(0, 2);
+    if (want === pageLang) return;
+    var alt = document.querySelector('link[rel="alternate"][hreflang="' + want + '"]');
+    if (alt) window.location.replace(alt.href);
+  })();
+</script>
+{{- end }}

@@ -1,0 +1,86 @@
+# Chaînes d'interface en français pour le thème modeline.
+
+[skipToContent]
+other = "Aller au contenu"
+
+[mainNavigation]
+other = "Navigation principale"
+
+[searchPlaceholder]
+other = "Rechercher"
+
+[searchPosts]
+other = "Rechercher des articles"
+
+[toggleTheme]
+other = "Basculer entre thème sombre et clair"
+
+[switchLanguage]
+other = "Changer de langue"
+
+[featured]
+other = "À la une"
+
+[readingTime]
+other = "{{ .Count }} min de lecture"
+
+[allPosts]
+other = "Tous les articles →"
+
+[allNPosts]
+other = "Les {{ .Count }} articles →"
+
+[entryCount]
+one = "{{ .Count }} entrée"
+other = "{{ .Count }} entrées"
+
+[sortedNewest]
+other = "du plus récent au plus ancien"
+
+[contents]
+other = "Sommaire"
+
+[tableOfContents]
+other = "Table des matières"
+
+[postNavigation]
+other = "Navigation entre articles"
+
+[browseByTag]
+other = "Parcourir par tag"
+
+[tagCloudSub]
+other = "Chaque pastille est un terme de taxonomie. Cliquez pour filtrer."
+
+[postCount]
+one = "{{ .Count }} article"
+other = "{{ .Count }} articles"
+
+[taggedWith]
+other = "avec le tag « {{ . }} »"
+
+[allTags]
+other = "tous les tags"
+
+[notFoundText]
+other = "Le buffer que vous cherchez n'est pas ouvert. Il a peut-être été déplacé, supprimé, ou jamais écrit sur le disque."
+
+[backHome]
+other = "— retour à l'accueil"
+
+[pagination]
+other = "Pagination"
+
+[previousPage]
+other = "Page précédente"
+
+[nextPage]
+other = "Page suivante"
+
+# Formats de date localisés (temps de référence Go). L'ordre jour/mois
+# change en français ; les noms de mois sont traduits par time.Format.
+[dateShort]
+other = "2 Jan"
+
+[dateShortPadded]
+other = "02 Jan"

@@ -12,6 +12,15 @@
     });
   }
 
+  /* ----- language switch ----- */
+  // Clicking a language link stores an explicit preference that overrides
+  // the browser-language auto-detection done inline in <head>.
+  document.querySelectorAll(".lang-switch a[data-lang]").forEach(function (link) {
+    link.addEventListener("click", function () {
+      try { localStorage.setItem("lang", link.dataset.lang); } catch (e) {}
+    });
+  });
+
   /* ----- search ----- */
   var input = document.getElementById("search-input");
   var list = document.getElementById("search-results");
