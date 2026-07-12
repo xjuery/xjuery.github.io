@@ -2,22 +2,18 @@
 title: "La cheatsheet Vim que je ressors sans arrêt"
 date: 2026-07-12T13:41:52+02:00
 tags: [vim]
-banner: /images/posts/vim-cheatsheet/vim-console.png
-bannerAlt: "Une session Vim avec des fenêtres scindées"
-featured: false
-draft: true
+banner: /images/posts/vim-cheatsheet/banner.png
+bannerAlt: "Une banniere sur Vim"
+featured: true
+draft: false
 summary: "Les commandes Vim essentielles au quotidien — modes, déplacements, édition, macros — plus les techniques avancées (bloc visuel, :g, répétition avec .) qui font tout basculer."
 ---
 
 De temps en temps, je vois quelqu'un ouvrir Vim sur un serveur,
-paniquer, et se rabattre sur `nano`. Et je dois admettre que, parfois, il peut s'agir de moi. Voici la cheatsheet que je garde à
-portée de main à la place : les commandes que j'utilise vraiment au
+paniquer, et se rabattre sur `nano`. Et je dois admettre que, parfois, il peut s'agir de moi. Voici la cheatsheet que je garde à portée de main à la place : les commandes que j'utilise vraiment au
 quotidien en tant que développeur, plus une poignée de techniques avancées
 qui transforment Vim de « l'éditeur dont on ne sait pas sortir » en l'outil
 le plus rapide du terminal.
-
-![Le logo de Vim](/images/posts/vim-cheatsheet/vim-logo.svg)
-{width="160"}
 
 ## Les modes : le modèle mental
 

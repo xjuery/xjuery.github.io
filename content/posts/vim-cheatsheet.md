@@ -3,9 +3,9 @@ title: "The Vim cheatsheet I keep coming back to"
 date: 2026-07-12T13:41:52+02:00
 tags: [vim]
 banner: /images/posts/vim-cheatsheet/banner.png
-bannerAlt: "A Vim session with split windows"
-featured: false
-draft: true
+bannerAlt: "A Vim banner"
+featured: true
+draft: false
 summary: "Essential Vim commands for daily use — modes, motions, editing, macros — plus the power techniques (visual block, :g, dot-repeat) that make it all click."
 ---
 
