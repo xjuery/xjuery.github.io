@@ -1,0 +1,12 @@
+{{- /* Returns a stable pill color name for a tag: config override first,
+       otherwise a hash of the tag name into the palette. */ -}}
+{{- $palette := slice "blue" "green" "yellow" "purple" "red" -}}
+{{- $name := lower (. | default "") -}}
+{{- $color := "" -}}
+{{- with site.Params.tagColors -}}
+  {{- $color = index . $name | default "" -}}
+{{- end -}}
+{{- if not $color -}}
+  {{- $color = index $palette (mod (hash.FNV32a $name) (len $palette)) -}}
+{{- end -}}
+{{- return $color -}}

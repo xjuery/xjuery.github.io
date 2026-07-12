@@ -1,0 +1,8 @@
+<article class="post-card">
+  {{- range first 1 (.Params.tags | default slice) }}
+    {{ partial "tag-pill.html" (dict "name" . "plain" true) }}
+  {{- end }}
+  <h3 class="post-card-title"><a class="stretched" href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+  <p class="post-card-summary">{{ .Summary | plainify }}</p>
+  <p class="post-meta">{{ .Date.Format "Jan 2" }} · {{ .ReadingTime }} min</p>
+</article>

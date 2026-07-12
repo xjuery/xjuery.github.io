@@ -1,0 +1,13 @@
+name = "Modeline"
+license = "MIT"
+licenselink = "https://github.com/juery/modeline/blob/main/LICENSE"
+description = "An editorial developer-blog theme: JetBrains Mono display type, Inter body, GitHub-flavored dark & light palettes behind a toggle, colored tag pills, terminal-style code blocks, client-side search, and a vim-flavored 404."
+homepage = "https://juery.fr/"
+demosite = "https://juery.fr/"
+tags = ["blog", "dark", "light", "developer", "monospace", "responsive", "search", "minimal"]
+features = ["dark mode", "light mode", "client-side search", "table of contents", "syntax highlighting", "taxonomies", "pagination", "rss"]
+min_version = "0.146.0"
+
+[author]
+  name = "juery.fr"
+  homepage = "https://juery.fr/"

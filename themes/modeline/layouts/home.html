@@ -1,0 +1,41 @@
+{{ define "main" }}
+{{- $posts := where site.RegularPages "Type" "posts" }}
+<section class="wrap hero">
+  {{ with site.Params.heroEyebrow }}<p class="hero-eyebrow">{{ . }}</p>{{ end }}
+  <h1 class="hero-title">{{ site.Params.heroTitle | default site.Title }}</h1>
+  {{ with site.Params.heroText }}<p class="hero-text">{{ . }}</p>{{ end }}
+</section>
+
+{{- $featured := index (where $posts "Params.featured" true) 0 }}
+{{- if not $featured }}{{ $featured = index $posts 0 }}{{ end }}
+{{- with $featured }}
+{{- $tag := index (.Params.tags | default slice) 0 | default "" }}
+<section class="wrap">
+  <article class="featured featured--{{ partial "func/tag-color.html" $tag }}">
+    <div class="featured-bar" aria-hidden="true"></div>
+    <div class="featured-body">
+      <div class="featured-meta">
+        <span class="featured-label">Featured</span>
+        {{ with $tag }}{{ partial "tag-pill.html" (dict "name" . "plain" true) }}{{ end }}
+      </div>
+      <h2 class="featured-title"><a class="stretched" href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <p class="featured-summary">{{ .Summary | plainify }}</p>
+      <p class="post-meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</p>
+    </div>
+  </article>
+</section>
+{{- end }}
+
+<section class="wrap">
+  <div class="post-grid">
+    {{- $rest := $posts }}
+    {{- with $featured }}{{ $rest = where $posts "Permalink" "ne" .Permalink }}{{ end }}
+    {{- range first 4 $rest }}
+      {{ partial "post-card.html" . }}
+    {{- end }}
+  </div>
+  {{- if gt (len $posts) 5 }}
+  <p class="home-more"><a href="{{ (site.GetPage "/posts").RelPermalink }}">All posts →</a></p>
+  {{- end }}
+</section>
+{{ end }}

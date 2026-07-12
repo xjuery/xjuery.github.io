@@ -1,0 +1,15 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="page-title">{{ .Title }}</h1>
+    <p class="page-sub">{{ len .RegularPages }} {{ if eq (len .RegularPages) 1 }}entry{{ else }}entries{{ end }} · sorted newest first</p>
+  </header>
+  {{- $pag := .Paginate .RegularPages }}
+  <div class="post-list">
+    {{- range $pag.Pages }}
+      {{ partial "post-row.html" . }}
+    {{- end }}
+  </div>
+  {{ partial "pagination.html" . }}
+</div>
+{{ end }}

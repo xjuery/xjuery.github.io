@@ -1,0 +1,15 @@
+{{- /* Renders a colored tag pill.
+       dict keys: name (required), url (optional, else links to the term page),
+       count (optional), class (optional extra classes), plain (optional: no link) */ -}}
+{{- $name := .name -}}
+{{- $color := partial "func/tag-color.html" $name -}}
+{{- $url := .url -}}
+{{- if and (not $url) (not .plain) -}}
+  {{- with site.GetPage (printf "/tags/%s" (urlize $name)) -}}{{- $url = .RelPermalink -}}{{- end -}}
+{{- end -}}
+{{- $classes := printf "pill pill--%s %s" $color (.class | default "") -}}
+{{- if $url -}}
+<a class="{{ $classes | strings.TrimSpace }}" href="{{ $url }}">{{ $name }}{{ with .count }}<span class="pill-count">{{ . }}</span>{{ end }}</a>
+{{- else -}}
+<span class="{{ $classes | strings.TrimSpace }}">{{ $name }}{{ with .count }}<span class="pill-count">{{ . }}</span>{{ end }}</span>
+{{- end -}}
