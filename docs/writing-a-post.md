@@ -60,6 +60,67 @@ Standard Markdown, with a few theme extras:
 - **Raw HTML**: allowed (`unsafe = true` in the Goldmark config), e.g.
   `<kbd>` for key caps.
 
+### Adding images
+
+Image files go in `static/`, under one folder per post to keep things tidy:
+
+```
+static/images/posts/<slug>/diagram.png
+```
+
+Everything in `static/` is copied verbatim to the site root at build time, so
+that file is served at `/images/posts/<slug>/diagram.png`. Reference it from
+the post with standard Markdown, using an **absolute path** (starting with
+`/`) and meaningful alt text:
+
+```markdown
+![Hexagonal architecture diagram](/images/posts/my-post-title/diagram.png)
+```
+
+#### Specifying the display size
+
+By default an image is displayed at its original size (capped at the content
+width). To display it smaller, add an attribute list on the line
+**immediately after** the image:
+
+```markdown
+![Hexagonal architecture diagram](/images/posts/my-post-title/diagram.png)
+{width="400"}
+```
+
+- `width` is the display width in pixels; the height follows automatically,
+  so the aspect ratio is preserved. This is usually the only attribute you
+  need.
+- You can also pass `height="300"` (with `width`, it reserves the exact
+  layout box while the image loads) and `class="..."` for custom styling.
+- This works only for **standalone** images (an image alone on its line, the
+  usual case). Images inline in a sentence are always rendered at their
+  natural size.
+- Remember to add the same attribute line in the French translation.
+
+This is handled by the theme's image render hook
+(`themes/modeline/layouts/_markup/render-image.html`), which also adds lazy
+loading to every post image.
+
+Notes:
+
+- **Translations share the images.** Because the path is absolute, the same
+  reference works from both `<slug>.md` and `<slug>.fr.md` — no need to
+  duplicate files. Do translate the alt text in the French version, though.
+- **Site-wide images** (logos, the about-page avatar) live one level up in
+  `static/images/`, e.g. `static/images/face.jpg` → `/images/face.jpg`.
+- **Keep files light**: prefer compressed JPEG for photos and PNG/SVG for
+  diagrams; roughly < 200 KB per image keeps pages fast. The theme caps
+  image width via the prose styles, but resize very large originals before
+  committing them.
+
+For an image-heavy post you can alternatively use a Hugo *page bundle*:
+create `content/posts/<slug>/` containing `index.md`, `index.fr.md`, and the
+images side by side, then reference them with relative paths
+(`![Alt](diagram.png)`). Both approaches work; the `static/` convention is
+the default here because `make new` and `/new-post` scaffold single-file
+posts.
+
 ## 4. Add the French translation
 
 Translations are separate files with a language suffix, side by side with the
