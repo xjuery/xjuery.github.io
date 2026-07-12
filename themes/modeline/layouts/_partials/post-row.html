@@ -1,0 +1,12 @@
+<article class="post-row">
+  <time class="post-row-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02" }}</time>
+  <div class="post-row-main">
+    <div class="post-row-head">
+      <h2 class="post-row-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      {{- range .Params.tags }}
+        {{ partial "tag-pill.html" (dict "name" .) }}
+      {{- end }}
+    </div>
+    <p class="post-row-summary">{{ .Summary | plainify }}</p>
+  </div>
+</article>

@@ -1,0 +1,10 @@
+{{- $title := "" -}}
+{{- with .Attributes.filename }}{{ $title = . }}{{ end -}}
+{{- if not $title }}{{ $title = .Type | default "code" }}{{ end -}}
+<figure class="codeblock">
+  <figcaption class="codeblock-head">
+    <span class="codeblock-dot" aria-hidden="true"></span>
+    <span class="codeblock-title">{{ $title }}</span>
+  </figcaption>
+  {{ (transform.HighlightCodeBlock .).Wrapped }}
+</figure>

@@ -1,0 +1,74 @@
+{{ define "main" }}
+{{- if eq .Type "posts" }}
+{{- $hasToc := and (.Params.toc | default true) (gt (len (plainify .TableOfContents)) 10) }}
+<div class="wrap article-layout{{ if not $hasToc }} article-layout--no-toc{{ end }}">
+  {{- if $hasToc }}
+  <aside class="toc" aria-label="Table of contents">
+    <div class="toc-inner">
+      <p class="toc-label">Contents</p>
+      {{ .TableOfContents }}
+    </div>
+  </aside>
+  {{- end }}
+  <article class="article">
+    <header class="article-head">
+      <div class="article-meta">
+        {{- range .Params.tags }}
+          {{ partial "tag-pill.html" (dict "name" .) }}
+        {{- end }}
+        <span class="post-meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</span>
+      </div>
+      <h1 class="article-title">{{ .Title }}</h1>
+    </header>
+    <div class="prose">
+      {{ .Content }}
+    </div>
+    {{- if or .PrevInSection .NextInSection }}
+    <nav class="post-nav" aria-label="Post navigation">
+      {{- with .PrevInSection }}
+      <a class="post-nav-link post-nav-prev" href="{{ .RelPermalink }}" rel="prev"><span class="post-nav-cmd">:bp</span><span class="post-nav-title">{{ .Title }}</span></a>
+      {{- else }}<span></span>{{ end }}
+      {{- with .NextInSection }}
+      <a class="post-nav-link post-nav-next" href="{{ .RelPermalink }}" rel="next"><span class="post-nav-cmd">:bn</span><span class="post-nav-title">{{ .Title }}</span></a>
+      {{- end }}
+    </nav>
+    {{- end }}
+  </article>
+</div>
+{{- else if or .Params.role .Params.avatar .Params.links }}
+<div class="wrap about-layout">
+  <div class="about-avatar">
+    {{- with .Params.avatar }}
+    <img src="{{ . | relURL }}" alt="{{ $.Title }}" width="120" height="120">
+    {{- else }}
+    <span aria-hidden="true">avatar</span>
+    {{- end }}
+  </div>
+  <div class="about-main">
+    <h1 class="about-name">{{ .Title }}</h1>
+    {{ with .Params.role }}<p class="about-role">{{ . }}</p>{{ end }}
+    <div class="prose">
+      {{ .Content }}
+    </div>
+    {{- with .Params.links }}
+    <div class="about-links">
+      {{- range . }}
+        {{ partial "tag-pill.html" (dict "name" .name "url" .url "class" "pill--lg") }}
+      {{- end }}
+    </div>
+    {{- end }}
+  </div>
+</div>
+{{- else }}
+<div class="wrap page-plain">
+  <article class="article">
+    <header class="article-head">
+      <h1 class="article-title">{{ .Title }}</h1>
+    </header>
+    <div class="prose">
+      {{ .Content }}
+    </div>
+  </article>
+</div>
+{{- end }}
+{{ end }}

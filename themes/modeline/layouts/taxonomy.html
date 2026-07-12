@@ -1,0 +1,30 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="page-head">
+    <h1 class="page-title">Browse by tag</h1>
+    <p class="page-sub">Every pill is a taxonomy term. Tap one to filter.</p>
+  </header>
+  <div class="tag-cloud">
+    {{- range .Data.Terms.ByCount }}
+      {{ partial "tag-pill.html" (dict "name" .Name "url" .Page.RelPermalink "count" .Count "class" "pill--lg") }}
+    {{- end }}
+  </div>
+  {{- range .Data.Terms.ByCount }}
+  <section class="term-group">
+    <div class="term-group-head">
+      <a class="term-group-name" href="{{ .Page.RelPermalink }}">#{{ .Name }}</a>
+      <span class="term-group-rule" aria-hidden="true"></span>
+    </div>
+    {{- range first 5 .Pages }}
+    <div class="term-row">
+      <time class="term-row-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02" }}</time>
+      <a class="term-row-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </div>
+    {{- end }}
+    {{- if gt (len .Pages) 5 }}
+    <p class="term-group-more"><a href="{{ .Page.RelPermalink }}">All {{ len .Pages }} posts →</a></p>
+    {{- end }}
+  </section>
+  {{- end }}
+</div>
+{{ end }}
