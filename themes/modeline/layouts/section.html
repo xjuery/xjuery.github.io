@@ -1,5 +1,6 @@
 {{ define "main" }}
 <div class="wrap">
+  {{ partial "banner.html" . }}
   <header class="page-head">
     <h1 class="page-title">{{ .Title }}</h1>
     <p class="page-sub">{{ i18n "entryCount" (len .RegularPages) }} · {{ i18n "sortedNewest" }}</p>

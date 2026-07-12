@@ -1,0 +1,5 @@
+{{- with .Params.banner }}
+<figure class="article-banner">
+  <img src="{{ . | relURL }}" alt="{{ $.Params.bannerAlt | default "" }}" fetchpriority="high">
+</figure>
+{{- end }}
