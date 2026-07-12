@@ -508,6 +508,17 @@ a.pill:hover { text-decoration: none; filter: brightness(1.15); }
   .toc { display: none; }
 }
 
+.article-banner { margin: 0 0 28px; }
+.article-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
 .article-head { margin-bottom: 24px; }
 .article-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
 .article-title {

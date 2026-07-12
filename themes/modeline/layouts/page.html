@@ -11,6 +11,7 @@
   </aside>
   {{- end }}
   <article class="article">
+    {{ partial "banner.html" . }}
     <header class="article-head">
       <div class="article-meta">
         {{- range .Params.tags }}
@@ -45,6 +46,7 @@
     {{- end }}
   </div>
   <div class="about-main">
+    {{ partial "banner.html" . }}
     <h1 class="about-name">{{ .Title }}</h1>
     {{ with .Params.role }}<p class="about-role">{{ . }}</p>{{ end }}
     <div class="prose">
@@ -62,6 +64,7 @@
 {{- else }}
 <div class="wrap page-plain">
   <article class="article">
+    {{ partial "banner.html" . }}
     <header class="article-head">
       <h1 class="article-title">{{ .Title }}</h1>
     </header>

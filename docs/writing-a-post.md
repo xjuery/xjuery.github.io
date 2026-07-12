@@ -40,6 +40,8 @@ summary: ""
 | `draft`    | Keep `true` while writing; drafts only show up with `make serve`. Set `false` to publish. |
 | `summary`  | One or two sentences shown in lists, cards, search results, and meta descriptions.       |
 | `toc`      | Optional, defaults to `true`. Set `false` to hide the table of contents.                 |
+| `banner`   | Optional. Path to a banner image (e.g. `/images/posts/<slug>/banner.jpg`) displayed full-width at the top of the page, above the title. See [Banner image](#banner-image). |
+| `bannerAlt`| Optional. Alt text for the banner image. Defaults to empty (decorative image). Translate it in the French file. |
 
 ## 3. Write the body
 
@@ -113,6 +115,32 @@ Notes:
   diagrams; roughly < 200 KB per image keeps pages fast. The theme caps
   image width via the prose styles, but resize very large originals before
   committing them.
+
+#### Banner image
+
+Any page can display a banner image across the top of its content column,
+above the title. Store the image like any other post image and point the
+`banner` front-matter field at it:
+
+```yaml
+---
+title: "My Post Title"
+banner: /images/posts/my-post-title/banner.jpg
+bannerAlt: "A skyline of terminal windows at dusk"
+---
+```
+
+- The banner is rendered full-width (cropped to at most 320 px tall via
+  `object-fit: cover`), so favor wide, landscape images — roughly 1400×400
+  works well. The same size guidance as other images applies (< 200 KB).
+- `bannerAlt` is optional; without it the image is treated as decorative
+  (empty `alt`). Set it whenever the image carries meaning.
+- It works on **every page kind**: posts, plain pages, the about page, and
+  section list pages (set `banner` in `content/posts/_index.md` to decorate
+  the post list).
+- Translations: like other images, the file is shared — repeat the same
+  `banner` path in `<slug>.fr.md` (front matter is per-file) and translate
+  `bannerAlt`.
 
 For an image-heavy post you can alternatively use a Hugo *page bundle*:
 create `content/posts/<slug>/` containing `index.md`, `index.fr.md`, and the
