@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg viewBox="0 0 765 560" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="765" height="560" fill="#f6f8fa"/>
+  <style type="text/css">
+    text {
+      font-family: "Bitstream Vera Sans";
+      font-size: 20px;
+      text-align: center;
+      text-anchor: middle;
+    }
+
+    path {
+      stroke: #000;
+      stroke-width: 2px;
+      paint-order: stroke;
+    }
+
+    rect {
+      rx: 10px;
+      ry: 10px;
+      stroke: #000;
+      stroke-width: 1px;
+    }
+
+    .remote {
+      stroke-width: 1px;
+    }
+  </style>
+  <clipPath id="branches-clip">
+    <rect x="225" y="20" height="540" width="280" />
+  </clipPath>
+  <clipPath id="working-files-clip">
+    <rect x="505" y="20" height="540" width="240" />
+  </clipPath>
+  <rect fill="#d4feff" x="20" y="20" height="520" width="140" />
+  <rect fill="#d4feff" x="225" y="20" height="520" width="280" />
+  <rect fill="#d4feff" x="225" y="20" height="290" width="140" clip-path="url(#branches-clip)" />
+  <rect fill="#f4ffff" x="505" y="20" height="520" width="240" />
+  <rect fill="#f4ffff" x="505" y="370" height="170" width="140" clip-path="url(#working-files-clip)" />
+  <text x="90" y="50">
+    Remote
+  </text>
+  <text x="295" y="50">
+    Clone
+  </text>
+  <text x="435" y="50">
+    Branches
+  </text>
+  <text x="575" y="400">
+    Stage
+  </text>
+  <text x="625" y="50">
+    Working Files
+  </text>
+  <path fill="#fff" d="M90 70H625l25 20-25 20H90Z" />
+  <text x="357.5" y="97">
+    pull
+  </text>
+  <path fill="#D4FEFF" stroke-dasharray="6,6" d="M420 130H295l-25 20 25 20H420Z" />
+  <text x="355" y="157">
+    --track
+  </text>
+  <path fill="#fff" d="M435 130H625l25 20-25 20H435Z" />
+  <text x="530" y="157">
+    checkout
+  </text>
+  <path fill="#fff" d="M90 190H260l25 20-25 20H90Z" />
+  <text x="175" y="217">
+    fetch
+  </text>
+  <path fill="#fff" d="M295 190H435l25 20-25 20H295Z" />
+  <text x="370.9" y="217">
+    reset
+  </text>
+  <path fill="none" stroke-dasharray="6,6" class="remote" d="M280 250H120l-25 20 25 20H280Z" />
+  <text x="190.5" y="277">
+    remote
+  </text>
+  <path fill="#F4FFFF" stroke-dasharray="6,6" d="M295 250H500v40H295Z" />
+  <path fill="#fff" d="M435 250H625l25 20-25 20H435Z" />
+  <text x="530" y="277">
+    reset --hard
+  </text>
+  <path fill="#fff" d="M435 310H625l25 20-25 20H435Z" />
+  <text x="530" y="337">
+    merge
+  </text>
+  <path fill="#fff" d="M365 420H90l-25 20 25 20H365Z" />
+  <text x="225" y="447">
+    push
+  </text>
+  <path fill="#fff" d="M560 420H435l-25 20 25 20H560Z" />
+  <text x="497.5" y="447">
+    commit
+  </text>
+  <path fill="#fff" d="M695 420H600l-25 20 25 20H695Z" />
+  <text x="647.5" y="447">
+    add
+  </text>
+  <path fill="#fff" d="M695 480H435l-25 20 25 20H695Z" />
+  <text x="565" y="507">
+    commit -a
+  </text>
+</svg>

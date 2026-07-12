@@ -50,12 +50,15 @@ defaultContentLanguageInSubdir = false
   # Optional: pin tags to a pill color (blue, green, yellow, purple, red).
   # Unlisted tags get a stable color derived from their name.
   [params.tagColors]
-    vim = 'blue'
-    go = 'green'
+    tools = 'blue'
+    go = 'brown'
     ops = 'yellow'
     rust = 'purple'
     rant = 'red'
-
+    architecture = 'green'
+    vim = 'red'
+    git = 'purple'
+    
 [languages]
   [languages.en]
     label = 'English'

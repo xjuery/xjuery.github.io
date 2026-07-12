@@ -1,7 +1,7 @@
 ---
 title: "La cheatsheet Vim que je ressors sans arrêt"
-date: 2026-07-12T13:41:52+02:00
-tags: [vim]
+date: 2026-07-05T13:41:52+02:00
+tags: [tools, vim]
 banner: /images/posts/vim-cheatsheet/banner.png
 bannerAlt: "Une banniere sur Vim"
 featured: true
