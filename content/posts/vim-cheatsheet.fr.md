@@ -4,8 +4,8 @@ date: 2026-07-12T13:41:52+02:00
 tags: [vim]
 banner: /images/posts/vim-cheatsheet/vim-console.png
 bannerAlt: "Une session Vim avec des fenêtres scindées"
-featured: false
-draft: true
+featured: true
+draft: false
 summary: "Les commandes Vim essentielles au quotidien — modes, déplacements, édition, macros — plus les techniques avancées (bloc visuel, :g, répétition avec .) qui font tout basculer."
 ---
 
