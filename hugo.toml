@@ -40,7 +40,7 @@ capitalizeListTitles = false
     weight = 30
 
 [params]
-  description = 'Everything I wish I'd known about building software, sooner.'
+  description = "Everything I wish I'd known about building software, sooner."
   copyright = 'juery.fr'
   footerNote = 'built with Hugo'
 
@@ -51,7 +51,7 @@ capitalizeListTitles = false
   # Home hero
   heroEyebrow = 'Software architect · writing weekly'
   heroTitle = 'Software architecture, patterns, and tools — decoded.'
-  heroText = 'Everything I wish I'd known about building software, sooner. Notes from the rabbit holes of new technologies.'
+  heroText = "Everything I wish I'd known about building software, sooner. Notes from the rabbit holes of new technologies."
 
   # Features
   search = true            # client-side search + "/" shortcut
