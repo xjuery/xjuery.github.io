@@ -225,6 +225,29 @@ a:hover { text-decoration: underline; }
 .search-date { font-family: var(--font-mono); font-size: 11px; color: var(--faint); white-space: nowrap; }
 .search-empty { padding: 9px 12px; font-size: 13px; color: var(--muted); }
 
+/* language switch */
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+}
+.lang-switch .lang-link {
+  padding: 5px 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--muted);
+}
+.lang-switch a.lang-link:hover {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border-2);
+  text-decoration: none;
+}
+.lang-switch .lang-link.is-active { color: var(--accent); background: var(--accent-tint); }
+
 /* theme toggle */
 .theme-toggle {
   background: none;

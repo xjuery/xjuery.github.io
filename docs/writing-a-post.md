@@ -1,0 +1,121 @@
+# Writing a new post
+
+This site is bilingual (English + French). English is the default language and
+lives at the site root (`https://juery.fr/`); French lives under `/fr/`.
+This guide walks through creating a post in English and adding its French
+translation.
+
+> **Shortcut**: in Claude Code, `/new-post <title or topic>` runs all the
+> steps below — it scaffolds the post and creates both the English and French
+> drafts (see `.claude/commands/new-post.md`).
+
+## 1. Scaffold the post
+
+```bash
+make new SLUG=my-post-title
+```
+
+This runs `hugo new content posts/my-post-title.md` and creates a draft from
+the archetype in `themes/modeline/archetypes/posts.md`:
+
+```yaml
+---
+title: "My Post Title"
+date: 2026-07-12T10:00:00+02:00
+tags: []
+featured: false
+draft: true
+summary: ""
+---
+```
+
+## 2. Fill in the front matter
+
+| Field      | Purpose                                                                                  |
+| ---------- | ---------------------------------------------------------------------------------------- |
+| `title`    | Post title, shown in lists, cards, and the `<title>` tag.                                |
+| `date`     | Publication date. Future-dated posts are hidden until the date passes.                   |
+| `tags`     | List of tags, e.g. `[ops, go]`. Pinned colors are configured in `hugo.toml` (`[params.tagColors]`); unlisted tags get a stable color derived from their name. |
+| `featured` | Set `true` to pin the post to the big "Featured" card on the home page (the newest post is featured otherwise). |
+| `draft`    | Keep `true` while writing; drafts only show up with `make serve`. Set `false` to publish. |
+| `summary`  | One or two sentences shown in lists, cards, search results, and meta descriptions.       |
+| `toc`      | Optional, defaults to `true`. Set `false` to hide the table of contents.                 |
+
+## 3. Write the body
+
+Standard Markdown, with a few theme extras:
+
+- **Headings**: use `##` and `###` — they feed the table of contents
+  (configured for levels 2–3).
+- **Code blocks**: fenced blocks get syntax highlighting. An optional
+  `filename` attribute renders a filename header:
+
+  ````markdown
+  ```yaml {filename="values.yaml"}
+  replicas: 3
+  ```
+  ````
+
+- **Emoji**: shortcodes like `:wq:` work (`enableEmoji = true`).
+- **Raw HTML**: allowed (`unsafe = true` in the Goldmark config), e.g.
+  `<kbd>` for key caps.
+
+## 4. Add the French translation
+
+Translations are separate files with a language suffix, side by side with the
+original:
+
+```
+content/posts/my-post-title.md      # English (default language)
+content/posts/my-post-title.fr.md   # French
+```
+
+Copy the English file to `<slug>.fr.md` and translate the `title`, `summary`,
+and body. **Keep the same filename base** — that is how Hugo links the two
+pages as translations of each other, which powers:
+
+- the EN/FR switcher in the header linking directly to the translated post,
+- the `hreflang` alternate links in `<head>`,
+- the automatic browser-language redirect.
+
+Keep `date` and `tags` identical to the English version so both listings stay
+consistent.
+
+A post without a translation is fine: it simply only appears on the site of
+its own language, and the language switcher falls back to the other
+language's home page.
+
+### Translating other content
+
+The same suffix convention applies everywhere in `content/`:
+`about.md` / `about.fr.md`, `_index.md` / `_index.fr.md`, etc.
+
+### UI strings and site chrome
+
+- Theme UI strings (labels, dates, aria-labels) live in
+  `themes/modeline/i18n/en.toml` and `themes/modeline/i18n/fr.toml`.
+- Per-language site params (hero text, description) and menus live in
+  `hugo.toml` under `[languages.en]` / `[languages.fr]`.
+
+## 5. Preview
+
+```bash
+make serve        # live-reload server with drafts + future posts
+```
+
+Open `http://localhost:1313/` (English) and `http://localhost:1313/fr/`
+(French). Check both languages, and use the EN/FR switcher in the header to
+verify the two versions are linked.
+
+Note: the site auto-redirects based on your browser language on first visit.
+Your explicit choice via the EN/FR switcher is stored in `localStorage`
+(key `lang`) and always wins; clear it from the browser console with
+`localStorage.removeItem("lang")` to test detection again.
+
+## 6. Publish
+
+1. Set `draft: false` (in **both** language files).
+2. Run `make check` — it fails on broken refs and template errors.
+3. Commit and merge to `master`; the GitHub Actions workflow
+   (`.github/workflows/deploy.yml`) builds and deploys to GitHub Pages
+   automatically.

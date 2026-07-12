@@ -5,6 +5,6 @@
         "url" .RelPermalink
         "summary" (.Summary | plainify)
         "tags" (.Params.tags | default slice)
-        "date" (.Date.Format "Jan 2, 2006")) -}}
+        "date" (.Date | time.Format ":date_medium")) -}}
 {{- end -}}
 {{- $index | jsonify -}}

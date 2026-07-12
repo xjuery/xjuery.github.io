@@ -1,0 +1,86 @@
+# English UI strings for the modeline theme.
+
+[skipToContent]
+other = "Skip to content"
+
+[mainNavigation]
+other = "Main navigation"
+
+[searchPlaceholder]
+other = "Search"
+
+[searchPosts]
+other = "Search posts"
+
+[toggleTheme]
+other = "Toggle dark / light theme"
+
+[switchLanguage]
+other = "Switch language"
+
+[featured]
+other = "Featured"
+
+[readingTime]
+other = "{{ .Count }} min read"
+
+[allPosts]
+other = "All posts →"
+
+[allNPosts]
+other = "All {{ .Count }} posts →"
+
+[entryCount]
+one = "{{ .Count }} entry"
+other = "{{ .Count }} entries"
+
+[sortedNewest]
+other = "sorted newest first"
+
+[contents]
+other = "Contents"
+
+[tableOfContents]
+other = "Table of contents"
+
+[postNavigation]
+other = "Post navigation"
+
+[browseByTag]
+other = "Browse by tag"
+
+[tagCloudSub]
+other = "Every pill is a taxonomy term. Tap one to filter."
+
+[postCount]
+one = "{{ .Count }} post"
+other = "{{ .Count }} posts"
+
+[taggedWith]
+other = "tagged “{{ . }}”"
+
+[allTags]
+other = "all tags"
+
+[notFoundText]
+other = "The buffer you're looking for isn't open. It may have been moved, deleted, or never written to disk."
+
+[backHome]
+other = "— back home"
+
+[pagination]
+other = "Pagination"
+
+[previousPage]
+other = "Previous page"
+
+[nextPage]
+other = "Next page"
+
+# Locale-aware date layouts (Go reference time). Textual month names are
+# localized by Hugo's time.Format; these control the field order.
+[dateShort]
+other = "Jan 2"
+
+[dateShortPadded]
+other = "Jan 02"

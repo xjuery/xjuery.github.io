@@ -2,7 +2,7 @@
 <div class="wrap">
   <header class="page-head">
     <h1 class="page-title page-title--term">#{{ lower .Title }}</h1>
-    <p class="page-sub">{{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }} tagged “{{ lower .Title }}” · <a href="{{ (site.GetPage "/tags").RelPermalink }}">all tags</a></p>
+    <p class="page-sub">{{ i18n "postCount" (len .Pages) }} {{ i18n "taggedWith" (lower .Title) }} · <a href="{{ (site.GetPage "/tags").RelPermalink }}">{{ i18n "allTags" }}</a></p>
   </header>
   {{- $pag := .Paginate .Pages }}
   <div class="post-list">

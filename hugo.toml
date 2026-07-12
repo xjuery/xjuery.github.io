@@ -1,10 +1,13 @@
 baseURL = 'https://juery.fr/'
-locale = 'en'
 title = 'juery.fr'
 theme = 'modeline'
 enableRobotsTXT = true
 enableEmoji = true
 capitalizeListTitles = false
+
+# i18n: English lives at the site root, French under /fr/.
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
 
 [pagination]
   pagerSize = 8
@@ -25,33 +28,14 @@ capitalizeListTitles = false
     startLevel = 2
     endLevel = 3
 
-[menus]
-  [[menus.main]]
-    name = 'Posts'
-    pageRef = '/posts'
-    weight = 10
-  [[menus.main]]
-    name = 'Tags'
-    pageRef = '/tags'
-    weight = 20
-  [[menus.main]]
-    name = 'About'
-    pageRef = '/about'
-    weight = 30
-
+# Shared params (language-specific ones live under [languages.*.params]).
 [params]
-  description = "Everything I wish I'd known about building software, sooner."
   copyright = 'juery.fr'
   footerNote = 'built with Hugo'
 
   # Header logo, rendered as {logoText}{logoAccent} with the accent colored.
   logoText = 'juery'
   logoAccent = '.fr'
-
-  # Home hero
-  heroEyebrow = 'Software architect · writing weekly'
-  heroTitle = 'Software architecture, patterns, and tools — decoded.'
-  heroText = "Everything I wish I'd known about building software, sooner. Notes from the rabbit holes of new technologies."
 
   # Features
   search = true            # client-side search + "/" shortcut
@@ -65,3 +49,50 @@ capitalizeListTitles = false
     ops = 'yellow'
     rust = 'purple'
     rant = 'red'
+
+[languages]
+  [languages.en]
+    label = 'English'
+    locale = 'en'
+    weight = 1
+    [languages.en.params]
+      description = "Everything I wish I'd known about building software, sooner."
+      heroEyebrow = 'Software architect · writing weekly'
+      heroTitle = 'Software architecture, patterns, and tools — decoded.'
+      heroText = "Everything I wish I'd known about building software, sooner. Notes from the rabbit holes of new technologies."
+    [languages.en.menus]
+      [[languages.en.menus.main]]
+        name = 'Posts'
+        pageRef = '/posts'
+        weight = 10
+      [[languages.en.menus.main]]
+        name = 'Tags'
+        pageRef = '/tags'
+        weight = 20
+      [[languages.en.menus.main]]
+        name = 'About'
+        pageRef = '/about'
+        weight = 30
+
+  [languages.fr]
+    label = 'Français'
+    locale = 'fr'
+    weight = 2
+    [languages.fr.params]
+      description = "Tout ce que j'aurais aimé savoir plus tôt sur la création de logiciels."
+      heroEyebrow = 'Architecte logiciel · un billet par semaine'
+      heroTitle = 'Architecture logicielle, patterns et outils — décodés.'
+      heroText = "Tout ce que j'aurais aimé savoir plus tôt sur la création de logiciels. Notes tirées de mes plongées dans les nouvelles technologies."
+    [languages.fr.menus]
+      [[languages.fr.menus.main]]
+        name = 'Articles'
+        pageRef = '/posts'
+        weight = 10
+      [[languages.fr.menus.main]]
+        name = 'Tags'
+        pageRef = '/tags'
+        weight = 20
+      [[languages.fr.menus.main]]
+        name = 'À propos'
+        pageRef = '/about'
+        weight = 30

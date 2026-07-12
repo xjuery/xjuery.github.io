@@ -1,7 +1,7 @@
 <header class="site-header">
   <div class="wrap site-header-inner">
     <a class="logo" href="{{ site.Home.RelPermalink }}">{{ site.Params.logoText | default site.Title }}<span class="logo-accent">{{ site.Params.logoAccent }}</span></a>
-    <nav class="site-nav" aria-label="Main navigation">
+    <nav class="site-nav" aria-label="{{ i18n "mainNavigation" }}">
       {{ range site.Menus.main }}
         {{- $active := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) -}}
         <a href="{{ .URL }}"{{ if $active }} class="is-active" aria-current="page"{{ end }}>{{ .Name }}</a>
@@ -10,13 +10,29 @@
     <div class="site-tools">
       {{- if site.Params.search | default true }}
       <div class="search" id="search">
-        <input id="search-input" type="search" placeholder="Search" aria-label="Search posts"
-               autocomplete="off" spellcheck="false" data-index="{{ "index.json" | relURL }}">
+        <input id="search-input" type="search" placeholder="{{ i18n "searchPlaceholder" }}" aria-label="{{ i18n "searchPosts" }}"
+               autocomplete="off" spellcheck="false" data-index="{{ with site.Home.OutputFormats.Get "json" }}{{ .RelPermalink }}{{ end }}">
         <kbd class="search-kbd" aria-hidden="true">/</kbd>
         <ul id="search-results" class="search-results" hidden></ul>
       </div>
       {{- end }}
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark / light theme">
+      {{- if hugo.IsMultilingual }}
+      <nav class="lang-switch" aria-label="{{ i18n "switchLanguage" }}">
+        {{- $page := . }}
+        {{- range hugo.Sites }}
+        {{- $lang := .Language }}
+        {{- if eq $lang.Lang site.Language.Lang }}
+        <span class="lang-link is-active" aria-current="true">{{ $lang.Lang | upper }}</span>
+        {{- else }}
+        {{- /* Link to this page's translation when it exists, else that language's home. */}}
+        {{- $href := .Home.RelPermalink }}
+        {{- range $page.AllTranslations }}{{ if eq .Language.Lang $lang.Lang }}{{ $href = .RelPermalink }}{{ end }}{{ end }}
+        <a class="lang-link" href="{{ $href }}" lang="{{ $lang.Lang }}" hreflang="{{ $lang.Lang }}" data-lang="{{ $lang.Lang }}" title="{{ $lang.Label }}">{{ $lang.Lang | upper }}</a>
+        {{- end }}
+        {{- end }}
+      </nav>
+      {{- end }}
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="{{ i18n "toggleTheme" }}">
         <span class="theme-icon theme-icon--moon" aria-hidden="true">🌙</span>
         <span class="theme-icon theme-icon--sun" aria-hidden="true">☀️</span>
       </button>

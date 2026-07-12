@@ -1,5 +1,5 @@
 <article class="post-row">
-  <time class="post-row-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02" }}</time>
+  <time class="post-row-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format (i18n "dateShortPadded") }}</time>
   <div class="post-row-main">
     <div class="post-row-head">
       <h2 class="post-row-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>

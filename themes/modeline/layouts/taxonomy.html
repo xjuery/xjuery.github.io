@@ -1,8 +1,8 @@
 {{ define "main" }}
 <div class="wrap">
   <header class="page-head">
-    <h1 class="page-title">Browse by tag</h1>
-    <p class="page-sub">Every pill is a taxonomy term. Tap one to filter.</p>
+    <h1 class="page-title">{{ i18n "browseByTag" }}</h1>
+    <p class="page-sub">{{ i18n "tagCloudSub" }}</p>
   </header>
   <div class="tag-cloud">
     {{- range .Data.Terms.ByCount }}
@@ -17,12 +17,12 @@
     </div>
     {{- range first 5 .Pages }}
     <div class="term-row">
-      <time class="term-row-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02" }}</time>
+      <time class="term-row-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format (i18n "dateShortPadded") }}</time>
       <a class="term-row-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
     </div>
     {{- end }}
     {{- if gt (len .Pages) 5 }}
-    <p class="term-group-more"><a href="{{ .Page.RelPermalink }}">All {{ len .Pages }} posts →</a></p>
+    <p class="term-group-more"><a href="{{ .Page.RelPermalink }}">{{ i18n "allNPosts" (len .Pages) }}</a></p>
     {{- end }}
   </section>
   {{- end }}

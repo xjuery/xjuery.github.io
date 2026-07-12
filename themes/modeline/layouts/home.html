@@ -15,12 +15,12 @@
     <div class="featured-bar" aria-hidden="true"></div>
     <div class="featured-body">
       <div class="featured-meta">
-        <span class="featured-label">Featured</span>
+        <span class="featured-label">{{ i18n "featured" }}</span>
         {{ with $tag }}{{ partial "tag-pill.html" (dict "name" . "plain" true) }}{{ end }}
       </div>
       <h2 class="featured-title"><a class="stretched" href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
       <p class="featured-summary">{{ .Summary | plainify }}</p>
-      <p class="post-meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</p>
+      <p class="post-meta">{{ .Date | time.Format ":date_medium" }} · {{ i18n "readingTime" .ReadingTime }}</p>
     </div>
   </article>
 </section>
@@ -35,7 +35,7 @@
     {{- end }}
   </div>
   {{- if gt (len $posts) 5 }}
-  <p class="home-more"><a href="{{ (site.GetPage "/posts").RelPermalink }}">All posts →</a></p>
+  <p class="home-more"><a href="{{ (site.GetPage "/posts").RelPermalink }}">{{ i18n "allPosts" }}</a></p>
   {{- end }}
 </section>
 {{ end }}

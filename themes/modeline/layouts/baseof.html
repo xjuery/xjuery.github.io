@@ -4,7 +4,7 @@
   {{ partial "head.html" . }}
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main">{{ i18n "skipToContent" }}</a>
   {{ partial "header.html" . }}
   <main id="main" class="site-main">
     {{ block "main" . }}{{ end }}
