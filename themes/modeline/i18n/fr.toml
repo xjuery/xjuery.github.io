@@ -46,6 +46,9 @@ other = "Table des matières"
 [postNavigation]
 other = "Navigation entre articles"
 
+[codeLanguages]
+other = "Langages du code"
+
 [browseByTag]
 other = "Parcourir par tag"
 

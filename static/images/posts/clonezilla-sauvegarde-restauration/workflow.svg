@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" font-family="-apple-system, 'Segoe UI', Roboto, sans-serif">
+  <rect x="0" y="0" width="800" height="360" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#475569"/>
+    </marker>
+    <marker id="arrowg" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="38" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">Clonezilla : sauvegarde (savedisk) et restauration (restoredisk)</text>
+
+  <!-- Row 1: backup -->
+  <text x="60" y="95" font-size="13" font-weight="700" fill="#b45309">Sauvegarde</text>
+
+  <rect x="40" y="110" width="150" height="60" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="115" y="136" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">1. Booter sur la</text>
+  <text x="115" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">clé USB Clonezilla</text>
+
+  <rect x="240" y="110" width="150" height="60" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="315" y="136" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">2. Mode</text>
+  <text x="315" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">device-image</text>
+
+  <rect x="440" y="110" width="150" height="60" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="515" y="136" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">3. savedisk :</text>
+  <text x="515" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">disque → image</text>
+
+  <rect x="640" y="110" width="130" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="705" y="136" text-anchor="middle" font-size="12" font-weight="600" fill="#14532d">Image sur</text>
+  <text x="705" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#14532d">disque externe</text>
+
+  <line x1="190" y1="140" x2="234" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="390" y1="140" x2="434" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="590" y1="140" x2="634" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Row 2: restore -->
+  <text x="60" y="235" font-size="13" font-weight="700" fill="#15803d">Restauration (après un crash)</text>
+
+  <rect x="40" y="250" width="150" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="115" y="276" text-anchor="middle" font-size="12" font-weight="600" fill="#14532d">1. Booter sur la</text>
+  <text x="115" y="292" text-anchor="middle" font-size="12" font-weight="600" fill="#14532d">même clé USB</text>
+
+  <rect x="240" y="250" width="150" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="315" y="276" text-anchor="middle" font-size="12" font-weight="600" fill="#14532d">2. Brancher le</text>
+  <text x="315" y="292" text-anchor="middle" font-size="12" font-weight="600" fill="#14532d">disque d'images</text>
+
+  <rect x="440" y="250" width="150" height="60" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="515" y="276" text-anchor="middle" font-size="12" font-weight="600" fill="#14532d">3. restoredisk :</text>
+  <text x="515" y="292" text-anchor="middle" font-size="12" font-weight="600" fill="#14532d">image → disque</text>
+
+  <rect x="640" y="250" width="130" height="60" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="705" y="276" text-anchor="middle" font-size="12" font-weight="600" fill="#1e3a8a">Système</text>
+  <text x="705" y="292" text-anchor="middle" font-size="12" font-weight="600" fill="#1e3a8a">restauré ✓</text>
+
+  <line x1="190" y1="280" x2="234" y2="280" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowg)"/>
+  <line x1="390" y1="280" x2="434" y2="280" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowg)"/>
+  <line x1="590" y1="280" x2="634" y2="280" stroke="#16a34a" stroke-width="2" marker-end="url(#arrowg)"/>
+</svg>

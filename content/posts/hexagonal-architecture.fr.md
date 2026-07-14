@@ -66,72 +66,143 @@ JSON en appel de cas d'usage).
 ## Un exemple concret
 
 Le cœur définit un cas d'usage et *déclare* ce dont il a besoin — une
-interface. Il n'importe rien d'aucun framework :
+interface. Il n'importe rien d'aucun framework, quel que soit le langage :
 
-```go {filename="internal/core/subscribe.go"}
-package core
-
-type Subscriber struct {
-	Email string
-}
+{{< codetabs >}}
+{{< tab >}}
+```java
+public record Subscriber(String email) {}
 
 // Port piloté : le cœur possède cette interface,
 // l'adaptateur l'implémente.
-type SubscriberStore interface {
-	Save(s Subscriber) error
-	Exists(email string) (bool, error)
+public interface SubscriberStore {
+    void save(Subscriber s);
+    boolean exists(String email);
 }
 
 // Port pilotant : ce que le monde extérieur peut nous demander.
-type SubscribeUseCase struct {
-	store SubscriberStore
-}
+public class SubscribeUseCase {
+    private final SubscriberStore store;
 
-func NewSubscribeUseCase(store SubscriberStore) *SubscribeUseCase {
-	return &SubscribeUseCase{store: store}
-}
+    public SubscribeUseCase(SubscriberStore store) {
+        this.store = store;
+    }
 
-func (uc *SubscribeUseCase) Subscribe(email string) error {
-	if !validEmail(email) {
-		return ErrInvalidEmail
-	}
-	exists, err := uc.store.Exists(email)
-	if err != nil {
-		return err
-	}
-	if exists {
-		return ErrAlreadySubscribed
-	}
-	return uc.store.Save(Subscriber{Email: email})
+    public void subscribe(String email) {
+        if (!Emails.isValid(email)) {
+            throw new InvalidEmailException(email);
+        }
+        if (store.exists(email)) {
+            throw new AlreadySubscribedException(email);
+        }
+        store.save(new Subscriber(email));
+    }
 }
 ```
+{{< /tab >}}
+{{< tab >}}
+```python
+from dataclasses import dataclass
+from typing import Protocol
+
+
+@dataclass
+class Subscriber:
+    email: str
+
+
+# Port piloté : le cœur possède cette interface,
+# l'adaptateur l'implémente.
+class SubscriberStore(Protocol):
+    def save(self, s: Subscriber) -> None: ...
+    def exists(self, email: str) -> bool: ...
+
+
+# Port pilotant : ce que le monde extérieur peut nous demander.
+class SubscribeUseCase:
+    def __init__(self, store: SubscriberStore):
+        self._store = store
+
+    def subscribe(self, email: str) -> None:
+        if not valid_email(email):
+            raise InvalidEmailError(email)
+        if self._store.exists(email):
+            raise AlreadySubscribedError(email)
+        self._store.save(Subscriber(email=email))
+```
+{{< /tab >}}
+{{< /codetabs >}}
 
 Les adaptateurs vivent à la périphérie et dépendent du cœur — jamais
 l'inverse :
 
-```go {filename="internal/adapters/postgres/store.go"}
-package postgres
-
-// Implémente core.SubscriberStore avec database/sql.
+{{< codetabs >}}
+{{< tab >}}
+```java
+// Implémente SubscriberStore avec du JDBC pur.
 // Le cœur ne sait pas que Postgres existe.
-type Store struct{ db *sql.DB }
+public class PostgresStore implements SubscriberStore {
+    private final DataSource ds;
 
-func (s *Store) Save(sub core.Subscriber) error {
-	_, err := s.db.Exec(
-		"INSERT INTO subscribers (email) VALUES ($1)", sub.Email)
-	return err
+    public PostgresStore(DataSource ds) {
+        this.ds = ds;
+    }
+
+    @Override
+    public void save(Subscriber s) {
+        try (var conn = ds.getConnection();
+             var stmt = conn.prepareStatement(
+                 "INSERT INTO subscribers (email) VALUES (?)")) {
+            stmt.setString(1, s.email());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+    }
 }
 ```
+{{< /tab >}}
+{{< tab >}}
+```python
+# Implémente SubscriberStore avec la DB-API brute.
+# Le cœur ne sait pas que Postgres existe.
+class PostgresStore:
+    def __init__(self, conn):
+        self._conn = conn
 
-```go {filename="internal/adapters/http/handler.go"}
-package http
+    def save(self, s: Subscriber) -> None:
+        with self._conn.cursor() as cur:
+            cur.execute(
+                "INSERT INTO subscribers (email) VALUES (%s)",
+                (s.email,),
+            )
+```
+{{< /tab >}}
+{{< /codetabs >}}
 
+{{< codetabs >}}
+{{< tab >}}
+```java
 // Adaptateur pilotant : traduit HTTP en appel de cas d'usage.
-func (h *Handler) Subscribe(w http.ResponseWriter, r *http.Request) {
-	err := h.useCase.Subscribe(r.FormValue("email"))
-	// ... traduire les erreurs métier en codes HTTP
+@PostMapping("/subscribe")
+public ResponseEntity<Void> subscribe(@RequestParam String email) {
+    useCase.subscribe(email);
+    // ... traduire les exceptions métier en codes HTTP
+    return ResponseEntity.noContent().build();
 }
 ```
+{{< /tab >}}
+{{< tab >}}
+```python
+# Adaptateur pilotant : traduit HTTP en appel de cas d'usage.
+@app.post("/subscribe")
+def subscribe():
+    use_case.subscribe(request.form["email"])
+    # ... traduire les erreurs métier en codes HTTP
+    return "", 204
+```
+{{< /tab >}}
+{{< /codetabs >}}
 
 > La règle de dépendance est tout le pattern : **les dépendances de code
 > pointent vers l'intérieur, seulement vers l'intérieur, toujours vers
@@ -143,18 +214,30 @@ func (h *Handler) Subscribe(w http.ResponseWriter, r *http.Request) {
 Comme chaque dépendance du cœur est une interface qu'il possède, les tests
 branchent des fakes sur les mêmes ports que les vrais adaptateurs :
 
-```go {filename="internal/core/subscribe_test.go"}
-func TestSubscribeRejectsDuplicates(t *testing.T) {
-	store := &fakeStore{existing: []string{"a@b.io"}}
-	uc := NewSubscribeUseCase(store)
+{{< codetabs >}}
+{{< tab >}}
+```java
+@Test
+void subscribeRejectsDuplicates() {
+    var store = new FakeStore(List.of("a@b.io"));
+    var useCase = new SubscribeUseCase(store);
 
-	err := uc.Subscribe("a@b.io")
-
-	if !errors.Is(err, ErrAlreadySubscribed) {
-		t.Fatalf("want ErrAlreadySubscribed, got %v", err)
-	}
+    assertThrows(AlreadySubscribedException.class,
+        () -> useCase.subscribe("a@b.io"));
 }
 ```
+{{< /tab >}}
+{{< tab >}}
+```python
+def test_subscribe_rejects_duplicates():
+    store = FakeStore(existing=["a@b.io"])
+    use_case = SubscribeUseCase(store)
+
+    with pytest.raises(AlreadySubscribedError):
+        use_case.subscribe("a@b.io")
+```
+{{< /tab >}}
+{{< /codetabs >}}
 
 Pas de conteneur de base de données, pas de serveur HTTP, pas de framework
 de mocks — des tests en millisecondes sur exactement le code qui porte le

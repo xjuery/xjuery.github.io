@@ -58,6 +58,30 @@ Standard Markdown, with a few theme extras:
   ```
   ````
 
+- **Multi-language code tabs**: to show the same snippet in several
+  languages, wrap one fenced block per language in `tab` shortcodes inside
+  a `codetabs` shortcode. Each tab's language (and its label) is taken from
+  the fence info string:
+
+  ````markdown
+  {{</* codetabs */>}}
+  {{</* tab */>}}
+  ```go
+  fmt.Println("hello")
+  ```
+  {{</* /tab */>}}
+  {{</* tab */>}}
+  ```python
+  print("hello")
+  ```
+  {{</* /tab */>}}
+  {{</* /codetabs */>}}
+  ````
+
+  Common languages get a pretty label automatically (`js` → JavaScript,
+  `py` → Python…); override it with `{{</* tab lang="js" label="Node.js" */>}}`.
+  The first tab is shown by default. Remember to translate nothing here —
+  code tabs work the same in the French file.
 - **Emoji**: shortcodes like `:wq:` work (`enableEmoji = true`).
 - **Raw HTML**: allowed (`unsafe = true` in the Goldmark config), e.g.
   `<kbd>` for key caps.

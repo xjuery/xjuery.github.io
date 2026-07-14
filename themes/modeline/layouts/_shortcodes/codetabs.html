@@ -1,0 +1,37 @@
+{{- /*
+  Tabbed code block: one snippet shown in several programming languages.
+  Wraps {{< tab >}} shortcodes; each tab registers itself in this
+  shortcode's Store, then we render the shared chrome + one panel per tab.
+
+  {{< codetabs >}}
+  {{< tab go >}} ...code... {{< /tab >}}
+  {{< tab python >}} ...code... {{< /tab >}}
+  {{< /codetabs >}}
+*/ -}}
+{{- $_ := .Inner -}}
+{{- $tabs := .Store.Get "tabs" -}}
+{{- if not $tabs -}}
+  {{- errorf "codetabs: no tab shortcodes found inside codetabs (%s)" .Position -}}
+{{- else -}}
+{{- $id := printf "codetabs-%d" .Ordinal -}}
+<figure class="codeblock codetabs">
+  <figcaption class="codeblock-head codetabs-head">
+    <span class="codeblock-dot" aria-hidden="true"></span>
+    <span class="codetabs-tabs" role="tablist" aria-label="{{ i18n "codeLanguages" }}">
+      {{- range $i, $tab := $tabs }}
+      <button type="button" role="tab" class="codetabs-tab"
+        id="{{ $id }}-tab-{{ $i }}" aria-controls="{{ $id }}-panel-{{ $i }}"
+        aria-selected="{{ if eq $i 0 }}true{{ else }}false{{ end }}"
+        {{- if ne $i 0 }} tabindex="-1"{{ end }}>{{ $tab.label }}</button>
+      {{- end }}
+    </span>
+  </figcaption>
+  {{- range $i, $tab := $tabs }}
+  <div class="codetabs-panel" role="tabpanel"
+    id="{{ $id }}-panel-{{ $i }}" aria-labelledby="{{ $id }}-tab-{{ $i }}"
+    {{- if ne $i 0 }} hidden{{ end }}>
+    {{ transform.Highlight $tab.code $tab.lang }}
+  </div>
+  {{- end }}
+</figure>
+{{- end -}}

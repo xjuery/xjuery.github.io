@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 430" font-family="-apple-system, 'Segoe UI', Roboto, sans-serif">
+  <rect x="0" y="0" width="800" height="430" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+
+  <!-- Hexagon -->
+  <polygon points="570,215 485,362 315,362 230,215 315,68 485,68"
+           fill="#f0f9ff" stroke="#0369a1" stroke-width="2.5"/>
+
+  <!-- Clean architecture circles inside -->
+  <circle cx="400" cy="215" r="108" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <circle cx="400" cy="215" r="52" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/>
+
+  <text x="400" y="211" text-anchor="middle" font-size="15" font-weight="600" fill="#0c4a6e">Entités</text>
+  <text x="400" y="230" text-anchor="middle" font-size="11" fill="#0c4a6e">(domaine)</text>
+  <text x="400" y="130" text-anchor="middle" font-size="14" font-weight="600" fill="#0c4a6e">Cas d'utilisation</text>
+  <text x="400" y="390" text-anchor="middle" font-size="13" font-weight="600" fill="#0369a1">L'hexagone : ports en périphérie, cercles de Clean à l'intérieur</text>
+
+  <!-- Ports (squares on hexagon edges) -->
+  <rect x="258" y="126" width="20" height="20" fill="#0369a1" transform="rotate(30 268 136)"/>
+  <rect x="258" y="284" width="20" height="20" fill="#0369a1" transform="rotate(-30 268 294)"/>
+  <rect x="522" y="126" width="20" height="20" fill="#16a34a" transform="rotate(-30 532 136)"/>
+  <rect x="522" y="284" width="20" height="20" fill="#16a34a" transform="rotate(30 532 294)"/>
+
+  <text x="300" y="105" text-anchor="middle" font-size="12" fill="#0369a1" font-weight="600">Port entrant</text>
+  <text x="500" y="105" text-anchor="middle" font-size="12" fill="#16a34a" font-weight="600">Port sortant</text>
+
+  <!-- Left adapters (driving) -->
+  <rect x="20" y="110" width="150" height="52" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="95" y="132" text-anchor="middle" font-size="13" font-weight="600" fill="#92400e">Contrôleur REST</text>
+  <text x="95" y="150" text-anchor="middle" font-size="11" fill="#92400e">adaptateur entrant</text>
+
+  <rect x="20" y="268" width="150" height="52" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="95" y="290" text-anchor="middle" font-size="13" font-weight="600" fill="#92400e">CLI / Batch</text>
+  <text x="95" y="308" text-anchor="middle" font-size="11" fill="#92400e">adaptateur entrant</text>
+
+  <!-- Right adapters (driven) -->
+  <rect x="630" y="110" width="150" height="52" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="705" y="132" text-anchor="middle" font-size="13" font-weight="600" fill="#14532d">PostgreSQL</text>
+  <text x="705" y="150" text-anchor="middle" font-size="11" fill="#14532d">adaptateur sortant</text>
+
+  <rect x="630" y="268" width="150" height="52" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="705" y="290" text-anchor="middle" font-size="13" font-weight="600" fill="#14532d">SMTP / E-mail</text>
+  <text x="705" y="308" text-anchor="middle" font-size="11" fill="#14532d">adaptateur sortant</text>
+
+  <!-- Arrows -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+  <line x1="170" y1="136" x2="252" y2="136" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="170" y1="294" x2="252" y2="294" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="548" y1="136" x2="624" y2="136" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="548" y1="294" x2="624" y2="294" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Dependency rule note -->
+  <text x="400" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">Règle de dépendance : tout pointe vers le centre</text>
+</svg>
