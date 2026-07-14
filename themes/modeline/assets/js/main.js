@@ -124,6 +124,36 @@
     });
   }
 
+  /* ----- code tabs ----- */
+  document.querySelectorAll(".codetabs").forEach(function (block) {
+    var tabs = Array.prototype.slice.call(block.querySelectorAll(".codetabs-tab"));
+    var panels = Array.prototype.slice.call(block.querySelectorAll(".codetabs-panel"));
+
+    function select(index, focus) {
+      tabs.forEach(function (tab, i) {
+        var active = i === index;
+        tab.setAttribute("aria-selected", active ? "true" : "false");
+        tab.tabIndex = active ? 0 : -1;
+        if (panels[i]) panels[i].hidden = !active;
+      });
+      if (focus) tabs[index].focus();
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener("click", function () { select(i, false); });
+      tab.addEventListener("keydown", function (e) {
+        var next;
+        if (e.key === "ArrowRight") next = (i + 1) % tabs.length;
+        else if (e.key === "ArrowLeft") next = (i - 1 + tabs.length) % tabs.length;
+        else if (e.key === "Home") next = 0;
+        else if (e.key === "End") next = tabs.length - 1;
+        else return;
+        e.preventDefault();
+        select(next, true);
+      });
+    });
+  });
+
   /* ----- table-of-contents scrollspy ----- */
   var tocLinks = document.querySelectorAll("#TableOfContents a");
   var prose = document.querySelector(".prose");

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" font-family="-apple-system, 'Segoe UI', Roboto, sans-serif">
+  <rect x="0" y="0" width="800" height="320" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">Ansible : un nœud de contrôle, zéro agent sur les machines cibles</text>
+
+  <!-- Control node -->
+  <rect x="40" y="100" width="220" height="130" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Nœud de contrôle</text>
+  <text x="150" y="152" text-anchor="middle" font-size="11" fill="#1e3a8a">votre poste de travail</text>
+  <rect x="60" y="165" width="180" height="22" rx="5" fill="#ffffff" stroke="#2563eb"/>
+  <text x="150" y="180" text-anchor="middle" font-size="11" fill="#1e3a8a">ansible + playbook.yml</text>
+  <rect x="60" y="193" width="180" height="22" rx="5" fill="#ffffff" stroke="#2563eb"/>
+  <text x="150" y="208" text-anchor="middle" font-size="11" fill="#1e3a8a">inventory.ini</text>
+
+  <!-- Managed nodes -->
+  <rect x="560" y="70" width="200" height="56" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="660" y="94" text-anchor="middle" font-size="13" font-weight="600" fill="#14532d">web1</text>
+  <text x="660" y="112" text-anchor="middle" font-size="11" fill="#14532d">SSH + Python, c'est tout</text>
+
+  <rect x="560" y="140" width="200" height="56" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="660" y="164" text-anchor="middle" font-size="13" font-weight="600" fill="#14532d">web2</text>
+  <text x="660" y="182" text-anchor="middle" font-size="11" fill="#14532d">SSH + Python, c'est tout</text>
+
+  <rect x="560" y="210" width="200" height="56" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="660" y="234" text-anchor="middle" font-size="13" font-weight="600" fill="#14532d">db1</text>
+  <text x="660" y="252" text-anchor="middle" font-size="11" fill="#14532d">SSH + Python, c'est tout</text>
+
+  <!-- Arrows -->
+  <line x1="260" y1="150" x2="554" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="260" y1="165" x2="554" y2="168" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="260" y1="180" x2="554" y2="236" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="405" y="145" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">SSH</text>
+  <text x="400" y="298" text-anchor="middle" font-size="12" fill="#64748b">Rien à installer côté serveurs : Ansible pousse les tâches par SSH et repart</text>
+</svg>

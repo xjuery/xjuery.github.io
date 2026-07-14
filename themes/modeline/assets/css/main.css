@@ -631,6 +631,35 @@ kbd {
   color: #c9d1d9;
 }
 
+/* code tabs — one snippet in several languages ({{< codetabs >}}) */
+.codetabs-head {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.codetabs-tabs {
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+}
+.codetabs-tab {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #6e7681;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.codetabs-tab:hover { color: #c9d1d9; }
+/* blocks stay dark in both themes, so the accent is hardcoded too */
+.codetabs-tab[aria-selected="true"] {
+  color: #c9d1d9;
+  border-bottom-color: #58a6ff;
+}
+
 /* chroma syntax palette (GitHub-dark flavored) */
 .chroma { color: #c9d1d9; }
 .chroma .c, .chroma .c1, .chroma .cm, .chroma .ch, .chroma .cs,

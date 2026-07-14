@@ -1,0 +1,55 @@
+{{- /*
+  One language tab inside a {{< codetabs >}} block.
+
+  Params (positional or named):
+    lang  — Chroma language for highlighting, e.g. "go", "python".
+    label — tab label; defaults to a pretty name derived from lang.
+
+  The body is the code. A fenced code block is also accepted (the fence
+  is stripped, and its info string is used as lang when none is given),
+  so editors keep syntax-highlighting the snippet:
+
+  {{< tab >}}
+  ```go
+  fmt.Println("hi")
+  ```
+  {{< /tab >}}
+*/ -}}
+{{- $parentName := "" -}}
+{{- with .Parent }}{{ $parentName = .Name }}{{ end -}}
+{{- if ne $parentName "codetabs" -}}
+  {{- errorf "tab: must be nested inside a codetabs shortcode (%s)" .Position -}}
+{{- end -}}
+{{- $lang := "" -}}
+{{- $label := "" -}}
+{{- if .IsNamedParams -}}
+  {{- $lang = .Get "lang" | default "" -}}
+  {{- $label = .Get "label" | default "" -}}
+{{- else -}}
+  {{- $lang = .Get 0 | default "" -}}
+  {{- $label = .Get 1 | default "" -}}
+{{- end -}}
+{{- $code := trim .Inner "\r\n" -}}
+{{- with findRESubmatch "(?s)^`{3,}([\\w+#-]*)[^\\n]*\\n(.*?)\\n?`{3,}$" $code 1 -}}
+  {{- $m := index . 0 -}}
+  {{- if not $lang }}{{ $lang = index $m 1 }}{{ end -}}
+  {{- $code = index $m 2 -}}
+{{- end -}}
+{{- if not $label -}}
+  {{- $names := dict
+    "bash" "Bash" "sh" "Shell" "shell" "Shell" "zsh" "Zsh" "powershell" "PowerShell"
+    "js" "JavaScript" "javascript" "JavaScript" "ts" "TypeScript" "typescript" "TypeScript"
+    "py" "Python" "python" "Python" "rb" "Ruby" "ruby" "Ruby"
+    "go" "Go" "golang" "Go" "rs" "Rust" "rust" "Rust"
+    "java" "Java" "kt" "Kotlin" "kotlin" "Kotlin" "scala" "Scala"
+    "cs" "C#" "csharp" "C#" "c" "C" "cpp" "C++" "c++" "C++"
+    "php" "PHP" "swift" "Swift" "sql" "SQL"
+    "yaml" "YAML" "yml" "YAML" "json" "JSON" "toml" "TOML" "xml" "XML"
+    "html" "HTML" "css" "CSS" "hcl" "HCL" "tf" "Terraform" "terraform" "Terraform"
+  -}}
+  {{- $label = index $names (lower $lang) | default (or $lang "code") -}}
+{{- end -}}
+{{- .Parent.Store.Add "tabs" (slice (dict
+    "lang" ($lang | default "text")
+    "label" $label
+    "code" $code)) -}}

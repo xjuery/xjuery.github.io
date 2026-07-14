@@ -46,6 +46,9 @@ other = "Table of contents"
 [postNavigation]
 other = "Post navigation"
 
+[codeLanguages]
+other = "Code languages"
+
 [browseByTag]
 other = "Browse by tag"
 

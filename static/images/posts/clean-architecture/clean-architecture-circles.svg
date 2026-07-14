@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" font-family="-apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <rect width="800" height="600" fill="#f6f8fa"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#444c56"/>
+    </marker>
+  </defs>
+
+  <!-- rings, outermost first -->
+  <circle cx="410" cy="310" r="262" fill="#cfe3f5" stroke="#7fa8cc" stroke-width="2"/>
+  <circle cx="410" cy="310" r="198" fill="#d5e8d4" stroke="#82b366" stroke-width="2"/>
+  <circle cx="410" cy="310" r="136" fill="#f8cecc" stroke="#b85450" stroke-width="2"/>
+  <circle cx="410" cy="310" r="76"  fill="#ffe699" stroke="#d6b656" stroke-width="2"/>
+
+  <!-- ring labels -->
+  <g text-anchor="middle" fill="#1f2328">
+    <text x="410" y="78"  font-size="19" font-weight="700">Frameworks &amp; Drivers</text>
+    <text x="410" y="99"  font-size="12.5" fill="#57606a">web · database · UI · devices · external services</text>
+
+    <text x="410" y="146" font-size="19" font-weight="700">Interface Adapters</text>
+    <text x="410" y="166" font-size="12.5" fill="#57606a">controllers · presenters · gateways</text>
+
+    <text x="410" y="212" font-size="19" font-weight="700">Use Cases</text>
+    <text x="410" y="231" font-size="12.5" fill="#57606a">application business rules</text>
+
+    <text x="410" y="305" font-size="19" font-weight="700">Entities</text>
+    <text x="410" y="324" font-size="12.5" fill="#57606a">enterprise rules</text>
+  </g>
+
+  <!-- dependency arrow pointing inward -->
+  <g>
+    <line x1="96" y1="120" x2="290" y2="243" stroke="#444c56" stroke-width="3.5" marker-end="url(#arrow)"/>
+    <text x="60" y="88" font-size="14" font-weight="600" fill="#1f2328">Dependencies</text>
+    <text x="60" y="106" font-size="14" font-weight="600" fill="#1f2328">point inward</text>
+  </g>
+</svg>

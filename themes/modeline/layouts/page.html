@@ -27,10 +27,10 @@
     {{- if or .PrevInSection .NextInSection }}
     <nav class="post-nav" aria-label="{{ i18n "postNavigation" }}">
       {{- with .PrevInSection }}
-      <a class="post-nav-link post-nav-prev" href="{{ .RelPermalink }}" rel="prev"><span class="post-nav-cmd">:bp</span><span class="post-nav-title">{{ .Title }}</span></a>
+      <a class="post-nav-link post-nav-prev" href="{{ .RelPermalink }}" rel="prev"><span class="post-nav-cmd"><<</span><span class="post-nav-title">{{ .Title }}</span></a>
       {{- else }}<span></span>{{ end }}
       {{- with .NextInSection }}
-      <a class="post-nav-link post-nav-next" href="{{ .RelPermalink }}" rel="next"><span class="post-nav-cmd">:bn</span><span class="post-nav-title">{{ .Title }}</span></a>
+      <a class="post-nav-link post-nav-next" href="{{ .RelPermalink }}" rel="next"><span class="post-nav-cmd">>></span><span class="post-nav-title">{{ .Title }}</span></a>
       {{- end }}
     </nav>
     {{- end }}

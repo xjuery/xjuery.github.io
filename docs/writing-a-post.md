@@ -11,12 +11,19 @@ translation.
 
 ## 1. Scaffold the post
 
+Posts are organized in **monthly folders** named after their publication
+date: a post dated `2026-07-12T14:49:35+02:00` lives in
+`content/posts/2026-07/`. URLs are not affected — the `[permalinks]` config
+in `hugo.toml` keeps every post at `/posts/<slug>/` regardless of the
+folder, so moving a post between months never breaks a link.
+
 ```bash
-make new SLUG=my-post-title
+make new SLUG=my-post-title              # current month
+make new SLUG=my-post-title MONTH=2026-09   # explicit month
 ```
 
-This runs `hugo new content posts/my-post-title.md` and creates a draft from
-the archetype in `themes/modeline/archetypes/posts.md`:
+This runs `hugo new content posts/<YYYY-MM>/my-post-title.md` and creates a
+draft from the archetype in `themes/modeline/archetypes/posts.md`:
 
 ```yaml
 ---
@@ -34,7 +41,7 @@ summary: ""
 | Field      | Purpose                                                                                  |
 | ---------- | ---------------------------------------------------------------------------------------- |
 | `title`    | Post title, shown in lists, cards, and the `<title>` tag.                                |
-| `date`     | Publication date. Future-dated posts are hidden until the date passes.                   |
+| `date`     | Publication date. Future-dated posts are hidden until the date passes. Must match the monthly folder: if you re-date a post to another month, move the file (and its `.fr.md` sibling) to the matching `content/posts/YYYY-MM/` folder. |
 | `tags`     | List of tags, e.g. `[ops, go]`. Pinned colors are configured in `hugo.toml` (`[params.tagColors]`); unlisted tags get a stable color derived from their name. |
 | `featured` | Set `true` to pin the post to the big "Featured" card on the home page (the newest post is featured otherwise). |
 | `draft`    | Keep `true` while writing; drafts only show up with `make serve`. Set `false` to publish. |
@@ -58,6 +65,30 @@ Standard Markdown, with a few theme extras:
   ```
   ````
 
+- **Multi-language code tabs**: to show the same snippet in several
+  languages, wrap one fenced block per language in `tab` shortcodes inside
+  a `codetabs` shortcode. Each tab's language (and its label) is taken from
+  the fence info string:
+
+  ````markdown
+  {{</* codetabs */>}}
+  {{</* tab */>}}
+  ```go
+  fmt.Println("hello")
+  ```
+  {{</* /tab */>}}
+  {{</* tab */>}}
+  ```python
+  print("hello")
+  ```
+  {{</* /tab */>}}
+  {{</* /codetabs */>}}
+  ````
+
+  Common languages get a pretty label automatically (`js` → JavaScript,
+  `py` → Python…); override it with `{{</* tab lang="js" label="Node.js" */>}}`.
+  The first tab is shown by default. Remember to translate nothing here —
+  code tabs work the same in the French file.
 - **Emoji**: shortcodes like `:wq:` work (`enableEmoji = true`).
 - **Raw HTML**: allowed (`unsafe = true` in the Goldmark config), e.g.
   `<kbd>` for key caps.
@@ -143,8 +174,9 @@ bannerAlt: "A skyline of terminal windows at dusk"
   `bannerAlt`.
 
 For an image-heavy post you can alternatively use a Hugo *page bundle*:
-create `content/posts/<slug>/` containing `index.md`, `index.fr.md`, and the
-images side by side, then reference them with relative paths
+create `content/posts/<YYYY-MM>/<slug>/` containing `index.md`,
+`index.fr.md`, and the images side by side, then reference them with
+relative paths
 (`![Alt](diagram.png)`). Both approaches work; the `static/` convention is
 the default here because `make new` and `/new-post` scaffold single-file
 posts.
@@ -155,8 +187,8 @@ Translations are separate files with a language suffix, side by side with the
 original:
 
 ```
-content/posts/my-post-title.md      # English (default language)
-content/posts/my-post-title.fr.md   # French
+content/posts/2026-07/my-post-title.md      # English (default language)
+content/posts/2026-07/my-post-title.fr.md   # French
 ```
 
 Copy the English file to `<slug>.fr.md` and translate the `title`, `summary`,

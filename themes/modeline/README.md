@@ -17,7 +17,7 @@ Requires Hugo **0.146.0+** (standard edition is fine).
   of recent posts. Feature a post with `featured: true` in front matter
   (falls back to the latest post).
 - **Article layout** — sticky table of contents with scrollspy, reading
-  time, tag pills, and `:bp` / `:bn` previous/next links.
+  time, tag pills, and `<<` / `>>` previous/next links.
 - **Terminal code blocks** — every fenced block gets window chrome with a
   filename caption: <code>```go {filename="main.go"}</code>. Syntax colors
   stay dark in both themes.
@@ -26,7 +26,6 @@ Requires Hugo **0.146.0+** (standard edition is fine).
 - **Search** — a tiny dependency-free client-side search over a generated
   JSON index. Press <kbd>/</kbd> anywhere to focus it; arrow keys navigate
   results.
-- **Pagination as buffers** — `:bp 1 2 3 :bn`.
 - Accessible: skip link, focus-visible outlines, `aria-current` navigation,
   reduced-motion support, semantic landmarks.
 
