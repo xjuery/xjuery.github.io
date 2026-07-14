@@ -1,6 +1,6 @@
 ---
 title: "Mixer Clean Architecture et architecture hexagonale : exemple concret"
-date: 2026-07-14T09:00:00+02:00
+date: 2026-09-13T09:00:00+02:00
 tags: [architecture]
 featured: false
 draft: true

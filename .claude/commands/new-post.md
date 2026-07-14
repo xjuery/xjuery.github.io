@@ -10,18 +10,24 @@ Follow the conventions in @docs/writing-a-post.md. Steps:
 
 1. **Derive the slug** from the arguments: lowercase, kebab-case, French,
    short (drop stop words). Example: "Why your YAML is 400 lines" →
-   `why-your-yaml-is-400-lines`. If a file with that slug already exists in
-   `content/posts/`, stop and ask for a different one.
+   `why-your-yaml-is-400-lines`. If a file with that slug already exists
+   anywhere under `content/posts/` (any monthly folder), stop and ask for a
+   different one.
 
 2. **Scaffold the French post**:
 
    ```bash
-   make new SLUG=<slug>
+   make new SLUG=<slug>              # current month
+   make new SLUG=<slug> MONTH=YYYY-MM   # if a publication month was given
    ```
 
-   This creates `content/posts/<slug>.md` from the theme archetype.
+   Posts live in monthly folders named after their `date`
+   (`content/posts/YYYY-MM/`). This creates
+   `content/posts/<YYYY-MM>/<slug>.md` from the theme archetype. If you
+   later change the `date` to another month, move the file to the matching
+   folder.
 
-3. **Fill in the French front matter** in `content/posts/<slug>.md`:
+3. **Fill in the French front matter** in `content/posts/<YYYY-MM>/<slug>.md`:
    - `title`: proper French title (title case not required, match the
      existing posts' style).
    - `tags`: pick 1–2 fitting tags; prefer existing ones (check

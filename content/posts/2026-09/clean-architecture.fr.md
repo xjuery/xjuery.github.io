@@ -1,6 +1,6 @@
 ---
 title: "La Clean Architecture (Robert C. Martin) : le code, c'est bien. Bien rangé, c'est mieux"
-date: 2026-07-26T15:23:44+02:00
+date: 2026-09-06T15:23:44+02:00
 tags: [architecture]
 featured: false
 draft: true

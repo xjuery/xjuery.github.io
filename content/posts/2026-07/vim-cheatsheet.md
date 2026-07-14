@@ -4,7 +4,7 @@ date: 2026-07-05T13:41:52+02:00
 tags: [tools, vim]
 banner: /images/posts/vim-cheatsheet/banner.png
 bannerAlt: "A Vim banner"
-featured: true
+featured: false
 draft: false
 summary: "Essential Vim commands for daily use — modes, motions, editing, macros — plus the power techniques (visual block, :g, dot-repeat) that make it all click."
 ---

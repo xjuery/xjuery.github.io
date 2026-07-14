@@ -1,6 +1,6 @@
 ---
 title: "Filebeat et stacktraces Java : arrêter de perdre la moitié de l'erreur"
-date: 2026-07-14T09:10:00+02:00
+date: 2026-07-19T09:10:00+02:00
 tags: [filebeat, astuces]
 featured: false
 draft: true

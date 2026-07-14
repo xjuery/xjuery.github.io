@@ -1,6 +1,6 @@
 ---
 title: "L'architecture hexagonale: les fondamentaux pour une application qui dure"
-date: 2026-07-19T15:08:12+02:00
+date: 2026-08-30T15:08:12+02:00
 tags: [architecture]
 featured: false
 draft: true

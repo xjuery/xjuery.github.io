@@ -2,8 +2,10 @@
 title: "Les tags Git, la cheatsheet en cinq minutes"
 date: 2026-07-12T14:49:35+02:00
 tags: [tools, git]
-featured: false
-draft: true
+banner: /images/posts/git-tags-cheatsheet/banner.png
+bannerAlt: "A git tag banner"
+featured: true
+draft: false
 summary: "Tout ce qu'il faut pour taguer ses releases sereinement : tags annotés vs légers, les commandes qui comptent, et pourquoi git push ignore silencieusement vos tags."
 ---
 
@@ -17,7 +19,7 @@ poignée de commandes ci-dessous indispensable à connaître par cœur.
 
 Une branche avance à chaque commit qu'on y fait. Un tag reste exactement là
 où on l'a posé, pour toujours. Dans le graphe de révisions classique
-ci-dessous, le tronc et les branches continuent de grandir — mais le tag
+ci-dessous, la branche principale (qu'on peut aussi appeler trunks, souvent nommée "main" ou "master") et les autres branches continuent de grandir — mais le tag
 `T1` est figé sur le commit depuis lequel il a été créé.
 
 ![Graphe de révisions montrant un tronc, des branches, des fusions et un tag T1 attaché définitivement à un commit](/images/posts/git-tags-cheatsheet/revision-graph.svg)
@@ -52,8 +54,8 @@ git tag v1.0.0-light
 git tag -a v0.9.0 9fceb02 -m "Beta release"
 ```
 
-Oublié de taguer avant que d'autres commits n'arrivent ? Pas de souci — la
-troisième forme tague n'importe quel commit rétroactivement.
+> Vous avez oublié de taguer avant que d'autres commits n'arrivent ? Pas de souci — la
+> troisième forme tague n'importe quel commit rétroactivement.
 
 ## Lister & inspecter
 
@@ -63,10 +65,10 @@ git tag -l "v1.*"        # Lister les tags correspondant à un motif
 git show v1.0.0          # Détails du tag + le commit pointé
 ```
 
-## Pousser — les tags ne sont PAS poussés par défaut
+## Push — les tags ne sont PAS poussés par défaut
 
 C'est le piège classique : `git push` envoie vos commits et avance la
-branche distante, mais ne dit rien des tags. Ils vivent dans un espace de
+branche distante, mais ne fait rien des tags. Ils vivent dans un espace de
 noms séparé et ne voyagent que si on les pousse explicitement.
 
 ![Diagramme des opérations Git entre le dépôt distant, le clone local, les branches et les fichiers de travail](/images/posts/git-tags-cheatsheet/git-operations.svg)

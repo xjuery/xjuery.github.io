@@ -1,6 +1,6 @@
 ---
 title: "Astuces Dockerfile : du build qui marche au build qu'on ne touche plus"
-date: 2026-07-14T09:30:00+02:00
+date: 2026-07-26T09:30:00+02:00
 tags: [docker, astuces]
 featured: false
 draft: true

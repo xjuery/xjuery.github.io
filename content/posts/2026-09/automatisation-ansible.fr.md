@@ -1,6 +1,6 @@
 ---
 title: "Créer une automatisation simple avec Ansible : le guide du débutant"
-date: 2026-07-14T09:50:00+02:00
+date: 2026-09-20T09:50:00+02:00
 tags: [ansible, automation]
 featured: false
 draft: true

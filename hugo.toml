@@ -15,6 +15,12 @@ defaultContentLanguageInSubdir = false
 [taxonomies]
   tag = 'tags'
 
+# Posts are stored in monthly folders (content/posts/YYYY-MM/) but keep flat
+# URLs (/posts/<slug>/) so the organization on disk never breaks a link.
+[permalinks]
+  [permalinks.page]
+    posts = '/posts/:contentbasename/'
+
 [outputs]
   home = ['html', 'rss', 'json']
 

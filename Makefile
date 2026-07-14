@@ -64,10 +64,11 @@ serve-prod: check-hugo ## Preview a production build locally (no drafts)
 	$(HUGO) server --port $(PORT) --bind $(BIND) --environment production
 
 .PHONY: new
-new: check-hugo ## Scaffold a new post: make new SLUG=my-post-title
-	@test -n "$(SLUG)" || { echo "Usage: make new SLUG=my-post-title"; exit 1; }
-	$(HUGO) new content posts/$(SLUG).md
-	@echo "✓ created content/posts/$(SLUG).md (draft)"
+new: check-hugo ## Scaffold a new post: make new SLUG=my-post-title [MONTH=YYYY-MM]
+	@test -n "$(SLUG)" || { echo "Usage: make new SLUG=my-post-title [MONTH=YYYY-MM]"; exit 1; }
+	$(eval MONTH ?= $(shell date +%Y-%m))
+	$(HUGO) new content posts/$(MONTH)/$(SLUG).md
+	@echo "✓ created content/posts/$(MONTH)/$(SLUG).md (draft)"
 
 # ── Build ─────────────────────────────────────────────────────────────────────
 

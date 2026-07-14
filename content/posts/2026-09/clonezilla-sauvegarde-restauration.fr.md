@@ -1,6 +1,6 @@
 ---
 title: "Clonezilla : sauvegarder et restaurer son système, le tutoriel complet"
-date: 2026-07-14T10:00:00+02:00
+date: 2026-09-27T10:00:00+02:00
 tags: [backup]
 featured: false
 draft: true

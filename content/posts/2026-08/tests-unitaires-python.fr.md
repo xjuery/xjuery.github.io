@@ -1,6 +1,6 @@
 ---
 title: "Les tests unitaires en Python : exploiter pytest à fond"
-date: 2026-07-14T09:20:00+02:00
+date: 2026-08-23T09:20:00+02:00
 tags: [python]
 featured: false
 draft: true

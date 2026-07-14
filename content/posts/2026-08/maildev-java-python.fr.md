@@ -1,6 +1,6 @@
 ---
 title: "MailDev : testez vos e-mails en Java et en Python"
-date: 2026-07-13T15:21:41+02:00
+date: 2026-08-16T15:21:41+02:00
 tags: [tools]
 featured: false
 draft: true

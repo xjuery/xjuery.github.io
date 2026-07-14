@@ -1,6 +1,6 @@
 ---
 title: "Astuces Docker Compose : services, healthchecks et démarrages qui tiennent"
-date: 2026-07-14T09:40:00+02:00
+date: 2026-08-02T09:40:00+02:00
 tags: [docker, astuces]
 featured: false
 draft: true

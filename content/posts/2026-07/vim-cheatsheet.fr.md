@@ -4,7 +4,7 @@ date: 2026-07-05T13:41:52+02:00
 tags: [tools, vim]
 banner: /images/posts/vim-cheatsheet/banner.png
 bannerAlt: "Une banniere sur Vim"
-featured: true
+featured: false
 draft: false
 summary: "Les commandes Vim essentielles au quotidien — modes, déplacements, édition, macros — plus les techniques avancées (bloc visuel, :g, répétition avec .) qui font tout basculer."
 ---
