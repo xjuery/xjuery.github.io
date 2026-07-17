@@ -14,7 +14,7 @@
 <meta property="article:published_time" content="{{ .Date.Format "2006-01-02" }}">
 {{- end }}
 {{ range .AlternativeOutputFormats -}}
-<link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ site.Title }}">
+<link rel="{{ .Rel }}" {{ printf "type=%q" .MediaType.Type | safeHTMLAttr }} href="{{ .Permalink }}" title="{{ site.Title }}">
 {{ end -}}
 {{- if hugo.IsMultilingual }}
 {{- range .AllTranslations }}

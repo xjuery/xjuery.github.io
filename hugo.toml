@@ -24,6 +24,11 @@ defaultContentLanguageInSubdir = false
 [outputs]
   home = ['html', 'rss', 'json']
 
+# RSS feeds (layouts/rss.xml): /index.xml and /fr/index.xml carry the latest
+# posts with full content; /posts/index.xml and per-tag feeds come for free.
+[services.rss]
+  limit = 20
+
 [markup]
   [markup.goldmark.renderer]
     unsafe = true
