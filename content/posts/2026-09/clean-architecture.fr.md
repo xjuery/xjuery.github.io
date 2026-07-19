@@ -66,39 +66,64 @@ l'extérieur* — persister quelque chose, notifier quelqu'un. Une dépendance
 de code vers l'extérieur étant interdite, on l'inverse : le cas d'usage
 définit l'interface, le cercle extérieur l'implémente.
 
-```go {filename="internal/usecase/cancel_subscription.go"}
-package usecase
-
-// Définie ici, dans le cercle intérieur. Implémentée dehors.
-type SubscriptionRepo interface {
-	Find(id string) (*entity.Subscription, error)
-	Save(*entity.Subscription) error
+{{< codetabs >}}
+{{< tab >}}
+```java
+// Définies ici, dans le cercle intérieur. Implémentées dehors.
+public interface SubscriptionRepo {
+    Subscription findById(String id);
+    void save(Subscription subscription);
 }
 
-type Notifier interface {
-	SubscriptionCancelled(sub *entity.Subscription)
+public interface Notifier {
+    void subscriptionCancelled(Subscription subscription);
 }
 
-type CancelSubscription struct {
-	repo     SubscriptionRepo
-	notifier Notifier
-}
+public class CancelSubscription {
 
-func (uc *CancelSubscription) Execute(id string) error {
-	sub, err := uc.repo.Find(id)
-	if err != nil {
-		return err
-	}
-	if err := sub.Cancel(); err != nil { // l'entité applique ses règles
-		return err
-	}
-	if err := uc.repo.Save(sub); err != nil {
-		return err
-	}
-	uc.notifier.SubscriptionCancelled(sub)
-	return nil
+    private final SubscriptionRepo repo;
+    private final Notifier notifier;
+
+    public CancelSubscription(SubscriptionRepo repo, Notifier notifier) {
+        this.repo = repo;
+        this.notifier = notifier;
+    }
+
+    public void execute(String id) {
+        Subscription sub = repo.findById(id);
+        sub.cancel(); // l'entité applique ses règles
+        repo.save(sub);
+        notifier.subscriptionCancelled(sub);
+    }
 }
 ```
+{{< /tab >}}
+{{< tab >}}
+```python
+# Définies ici, dans le cercle intérieur. Implémentées dehors.
+class SubscriptionRepo(Protocol):
+    def find_by_id(self, subscription_id: str) -> Subscription: ...
+    def save(self, subscription: Subscription) -> None: ...
+
+
+class Notifier(Protocol):
+    def subscription_cancelled(self, subscription: Subscription) -> None: ...
+
+
+class CancelSubscription:
+
+    def __init__(self, repo: SubscriptionRepo, notifier: Notifier) -> None:
+        self._repo = repo
+        self._notifier = notifier
+
+    def execute(self, subscription_id: str) -> None:
+        sub = self._repo.find_by_id(subscription_id)
+        sub.cancel()  # l'entité applique ses règles
+        self._repo.save(sub)
+        self._notifier.subscription_cancelled(sub)
+```
+{{< /tab >}}
+{{< /codetabs >}}
 
 À l'exécution, l'appel va du cas d'usage vers Postgres ; à la compilation,
 la flèche de dépendance pointe dans l'autre sens. Cette inversion — le bon

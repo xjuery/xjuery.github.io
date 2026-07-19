@@ -83,23 +83,38 @@ peu d'objets-valeurs. Montants, plages de dates, adresses, quantités : les
 modéliser comme des valeurs immuables dotées de leur propre comportement
 élimine des catégories entières de bugs.
 
-```go {filename="internal/domain/money.go"}
-package domain
-
+{{< codetabs >}}
+{{< tab >}}
+```java
 // Money est un objet-valeur : immuable, comparé par valeur,
 // et qui fait respecter ses propres invariants.
-type Money struct {
-	amount   int64 // centimes
-	currency Currency
-}
+public record Money(long amountInCents, Currency currency) {
 
-func (m Money) Add(other Money) (Money, error) {
-	if m.currency != other.currency {
-		return Money{}, ErrCurrencyMismatch
-	}
-	return Money{m.amount + other.amount, m.currency}, nil
+    public Money add(Money other) {
+        if (currency != other.currency()) {
+            throw new CurrencyMismatchException();
+        }
+        return new Money(amountInCents + other.amountInCents(), currency);
+    }
 }
 ```
+{{< /tab >}}
+{{< tab >}}
+```python
+# Money est un objet-valeur : immuable, comparé par valeur,
+# et qui fait respecter ses propres invariants.
+@dataclass(frozen=True)
+class Money:
+    amount_in_cents: int
+    currency: Currency
+
+    def add(self, other: "Money") -> "Money":
+        if self.currency != other.currency:
+            raise CurrencyMismatchError()
+        return Money(self.amount_in_cents + other.amount_in_cents, self.currency)
+```
+{{< /tab >}}
+{{< /codetabs >}}
 
 ### Les agrégats : la frontière de cohérence
 
@@ -109,27 +124,48 @@ extérieur ne détient une référence que vers la racine, et toute
 modification passe par elle — c'est ainsi qu'elle peut faire respecter les
 invariants.
 
-```go {filename="internal/domain/order.go"}
-package domain
+{{< codetabs >}}
+{{< tab >}}
+```java
+public class Order { // racine d'agrégat
 
-type Order struct { // racine d'agrégat
-	id    OrderID
-	lines []OrderLine
-	total Money
-}
+    private final OrderId id;
+    private final List<OrderLine> lines = new ArrayList<>();
+    private Money total;
 
-// AddLine est le seul moyen de faire grossir la commande —
-// l'invariant « le total correspond aux lignes » ne peut pas être contourné.
-func (o *Order) AddLine(p Product, qty int) error {
-	if qty <= 0 {
-		return ErrInvalidQuantity
-	}
-	line := NewOrderLine(p, qty)
-	o.lines = append(o.lines, line)
-	o.total, _ = o.total.Add(line.Subtotal())
-	return nil
+    // addLine est le seul moyen de faire grossir la commande —
+    // l'invariant « le total correspond aux lignes » ne peut pas être contourné.
+    public void addLine(Product product, int quantity) {
+        if (quantity <= 0) {
+            throw new InvalidQuantityException();
+        }
+        OrderLine line = new OrderLine(product, quantity);
+        lines.add(line);
+        total = total.add(line.subtotal());
+    }
 }
 ```
+{{< /tab >}}
+{{< tab >}}
+```python
+class Order:  # racine d'agrégat
+
+    def __init__(self, order_id: OrderId, currency: Currency) -> None:
+        self._id = order_id
+        self._lines: list[OrderLine] = []
+        self._total = Money(0, currency)
+
+    # add_line est le seul moyen de faire grossir la commande —
+    # l'invariant « le total correspond aux lignes » ne peut pas être contourné.
+    def add_line(self, product: Product, quantity: int) -> None:
+        if quantity <= 0:
+            raise InvalidQuantityError()
+        line = OrderLine(product, quantity)
+        self._lines.append(line)
+        self._total = self._total.add(line.subtotal())
+```
+{{< /tab >}}
+{{< /codetabs >}}
 
 La règle de conception qui en découle : **gardez les agrégats petits**, et
 référencez les autres agrégats par leur identifiant, pas par objet. Un
@@ -140,7 +176,7 @@ atomique, vos frontières sont probablement mal placées — ou il vous faut un
 ### Repositories, services de domaine, événements de domaine
 
 - Les **repositories** donnent l'illusion d'une collection en mémoire
-  d'agrégats (`orders.Find(id)`, `orders.Save(order)`), en cachant la base
+  d'agrégats (`orders.findById(id)`, `orders.save(order)`), en cachant la base
   de données. Un repository par racine d'agrégat — pas par table.
 - Les **services de domaine** portent la logique métier qui n'appartient à
   aucune entité en particulier — une politique de tarification qui pèse le
@@ -172,7 +208,7 @@ protègent le modèle ; le DDD s'occupe de ce que le modèle *raconte*.
 - **Le modèle de domaine anémique.** Des entités réduites à des sacs de
   getters et de setters, avec toute la logique dans des classes
   « service ». C'est un modèle de données avec des étapes en plus ; tout
-  l'intérêt est justement que `order.AddLine(...)` fasse respecter les
+  l'intérêt est justement que `order.addLine(...)` fasse respecter les
   règles elle-même.
 - **Le DDD partout.** Evans est explicite : le DDD est rentable dans le
   *domaine cœur* (*core domain*), là où votre métier se différencie
