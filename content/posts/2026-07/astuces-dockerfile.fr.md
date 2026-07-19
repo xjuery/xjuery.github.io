@@ -2,6 +2,7 @@
 title: "Astuces Dockerfile : du build qui marche au build qu'on ne touche plus"
 date: 2026-07-26T09:30:00+02:00
 tags: [docker, astuces]
+banner: /images/posts/astuces-dockerfile/banner.png
 featured: false
 draft: true
 summary: "Ordre des couches, .dockerignore, multi-stage builds, cache mounts, utilisateur non-root : les techniques qui transforment un Dockerfile naïf en image légère, rapide à reconstruire et saine en production."
