@@ -4,7 +4,7 @@ date: 2026-07-12T14:49:35+02:00
 tags: [tools, git]
 banner: /images/posts/git-tags-cheatsheet/banner.png
 bannerAlt: "A git tag banner"
-featured: true
+featured: false
 draft: false
 summary: "Everything you need to tag your releases with confidence: annotated vs lightweight tags, the commands that matter, and why git push silently ignores your tags."
 ---

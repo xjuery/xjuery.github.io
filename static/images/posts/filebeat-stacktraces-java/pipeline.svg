@@ -16,25 +16,25 @@
   <rect x="205" y="80" width="130" height="70" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
   <text x="270" y="106" text-anchor="middle" font-size="14" font-weight="600" fill="#92400e">app.log</text>
   <text x="270" y="126" text-anchor="middle" font-size="11" fill="#92400e">1 stacktrace =</text>
-  <text x="270" y="140" text-anchor="middle" font-size="11" fill="#92400e">40 lignes</text>
+  <text x="270" y="140" text-anchor="middle" font-size="11" fill="#92400e">40 lines</text>
 
   <!-- Filebeat -->
   <rect x="385" y="80" width="140" height="70" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
   <text x="455" y="106" text-anchor="middle" font-size="14" font-weight="600" fill="#1e3a8a">Filebeat</text>
-  <text x="455" y="126" text-anchor="middle" font-size="11" fill="#1e3a8a">parser multiline</text>
-  <text x="455" y="140" text-anchor="middle" font-size="11" fill="#1e3a8a">→ 1 événement</text>
+  <text x="455" y="126" text-anchor="middle" font-size="11" fill="#1e3a8a">multiline parser</text>
+  <text x="455" y="140" text-anchor="middle" font-size="11" fill="#1e3a8a">→ 1 event</text>
 
   <!-- Elasticsearch -->
   <rect x="575" y="80" width="130" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
   <text x="640" y="106" text-anchor="middle" font-size="14" font-weight="600" fill="#14532d">Elasticsearch</text>
-  <text x="640" y="126" text-anchor="middle" font-size="11" fill="#14532d">pipeline</text>
-  <text x="640" y="140" text-anchor="middle" font-size="11" fill="#14532d">d'ingestion (grok)</text>
+  <text x="640" y="126" text-anchor="middle" font-size="11" fill="#14532d">Ingestion</text>
+  <text x="640" y="140" text-anchor="middle" font-size="11" fill="#14532d">pipeline (grok)</text>
 
   <!-- Arrows -->
   <line x1="155" y1="115" x2="199" y2="115" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
   <line x1="335" y1="115" x2="379" y2="115" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
   <line x1="525" y1="115" x2="569" y2="115" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
 
-  <text x="400" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">Le voyage d'une stacktrace, du fichier de log à Kibana</text>
-  <text x="400" y="215" text-anchor="middle" font-size="12" fill="#64748b">Le regroupement multiligne se fait dans Filebeat, l'extraction des champs dans Elasticsearch</text>
+  <text x="400" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">The Journey of a Stack Trace, from the Log File to Kibana</text>
+  <text x="400" y="215" text-anchor="middle" font-size="12" fill="#64748b">The multiline aggregation is done in Filebeat, and the field extraction is done in Elasticsearch</text>
 </svg>

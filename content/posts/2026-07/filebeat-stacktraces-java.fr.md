@@ -1,9 +1,10 @@
 ---
 title: "Filebeat et stacktraces Java : arrêter de perdre la moitié de l'erreur"
 date: 2026-07-19T09:10:00+02:00
-tags: [filebeat, astuces]
-featured: false
-draft: true
+tags: [tools, filebeat, astuces]
+banner: /images/posts/filebeat-stacktraces-java/banner.png
+featured: true
+draft: false
 summary: "Une stacktrace Java fait 40 lignes ; mal configuré, Filebeat en fait 40 documents inutilisables. Configuration multiline pas à pas, avec une application de test qui génère de vraies stacktraces, jusqu'à des documents Elasticsearch complets et exploitables."
 ---
 
@@ -14,7 +15,7 @@ contenant chacun un `at com.example...` solitaire. La stacktrace est là,
 mais éparpillée — impossible de la lire, impossible de compter les
 erreurs, impossible d'alerter dessus.
 
-La cause est simple : **Filebeat lit ligne par ligne, une stacktrace Java
+La cause est souvent simple : **Filebeat lit ligne par ligne mais une stacktrace Java
 s'étale sur plusieurs lignes**. Voyons comment recoller les morceaux, avec
 une application de test pour vérifier chaque étape.
 
@@ -22,31 +23,39 @@ une application de test pour vérifier chaque étape.
 
 ## L'application de test
 
-Pour travailler sur du vrai, une mini-application qui logge du trafic
-normal et lève une exception imbriquée toutes les cinq secondes :
+Pour travailler sur du concret, une mini-application qui logge du trafic
+normal et lève une exception (qui va générer une stacktrace) toutes les cinq secondes :
 
 ```java {filename="LogGenerator.java"}
+package fr.juery;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
+import java.util.UUID;
+
 public class LogGenerator {
     private static final Logger log = LoggerFactory.getLogger(LogGenerator.class);
 
     public static void main(String[] args) throws InterruptedException {
         while (true) {
-            log.info("Traitement de la commande {}", UUID.randomUUID());
+            log.info("Handling command {}", UUID.randomUUID());
             Thread.sleep(1000);
             try {
-                chargerCommande();
+                loadCommand();
             } catch (Exception e) {
-                log.error("Échec du traitement de la commande", e);
+                log.error("Failed to handle command", e);
             }
             Thread.sleep(4000);
         }
     }
 
-    static void chargerCommande() {
+    static void loadCommand() {
         try {
             throw new SQLException("Connection refused: connect");
         } catch (SQLException e) {
-            throw new IllegalStateException("Impossible de charger la commande", e);
+            throw new IllegalStateException("Unable to load command", e);
         }
     }
 }
@@ -55,25 +64,37 @@ public class LogGenerator {
 Avec un pattern Logback classique :
 
 ```xml {filename="logback.xml"}
-<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-  <file>/var/log/demo/app.log</file>
-  <encoder>
-    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
-  </encoder>
-</appender>
+<configuration>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>./app.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="fr.juery" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <root level="error">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
 ```
 
 Le fichier produit ressemble à ceci — notez que **seule la première ligne
 commence par une date** :
 
 ```text {filename="app.log"}
-2026-07-14 09:12:03.412 INFO  [main] c.e.LogGenerator - Traitement de la commande 4f2a...
-2026-07-14 09:12:04.418 ERROR [main] c.e.LogGenerator - Échec du traitement de la commande
-java.lang.IllegalStateException: Impossible de charger la commande
-	at com.example.LogGenerator.chargerCommande(LogGenerator.java:24)
-	at com.example.LogGenerator.main(LogGenerator.java:13)
+2026-07-19 15:09:56.923 INFO  [main] fr.juery.LogGenerator - Handling command af08c406-b83f-4973-b84a-da1b6803fbef
+2026-07-19 15:09:57.931 ERROR [main] fr.juery.LogGenerator - Failed to handle command
+java.lang.IllegalStateException: Unable to load command
+	at fr.juery.LogGenerator.loadCommand(LogGenerator.java:29)
+	at fr.juery.LogGenerator.main(LogGenerator.java:17)
 Caused by: java.sql.SQLException: Connection refused: connect
-	at com.example.LogGenerator.chargerCommande(LogGenerator.java:22)
+	at fr.juery.LogGenerator.loadCommand(LogGenerator.java:27)
 	... 1 common frames omitted
 ```
 
@@ -90,13 +111,13 @@ filebeat.inputs:
   - type: filestream
     id: demo-java-app
     paths:
-      - /var/log/demo/app.log
+      - /var/log/app/app.log
     parsers:
       - multiline:
           type: pattern
-          pattern: '^\d{4}-\d{2}-\d{2}'   # une ligne qui commence par une date...
-          negate: true                     # ...ne matche PAS ce pattern ?
-          match: after                     # alors colle-la à la ligne précédente
+          pattern: '^\d{4}-\d{2}-\d{2}'    # A line that starts with a date...
+          negate: true                     # ...DOESN'T match with this pattern ?
+          match: after                     # concatenate it with the previous line
           max_lines: 200
           timeout: 5s
 
@@ -195,7 +216,7 @@ collant un événement multiligne tel que Filebeat l'envoie :
 curl -X POST "localhost:9200/_ingest/pipeline/java-logs/_simulate" \
   -H 'Content-Type: application/json' -d '
 {
-  "docs": [{ "_source": { "message": "2026-07-14 09:12:04.418 ERROR [main] c.e.LogGenerator - Échec du traitement de la commande\njava.lang.IllegalStateException: Impossible de charger la commande\n\tat com.example.LogGenerator.chargerCommande(LogGenerator.java:24)" } }]
+  "docs": [{ "_source": { "message": "2026-07-19 15:10:02.944 ERROR [main] fr.juery.LogGenerator - Failed to handle command\njava.lang.IllegalStateException: Unable to load command\n\tat fr.juery.LogGenerator.loadCommand(LogGenerator.java:29)\n\tat fr.juery.LogGenerator.main(LogGenerator.java:17)\nCaused by: java.sql.SQLException: Connection refused: connect\n\tat fr.juery.LogGenerator.loadCommand(LogGenerator.java:27)\n\t... 1 common frames omitted" } }]
 }'
 ```
 
@@ -204,12 +225,12 @@ Le document simulé doit ressortir avec tous les champs découpés :
 ```json
 {
   "log.level": "ERROR",
-  "log.logger": "c.e.LogGenerator",
+  "log.logger": "fr.juery.LogGenerator",
   "app.thread": "main",
-  "app.short_message": "Échec du traitement de la commande",
+  "app.short_message": "Failed to handle command",
   "error.type": "java.lang.IllegalStateException",
-  "error.message": "Impossible de charger la commande",
-  "error.stack_trace": "\tat com.example.LogGenerator.chargerCommande(...)"
+  "error.message": "Unable to load command",
+  "error.stack_trace": "\tat fr.juery.LogGenerator.loadCommand(...)"
 }
 ```
 
@@ -232,7 +253,7 @@ consiste à produire directement du JSON avec
 
 ```xml {filename="logback.xml"}
 <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-  <file>/var/log/demo/app.log.json</file>
+  <file>./app.log.json</file>
   <encoder class="co.elastic.logging.logback.EcsEncoder"/>
 </appender>
 ```
@@ -248,7 +269,7 @@ parsers:
       overwrite_keys: true
 ```
 
-Si vous maîtrisez l'application, c'est la meilleure option : zéro regex,
+Si vous avez la main l'application (sur son code), c'est la meilleure option : zéro regex,
 zéro risque de pattern qui casse au prochain changement de format de log.
 La configuration multiline reste indispensable pour tout ce que vous ne
 contrôlez pas — applications tierces, legacy, logs de serveurs
@@ -257,5 +278,5 @@ d'applications.
 > Une stacktrace éparpillée sur 40 documents ne sert à personne. Le trio
 > `pattern` ancré sur le timestamp + `negate: true` + `match: after`
 > recolle l'événement dans Filebeat ; un pipeline d'ingestion en extrait
-> `error.type` et `error.stack_trace` ; et si vous pouvez toucher à
+> `error.type` et `error.stack_trace` ; et si vous pouvez modifier
 > l'application, loggez en JSON ECS et supprimez le problème à la source.
