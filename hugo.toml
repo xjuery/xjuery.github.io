@@ -58,17 +58,21 @@ defaultContentLanguageInSubdir = false
   search = true            # client-side search + "/" shortcut
   loadGoogleFonts = true   # set false to use system fonts (or self-host)
 
-  # Optional: pin tags to a pill color (blue, green, yellow, purple, red).
+  # Optional: pin tags to a pill color (blue, green, yellow, purple, red,
+  # orange, coral, pink, magenta, indigo, cyan, teal, mint, lime, brown, gray).
   # Unlisted tags get a stable color derived from their name.
   [params.tagColors]
-    tools = 'blue'
-    go = 'brown'
-    ops = 'yellow'
-    rust = 'purple'
-    rant = 'red'
     architecture = 'green'
-    vim = 'red'
+    tools = 'blue'
+    astuces = 'teal'
+    docker = 'cyan'
+    ansible = 'orange'
+    automation = 'yellow'
+    backup = 'gray'
+    filebeat = 'teal'
     git = 'purple'
+    python = 'lime'
+    vim = 'red'
     
 [languages]
   [languages.en]

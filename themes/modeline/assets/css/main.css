@@ -26,6 +26,17 @@
   --c-yellow: #d29922;  --c-yellow-tint: rgba(210, 153, 34, 0.1);
   --c-purple: #bc8cff;  --c-purple-tint: rgba(188, 140, 255, 0.1);
   --c-red: #f85149;     --c-red-tint: rgba(248, 81, 73, 0.1);
+  --c-orange: #f0883e;  --c-orange-tint: rgba(240, 136, 62, 0.1);
+  --c-coral: #f78166;   --c-coral-tint: rgba(247, 129, 102, 0.1);
+  --c-pink: #f472b6;    --c-pink-tint: rgba(244, 114, 182, 0.1);
+  --c-magenta: #e879f9; --c-magenta-tint: rgba(232, 121, 249, 0.1);
+  --c-indigo: #818cf8;  --c-indigo-tint: rgba(129, 140, 248, 0.1);
+  --c-cyan: #22d3ee;    --c-cyan-tint: rgba(34, 211, 238, 0.1);
+  --c-teal: #2dd4bf;    --c-teal-tint: rgba(45, 212, 191, 0.1);
+  --c-mint: #34d399;    --c-mint-tint: rgba(52, 211, 153, 0.1);
+  --c-lime: #a3e635;    --c-lime-tint: rgba(163, 230, 53, 0.1);
+  --c-brown: #bf8b60;   --c-brown-tint: rgba(191, 139, 96, 0.1);
+  --c-gray: #8b949e;    --c-gray-tint: rgba(139, 148, 158, 0.1);
   color-scheme: dark;
 }
 
@@ -46,6 +57,17 @@
   --c-yellow: #9a6700;  --c-yellow-tint: rgba(154, 103, 0, 0.07);
   --c-purple: #8250df;  --c-purple-tint: rgba(130, 80, 223, 0.07);
   --c-red: #cf222e;     --c-red-tint: rgba(207, 34, 46, 0.07);
+  --c-orange: #bc4c00;  --c-orange-tint: rgba(188, 76, 0, 0.07);
+  --c-coral: #c4432b;   --c-coral-tint: rgba(196, 67, 43, 0.07);
+  --c-pink: #bf3989;    --c-pink-tint: rgba(191, 57, 137, 0.07);
+  --c-magenta: #a21caf; --c-magenta-tint: rgba(162, 28, 175, 0.07);
+  --c-indigo: #4f46e5;  --c-indigo-tint: rgba(79, 70, 229, 0.07);
+  --c-cyan: #0e7490;    --c-cyan-tint: rgba(14, 116, 144, 0.07);
+  --c-teal: #0f766e;    --c-teal-tint: rgba(15, 118, 110, 0.07);
+  --c-mint: #047857;    --c-mint-tint: rgba(4, 120, 87, 0.07);
+  --c-lime: #4d7c0f;    --c-lime-tint: rgba(77, 124, 15, 0.07);
+  --c-brown: #8a5a2b;   --c-brown-tint: rgba(138, 90, 43, 0.07);
+  --c-gray: #656d76;    --c-gray-tint: rgba(101, 109, 118, 0.07);
   color-scheme: light;
 }
 
@@ -68,6 +90,17 @@
     --c-yellow: #9a6700;  --c-yellow-tint: rgba(154, 103, 0, 0.07);
     --c-purple: #8250df;  --c-purple-tint: rgba(130, 80, 223, 0.07);
     --c-red: #cf222e;     --c-red-tint: rgba(207, 34, 46, 0.07);
+    --c-orange: #bc4c00;  --c-orange-tint: rgba(188, 76, 0, 0.07);
+    --c-coral: #c4432b;   --c-coral-tint: rgba(196, 67, 43, 0.07);
+    --c-pink: #bf3989;    --c-pink-tint: rgba(191, 57, 137, 0.07);
+    --c-magenta: #a21caf; --c-magenta-tint: rgba(162, 28, 175, 0.07);
+    --c-indigo: #4f46e5;  --c-indigo-tint: rgba(79, 70, 229, 0.07);
+    --c-cyan: #0e7490;    --c-cyan-tint: rgba(14, 116, 144, 0.07);
+    --c-teal: #0f766e;    --c-teal-tint: rgba(15, 118, 110, 0.07);
+    --c-mint: #047857;    --c-mint-tint: rgba(4, 120, 87, 0.07);
+    --c-lime: #4d7c0f;    --c-lime-tint: rgba(77, 124, 15, 0.07);
+    --c-brown: #8a5a2b;   --c-brown-tint: rgba(138, 90, 43, 0.07);
+    --c-gray: #656d76;    --c-gray-tint: rgba(101, 109, 118, 0.07);
     color-scheme: light;
   }
 }
@@ -307,6 +340,17 @@ a:hover { text-decoration: underline; }
 .featured--yellow .featured-bar { background: var(--c-yellow); }
 .featured--purple .featured-bar { background: var(--c-purple); }
 .featured--red .featured-bar { background: var(--c-red); }
+.featured--orange .featured-bar { background: var(--c-orange); }
+.featured--coral .featured-bar { background: var(--c-coral); }
+.featured--pink .featured-bar { background: var(--c-pink); }
+.featured--magenta .featured-bar { background: var(--c-magenta); }
+.featured--indigo .featured-bar { background: var(--c-indigo); }
+.featured--cyan .featured-bar { background: var(--c-cyan); }
+.featured--teal .featured-bar { background: var(--c-teal); }
+.featured--mint .featured-bar { background: var(--c-mint); }
+.featured--lime .featured-bar { background: var(--c-lime); }
+.featured--brown .featured-bar { background: var(--c-brown); }
+.featured--gray .featured-bar { background: var(--c-gray); }
 
 .featured-body { padding: 24px 26px; flex: 1; }
 .featured-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
@@ -400,6 +444,17 @@ a.pill:hover { text-decoration: none; filter: brightness(1.15); }
 .pill--yellow { border-color: var(--c-yellow); color: var(--c-yellow); background: var(--c-yellow-tint); }
 .pill--purple { border-color: var(--c-purple); color: var(--c-purple); background: var(--c-purple-tint); }
 .pill--red    { border-color: var(--c-red);    color: var(--c-red);    background: var(--c-red-tint); }
+.pill--orange  { border-color: var(--c-orange);  color: var(--c-orange);  background: var(--c-orange-tint); }
+.pill--coral   { border-color: var(--c-coral);   color: var(--c-coral);   background: var(--c-coral-tint); }
+.pill--pink    { border-color: var(--c-pink);    color: var(--c-pink);    background: var(--c-pink-tint); }
+.pill--magenta { border-color: var(--c-magenta); color: var(--c-magenta); background: var(--c-magenta-tint); }
+.pill--indigo  { border-color: var(--c-indigo);  color: var(--c-indigo);  background: var(--c-indigo-tint); }
+.pill--cyan    { border-color: var(--c-cyan);    color: var(--c-cyan);    background: var(--c-cyan-tint); }
+.pill--teal    { border-color: var(--c-teal);    color: var(--c-teal);    background: var(--c-teal-tint); }
+.pill--mint    { border-color: var(--c-mint);    color: var(--c-mint);    background: var(--c-mint-tint); }
+.pill--lime    { border-color: var(--c-lime);    color: var(--c-lime);    background: var(--c-lime-tint); }
+.pill--brown   { border-color: var(--c-brown);   color: var(--c-brown);   background: var(--c-brown-tint); }
+.pill--gray    { border-color: var(--c-gray);    color: var(--c-gray);    background: var(--c-gray-tint); }
 
 /* ---------- list pages ---------- */
 
