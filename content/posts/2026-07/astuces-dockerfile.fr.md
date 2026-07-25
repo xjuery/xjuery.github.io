@@ -10,7 +10,7 @@ summary: "Ordre des couches, .dockerignore, multi-stage builds, cache mounts, ut
 
 Tout Dockerfile commence pareil : `FROM`, `COPY . .`, `RUN` l'installation,
 `CMD` — et ça marche. Puis un jour on remarque que chaque build retélécharge
-toutes les dépendances, que l'image fait 1,2 Go, et qu'elle tourne en root.
+toutes les dépendances, que l'image fait 1,2 Go, qu'elle tourne en root et pire, que des secrets ont été stockés dans une couche.
 Cet article passe en revue les astuces qui corrigent tout ça, de la plus
 simple à la plus avancée.
 
@@ -46,16 +46,13 @@ COPY . .
 ```
 
 Sur un projet réel, c'est la différence entre un rebuild de 4 minutes et
-un rebuild de 8 secondes. La même logique vaut pour Maven (`pom.xml`
-d'abord), npm (`package*.json` d'abord) ou Go (`go.mod` + `go.sum`
-d'abord).
+un rebuild de 8 secondes. La même logique vaut pour Maven ( avec son `pom.xml`), npm (avec `package*.json`) ou Go (avec `go.mod` et `go.sum`).
 
 ## Astuce 2 — .dockerignore, le fichier qu'on oublie toujours
 
 `COPY . .` envoie tout le contexte au démon Docker : `.git`, les
 `node_modules` locaux, les artefacts de build, vos fichiers `.env`. Un
-`.dockerignore` réduit le contexte, accélère le build et évite de cuire un
-secret dans une couche :
+`.dockerignore` réduit le contexte, accélère le build et surtout, évite d'envoyer des fichiers non voulus dans une couche (comme des secrets, par exemple) :
 
 ```text {filename=".dockerignore"}
 .git
@@ -67,7 +64,7 @@ Dockerfile
 docker-compose*.yml
 ```
 
-Astuce dans l'astuce : sans `.dockerignore`, un simple `git commit`
+Astuce dans l'astuce (pour vous montrer l'importance de contrôler les fichiers envoyés dans les couches) : sans `.dockerignore`, un simple `git commit`
 (qui modifie `.git/`) invalide le cache de `COPY . .` alors qu'aucun
 fichier source n'a changé.
 
@@ -78,7 +75,7 @@ livrer que le résultat dans une image minimale**.
 
 ![Schéma du multi-stage build : une étape de compilation volumineuse et jetable, une image finale minimale qui ne reçoit que l'artefact](/images/posts/astuces-dockerfile/multistage.svg)
 
-```dockerfile {filename="Dockerfile"}
+```dockerfile {filename="Dockerfile d'une application Java"}
 # ── Étape 1 : build ──────────────────────────────
 FROM maven:3-eclipse-temurin-21 AS build
 WORKDIR /app
@@ -95,10 +92,10 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 ```
 
 L'image finale ne contient ni Maven, ni JDK, ni sources : on passe de
-~750 Mo à ~180 Mo, et la surface d'attaque fond d'autant. Le même motif en
-Python, où l'étape de build fabrique un *wheelhouse* :
+~750 Mo à ~180 Mo, et la surface d'attaque se réduit d'autant. Le même motif en
+Python, où l'étape de build fabrique un *wheel* :
 
-```dockerfile {filename="Dockerfile"}
+```dockerfile {filename="Dockerfile d'une application Python"}
 FROM python:3.12 AS build
 WORKDIR /app
 COPY requirements.txt .
@@ -123,17 +120,17 @@ côté téléchargements dès que le descripteur de dépendances change. Les
 *cache mounts* montent un répertoire de cache **persistant entre les
 builds**, sans qu'il ne finisse jamais dans l'image :
 
-```dockerfile
+```dockerfile {filename="Dockerfile / Java"}
 RUN --mount=type=cache,target=/root/.m2 mvn package -DskipTests
 ```
 
-```dockerfile
+```dockerfile {filename="Dockerfile / Python"}
 RUN --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
 ```
 
-Un `pom.xml` modifié ne retélécharge plus que les nouvelles dépendances.
+Un `pom.xml` (ou un `requirements.txt` ) modifié ne retélécharge plus que les nouvelles dépendances.
 Dans la même famille, `--mount=type=secret` donne accès à un secret
-(jeton de registre privé, clé SSH) **pendant** le `RUN` sans le stocker
+(Token pour l'accès à un repository, clé SSH, etc..) **pendant** le `RUN` sans le stocker
 dans aucune couche :
 
 ```dockerfile
@@ -147,7 +144,7 @@ docker build --secret id=pip_token,src=.pip_token .
 ```
 
 C'est LA bonne réponse au réflexe dangereux du `ARG TOKEN` — les `ARG`
-restent visibles dans `docker history`.
+restent visibles dans `docker history` ainsi un secret positionné dans un `ARG` est un secret de que vous donnés aux futurs utilisateurs de votre image.
 
 ## Astuce 5 — ne pas tourner en root
 
@@ -183,10 +180,10 @@ Deux règles évitent 90 % des surprises :
 
   `docker run mon-image --port 9000` remplace alors juste les arguments.
 
-## Astuce 7 — les détails qui trahissent le Dockerfile soigné
+## Astuce 7 — les détails qui montrent le Dockerfile soigné
 
-- **Épingler les versions de base** : `python:3.12-slim`, pas
-  `python:latest` — un build reproductible commence là.
+- **Épingler les versions de base** : `python:3.12-slim`, n'utilisez pas de
+  `python:latest` — si vous voulez un build reproductible (et je vous garanti que vous le voulez), c'est la clé.
 - **`COPY` plutôt que `ADD`**, sauf besoin explicite d'extraire une
   archive ; `ADD` avec une URL télécharge sans vérification ni cache.
 - **Fusionner les `apt-get`** pour ne pas figer les index de paquets dans
