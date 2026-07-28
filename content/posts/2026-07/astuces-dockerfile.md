@@ -29,7 +29,7 @@ tools shipped into production, running as root, and the entire
 directory — `.git` included — copied into the image. Let's fix them in
 order.
 
-## Trick 1 — order layers from stable to volatile
+## Tip 1 — order layers from stable to volatile
 
 Docker caches every instruction as a layer, and **invalidates everything
 that follows the first modified layer**. The practical consequence:
@@ -52,7 +52,7 @@ an 8-second rebuild. The same logic applies to Maven (with its
 `pom.xml`), npm (with `package*.json`), or Go (with `go.mod` and
 `go.sum`).
 
-## Trick 2 — .dockerignore, the file everyone forgets
+## Tip 2 — .dockerignore, the file everyone forgets
 
 `COPY . .` sends the entire build context to the Docker daemon: `.git`,
 local `node_modules`, build artifacts, your `.env` files. A
@@ -69,12 +69,12 @@ Dockerfile
 docker-compose*.yml
 ```
 
-A trick within the trick (to show just how much it matters to control
+A tip within the tip (to show just how much it matters to control
 what ends up in your layers): without a `.dockerignore`, a simple
 `git commit` (which changes `.git/`) invalidates the `COPY . .` cache
 even though no source file has changed.
 
-## Trick 3 — the multi-stage build
+## Tip 3 — the multi-stage build
 
 The technique that changes everything: **compile in a fully-tooled
 image, ship only the result in a minimal image**.
@@ -120,7 +120,7 @@ Bonus: `docker build --target build .` lets you build only the first
 stage — handy for running tests in CI against the fully-tooled image,
 while still publishing the lightweight one.
 
-## Trick 4 — BuildKit cache mounts
+## Tip 4 — BuildKit cache mounts
 
 Multi-stage protects the final image, but every build still starts from
 scratch on downloads as soon as the dependency descriptor changes.
@@ -155,7 +155,7 @@ This is THE right answer to the dangerous reflex of `ARG TOKEN` —
 through an `ARG` is a secret you've just handed to every future user of
 your image.
 
-## Trick 5 — don't run as root
+## Tip 5 — don't run as root
 
 By default, the container process runs as root. A container escape or
 an application flaw becomes noticeably less severe with a dedicated
@@ -171,7 +171,7 @@ privileges), and before `ENTRYPOINT`. If the application writes
 somewhere, prepare the directory ahead of time:
 `RUN mkdir /data && chown app:app /data`.
 
-## Trick 6 — ENTRYPOINT, CMD, and the signal that never arrives
+## Tip 6 — ENTRYPOINT, CMD, and the signal that never arrives
 
 Two rules avoid 90% of the surprises:
 
@@ -189,7 +189,7 @@ Two rules avoid 90% of the surprises:
 
   `docker run my-image --port 9000` then simply overrides the arguments.
 
-## Trick 7 — the details of a Dockerfile crafted with care
+## Tip 7 — the details of a Dockerfile crafted with care
 
 - **Pin the base image versions**: `python:3.12-slim`, never
   `python:latest` — if you want a reproducible build (and I guarantee
