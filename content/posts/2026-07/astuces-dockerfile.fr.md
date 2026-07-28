@@ -3,13 +3,13 @@ title: "Astuces Dockerfile : du build qui marche au build qu'on ne touche plus"
 date: 2026-07-26T09:30:00+02:00
 tags: [docker, astuces]
 banner: /images/posts/astuces-dockerfile/banner.png
-featured: false
-draft: true
+featured: true
+draft: false
 summary: "Ordre des couches, .dockerignore, multi-stage builds, cache mounts, utilisateur non-root : les techniques qui transforment un Dockerfile naïf en image légère, rapide à reconstruire et saine en production."
 ---
 
 Tout Dockerfile commence pareil : `FROM`, `COPY . .`, `RUN` l'installation,
-`CMD` — et ça marche. Puis un jour on remarque que chaque build retélécharge
+`CMD` — et ça marche. Puis un jour, on remarque que chaque build retélécharge
 toutes les dépendances, que l'image fait 1,2 Go, qu'elle tourne en root et pire, que des secrets ont été stockés dans une couche.
 Cet article passe en revue les astuces qui corrigent tout ça, de la plus
 simple à la plus avancée.
@@ -180,7 +180,7 @@ Deux règles évitent 90 % des surprises :
 
   `docker run mon-image --port 9000` remplace alors juste les arguments.
 
-## Astuce 7 — les détails qui montrent le Dockerfile soigné
+## Astuce 7 — les détails qui montrent un Dockerfile soigné
 
 - **Épingler les versions de base** : `python:3.12-slim`, n'utilisez pas de
   `python:latest` — si vous voulez un build reproductible (et je vous garanti que vous le voulez), c'est la clé.

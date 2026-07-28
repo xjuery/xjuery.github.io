@@ -1,6 +1,6 @@
 ---
 title: "Les fondamentaux du Domain-Driven Design : quand le métier prend le volant"
-date: 2026-08-09T11:42:17+02:00
+date: 2026-08-30T11:42:17+02:00
 tags: [architecture]
 featured: false
 draft: true

@@ -3,7 +3,7 @@ title: "Filebeat et stacktraces Java : arrêter de perdre la moitié de l'erreur
 date: 2026-07-19T09:10:00+02:00
 tags: [tools, filebeat, astuces]
 banner: /images/posts/filebeat-stacktraces-java/banner.png
-featured: true
+featured: false
 draft: false
 summary: "Une stacktrace Java fait 40 lignes ; mal configuré, Filebeat en fait 40 documents inutilisables. Configuration multiline pas à pas, avec une application de test qui génère de vraies stacktraces, jusqu'à des documents Elasticsearch complets et exploitables."
 ---
