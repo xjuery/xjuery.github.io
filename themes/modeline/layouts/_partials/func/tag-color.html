@@ -1,6 +1,6 @@
 {{- /* Returns a stable pill color name for a tag: config override first,
        otherwise a hash of the tag name into the palette. */ -}}
-{{- $palette := slice "blue" "green" "yellow" "purple" "red" -}}
+{{- $palette := slice "blue" "green" "yellow" "purple" "red" "orange" "coral" "pink" "magenta" "indigo" "cyan" "teal" "mint" "lime" "brown" "gray" -}}
 {{- $name := lower (. | default "") -}}
 {{- $color := "" -}}
 {{- with site.Params.tagColors -}}

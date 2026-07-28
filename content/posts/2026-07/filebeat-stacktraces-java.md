@@ -3,7 +3,7 @@ title: "Filebeat and Java stacktraces: stop losing half the error"
 date: 2026-07-19T09:10:00+02:00
 tags: [tools, filebeat, tips]
 banner: /images/posts/filebeat-stacktraces-java/banner.png
-featured: true
+featured: false
 draft: false
 summary: "A Java stacktrace is 40 lines long; misconfigured, Filebeat turns it into 40 unusable documents. A step-by-step multiline configuration, with a test application that generates real stacktraces, all the way to complete, queryable Elasticsearch documents."
 ---

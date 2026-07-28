@@ -88,7 +88,8 @@ theme = 'modeline'
                                    # JetBrains Mono/Inter for GDPR-friendly EU hosting)
 
   # Optional: pin tags to a pill color; unlisted tags hash to a stable color.
-  # Colors: blue, green, yellow, purple, red.
+  # Colors: blue, green, yellow, purple, red, orange, coral, pink, magenta,
+  # indigo, cyan, teal, mint, lime, brown, gray.
   [params.tagColors]
     vim = 'blue'
     go = 'green'

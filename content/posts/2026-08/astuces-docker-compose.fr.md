@@ -2,6 +2,7 @@
 title: "Astuces Docker Compose : services, healthchecks et démarrages qui tiennent"
 date: 2026-08-02T09:40:00+02:00
 tags: [docker, astuces]
+banner: /images/posts/astuces-docker-compose/banner.png
 featured: false
 draft: true
 summary: "depends_on ne suffit pas, les healthchecks changent tout : le tour des astuces Compose qui rendent une stack de dev fiable — ordre de démarrage, profils, fichiers d'override, ancres YAML et watch mode."
