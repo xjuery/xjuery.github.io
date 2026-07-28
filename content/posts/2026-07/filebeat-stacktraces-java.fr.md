@@ -269,7 +269,7 @@ parsers:
       overwrite_keys: true
 ```
 
-Si vous avez la main l'application (sur son code), c'est la meilleure option : zéro regex,
+Si vous avez la main sur l'application (sur son code), c'est la meilleure option : zéro regex,
 zéro risque de pattern qui casse au prochain changement de format de log.
 La configuration multiline reste indispensable pour tout ce que vous ne
 contrôlez pas — applications tierces, legacy, logs de serveurs
