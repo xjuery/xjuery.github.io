@@ -3,7 +3,7 @@ title: "Dockerfile tips: from a build that works to a build nobody touches again
 date: 2026-07-26T09:30:00+02:00
 tags: [docker, tips]
 banner: /images/posts/astuces-dockerfile/banner.png
-featured: true
+featured: false
 draft: false
 summary: "Layer ordering, .dockerignore, multi-stage builds, cache mounts, non-root users: the techniques that turn a naive Dockerfile into a lightweight image, fast to rebuild and sound in production."
 ---
