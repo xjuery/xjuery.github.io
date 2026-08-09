@@ -3,7 +3,7 @@ title: "Docker Compose Tips: Services, Healthchecks, and Reliable Startups"
 date: 2026-08-02T09:40:00+02:00
 tags: [docker, tips]
 banner: /images/posts/astuces-docker-compose/banner.png
-featured: true
+featured: false
 draft: false
 summary: "depends_on alone is not enough — healthchecks change everything: a tour of the Compose tricks that make a dev stack reliable — startup order, profiles, overrides and the !override tag, include, YAML anchors, watch mode, lifecycle hooks, parallel stacks, and tmpfs test databases."
 ---
