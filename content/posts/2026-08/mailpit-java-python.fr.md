@@ -10,17 +10,20 @@ summary: "Un faux serveur SMTP avec une vraie boîte de réception : Mailpit cap
 
 *« Spammez sans remords : ici, aucun e-mail n'atteint de vrai destinataire. »*
 
-Tout projet finit par envoyer des e-mails - inscription, mot de passe
-oublié, facture. Et tout développeur finit par se poser la même question :
+Beaucoup de projets finissent par envoyer des e-mails - inscription, mot de passe
+oublié, facture. L'email reste le moyen le plus commun de notifier ses utilisateurs.
+Et tout développeur finit par se poser la même question :
 comment tester ça sans arroser de vrais utilisateurs ? Les réponses
 classiques sont toutes mauvaises : commenter l'appel d'envoi, rediriger vers
 sa propre boîte Gmail à coups d'alias `+test`, ou pire, croiser les doigts
-et regarder les logs.
+et regarder les logs. Mauvaises, car elles ne respectent pas un principe fondamental : on ne modifie pas un package entre les tests et la mise en production. Ce qui a été validé doit être ce qui est déployé (certains reconnaitront le principe d'immutabilité des packages, aussi résumé par "Build once, deploy anywhere").
 
 Mailpit règle le problème avec une idée simple : un **serveur SMTP de
 capture**, accompagné d'une interface web et d'une API REST. Votre
 application lui parle comme à un vrai serveur de mail, il intercepte tout,
-et rien ne repart vers l'extérieur.
+et rien ne repart vers l'extérieur. 
+
+Et par rapport à notre principe d'immutabilité des packages, la différence entre les tests (avec mailpit) et la mise en production (avec un serveur smtp de production) se résument à un changement de configuration (comme si on avait affaire à des serveurs différents sur des environnements différents).
 
 ## Un faux SMTP, une vraie boîte de réception
 
