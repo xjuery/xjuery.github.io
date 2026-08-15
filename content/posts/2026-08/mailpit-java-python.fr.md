@@ -10,7 +10,7 @@ summary: "Un faux serveur SMTP avec une vraie boîte de réception : Mailpit cap
 
 *« Spammez sans remords : ici, aucun e-mail n'atteint de vrai destinataire. »*
 
-Tout projet finit par envoyer des e-mails — inscription, mot de passe
+Tout projet finit par envoyer des e-mails - inscription, mot de passe
 oublié, facture. Et tout développeur finit par se poser la même question :
 comment tester ça sans arroser de vrais utilisateurs ? Les réponses
 classiques sont toutes mauvaises : commenter l'appel d'envoi, rediriger vers
@@ -26,19 +26,19 @@ et rien ne repart vers l'extérieur.
 
 Mailpit écoute sur deux ports :
 
-- **1025** — le serveur SMTP. Pointez-y votre application ; dans sa
+- **1025** - le serveur SMTP. Pointez-y votre application ; dans sa
   configuration par défaut, il n'exige ni authentification ni chiffrement
   (les deux existent en option si vous voulez tester ce chemin-là aussi).
-- **8025** — l'interface web et l'API REST. Chaque e-mail capturé y
+- **8025** - l'interface web et l'API REST. Chaque e-mail capturé y
   apparaît en temps réel, avec son rendu HTML, sa version texte, ses
   en-têtes et ses pièces jointes.
 
 Par défaut, **aucun message n'est remis à son destinataire réel** : un
 e-mail envoyé à `pdg@grandclient.com` finit dans l'interface, pas dans sa
 boîte. (Mailpit sait aussi relayer ou transférer des messages vers un vrai
-serveur SMTP — des modes comme `--smtp-relay-all` existent — mais
+serveur SMTP - des modes comme `--smtp-relay-all` existent - mais
 uniquement si vous les configurez explicitement.) C'est toute la différence
-avec un « mode sandbox » d'un fournisseur d'envoi — il n'y a pas de compte,
+avec un « mode sandbox » d'un fournisseur d'envoi - il n'y a pas de compte,
 pas de quota d'envoi ni de clé d'API à gérer.
 
 ## Lancer Mailpit
@@ -123,7 +123,7 @@ et uniquement pour l'environnement de développement.
 
 ### Spring Boot
 
-`JavaMailSender` ne voit pas la différence — seule la configuration change :
+`JavaMailSender` ne voit pas la différence - seule la configuration change :
 
 ```yaml {filename="application-dev.yml"}
 spring:
@@ -146,12 +146,12 @@ EMAIL_PORT = 1025
 ```
 
 Et pour Flask ou FastAPI, c'est identique : quelle que soit la bibliothèque
-d'envoi (Flask-Mail, `fastapi-mail`…), pointez-la vers `localhost:1025` et
+d'envoi (Flask-Mail, `fastapi-mail`...), pointez-la vers `localhost:1025` et
 le tour est joué.
 
 ## Automatiser le lancement de Mailpit
 
-Lancer `mailpit` à la main chaque matin, on l'oublie une fois sur deux — et
+Lancer `mailpit` à la main chaque matin, on l'oublie une fois sur deux - et
 on perd dix minutes à comprendre pourquoi l'inscription « ne marche plus ».
 Deux approches pour que l'outil fasse partie du projet plutôt que de votre
 mémoire.
@@ -177,25 +177,25 @@ services:
 
 Attention au piège classique : depuis le conteneur applicatif,
 `localhost:1025` désigne le conteneur applicatif lui-même. C'est le **nom
-du service** — `mailpit:1025` — qui joint Mailpit sur le réseau Compose.
+du service** - `mailpit:1025` - qui joint Mailpit sur le réseau Compose.
 Du coup, le port SMTP n'a même pas besoin d'être publié sur l'hôte ; seule
 l'interface web l'est, et sur `127.0.0.1` uniquement. (Si une appli lancée
 hors Docker doit aussi envoyer des mails, ajoutez
 `"127.0.0.1:1025:1025"`.)
 
-Un `docker compose up -d` et toute la stack de dev — base, cache, faux
-SMTP — démarre d'un coup. Le nouveau venu clone le dépôt, lance Compose, et
+Un `docker compose up -d` et toute la stack de dev - base, cache, faux
+SMTP - démarre d'un coup. Le nouveau venu clone le dépôt, lance Compose, et
 les e-mails sont déjà capturés. Côté stockage, Mailpit garde ses messages
 dans une base SQLite et ne conserve par défaut que les 500 derniers. Avec
 le conteneur de cet exemple, rien n'est persisté : supprimer le conteneur
-supprime aussi la base — en dev comme en CI, c'est généralement exactement
+supprime aussi la base - en dev comme en CI, c'est généralement exactement
 ce qu'on veut (montez un volume et configurez le chemin de la base si vous
 tenez à la garder).
 
 ### Avec Testcontainers
 
 Pour les tests d'intégration, [Testcontainers](https://testcontainers.com/)
-va plus loin : c'est le test lui-même qui démarre le conteneur — et
+va plus loin : c'est le test lui-même qui démarre le conteneur - et
 l'arrête à la fin. Les ports exposés par le conteneur (1025, 8025) sont
 mappés sur des ports de l'hôte **attribués dynamiquement** : plus rien à
 lancer avant `mvn test` ou `pytest`, et plus de collision quand deux builds
@@ -252,7 +252,7 @@ existe aussi un côté Java, mais le `GenericContainer` ci-dessus fait la
 même chose sans dépendre du module dédié. Dans tous les cas, la règle est
 la même : les ports côté hôte étant dynamiques, injectez-les dans la
 configuration du test (le `@DynamicPropertySource` côté Spring, la fixture
-côté pytest) au lieu de coder quoi que ce soit en dur — et cela vaut aussi
+côté pytest) au lieu de coder quoi que ce soit en dur - et cela vaut aussi
 pour l'API, d'où le `mailpitApi()` côté Java et le `get_base_api_url()`
 côté Python.
 
@@ -262,15 +262,15 @@ l'intégration JUnit 5 de Testcontainers n'est de toute façon pas prévue
 pour l'exécution parallèle. La boîte de réception est donc une ressource
 partagée : ne supposez ni qu'elle est vide, ni que vos messages y sont
 seuls, ni dans quel ordre ils arrivent. La parade tient dans des
-identifiants uniques par test — c'est justement l'objet de la section
+identifiants uniques par test - c'est justement l'objet de la section
 suivante.
 
-## Vérifier les e-mails — à la main, puis en CI
+## Vérifier les e-mails - à la main, puis en CI
 
 L'interface web suffit pour le développement au quotidien. Mais Mailpit
 expose aussi une **API REST**, et c'est elle qui rend l'outil vraiment
 intéressant : vos tests d'intégration peuvent vérifier qu'un e-mail est
-parti, à qui, et avec quel contenu. (L'API sait faire bien plus — envoyer,
+parti, à qui, et avec quel contenu. (L'API sait faire bien plus - envoyer,
 taguer, relayer des messages ; les exemples ci-dessous supposent qu'elle
 n'est pas protégée par authentification, comme dans la configuration par
 défaut.)
@@ -287,9 +287,9 @@ D'abord une **course** : l'application peut répondre à la requête HTTP
 avant que l'e-mail ne soit arrivé jusqu'à Mailpit. Ensuite une **hypothèse
 d'ordre** : `messages[0]` suppose qu'aucun autre test n'a envoyé de message
 entre-temps. Le pattern robuste tient en trois points : des **données de
-test uniques** (un destinataire `alice+<uuid>@…` par test — deux tests qui
+test uniques** (un destinataire `alice+<uuid>@...` par test - deux tests qui
 écrivent au même destinataire redeviennent ambigus), une **recherche**
-ciblée (l'API accepte `to:`, `from:`, `subject:`…), et une **attente avec
+ciblée (l'API accepte `to:`, `from:`, `subject:`...), et une **attente avec
 timeout**.
 
 {{< codetabs >}}
@@ -366,19 +366,19 @@ def test_welcome_email_is_sent(client):
 {{< /codetabs >}}
 
 Trois détails dans ces exemples. Le destinataire unique garantit que la
-recherche renvoie exactement un message — et on l'affirme (`assertEquals(1,
-…)`) au lieu de prendre le premier venu. La requête HTTP de polling a son
-propre timeout court (`.timeout(…)` sur le `HttpRequest`, `timeout=1.0`
+recherche renvoie exactement un message - et on l'affirme (`assertEquals(1,
+...)`) au lieu de prendre le premier venu. La requête HTTP de polling a son
+propre timeout court (`.timeout(...)` sur le `HttpRequest`, `timeout=1.0`
 côté httpx) : sans lui, un Mailpit injoignable ferait pendre une requête
 au-delà du délai global du test. Enfin, ne supposez pas des clés JSON en
-minuscules (`subject`, `id`) — fiez-vous au schéma réellement renvoyé par
-Mailpit (`Subject`, `From`, `To`, `ID`…), et parsez le JSON plutôt que de
+minuscules (`subject`, `id`) - fiez-vous au schéma réellement renvoyé par
+Mailpit (`Subject`, `From`, `To`, `ID`...), et parsez le JSON plutôt que de
 chercher une sous-chaîne dans la réponse brute.
 
 ### Vérifier le contenu, pas seulement le sujet
 
 La liste et la recherche ne renvoient qu'un résumé de chaque message. Pour
-le corps — texte, HTML, en-têtes, pièces jointes —, interrogez
+le corps - texte, HTML, en-têtes, pièces jointes -, interrogez
 `GET /api/v1/message/{ID}` avec l'`ID` trouvé à l'étape précédente :
 
 {{< codetabs >}}
@@ -429,7 +429,7 @@ jobs:
 ```
 
 Le job tourne ici directement sur le runner, donc le service est joignable
-sur `localhost` — d'où les variables d'environnement. Si vos steps
+sur `localhost` - d'où les variables d'environnement. Si vos steps
 s'exécutent dans un conteneur (`container:`), remplacez `localhost` par le
 nom du service, `mailpit` : même logique que dans Compose. Les mêmes tests
 tournent alors en local et en CI, sans aucune bascule de configuration. Et
@@ -441,11 +441,11 @@ Mailpit.
 
 MailHog rendait le même service mais est aujourd'hui beaucoup moins actif ;
 Mailpit est une alternative moderne qui s'en inspire et reprend notamment
-ses ports 1025 (SMTP) et 8025 (HTTP) — ce qui facilite le remplacement —
+ses ports 1025 (SMTP) et 8025 (HTTP) - ce qui facilite le remplacement -
 en ajoutant la recherche, un serveur POP3, la vérification HTML, le spam
 testing (via SpamAssassin), les webhooks ou encore le chaos testing. Côté
 Node, MailDev joue le même rôle si votre équipe préfère un outil npm à un
-binaire Go. Le principe — et la configuration côté application — reste
+binaire Go. Le principe - et la configuration côté application - reste
 identique dans les trois cas.
 
 > Un e-mail de test qui part chez un vrai utilisateur est un bug qu'on ne

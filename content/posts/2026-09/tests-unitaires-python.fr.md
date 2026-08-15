@@ -4,13 +4,13 @@ date: 2026-09-06T09:20:00+02:00
 tags: [python]
 featured: false
 draft: true
-summary: "Écrire des tests, tout le monde sait faire. Écrire des tests courts, lisibles et qui couvrent dix cas en cinq lignes, c'est le métier de pytest : paramétrisation, fixtures, monkeypatch, tmp_path — le tour des outils qui changent vraiment la donne."
+summary: "Écrire des tests, tout le monde sait faire. Écrire des tests courts, lisibles et qui couvrent dix cas en cinq lignes, c'est le métier de pytest : paramétrisation, fixtures, monkeypatch, tmp_path - le tour des outils qui changent vraiment la donne."
 ---
 
 Le premier test unitaire Python qu'on écrit ressemble toujours à ça : une
 fonction, un `assert`, et ça passe. Puis les cas s'accumulent, on
 copie-colle le test en changeant deux valeurs, on ajoute un `try/except`
-pour tester une erreur… et six mois plus tard, la suite de tests est le
+pour tester une erreur... et six mois plus tard, la suite de tests est le
 fichier le plus pénible du projet.
 
 pytest est conçu pour éviter exactement cette dérive. Cet article fait le
@@ -35,7 +35,7 @@ def check_password(password: str) -> None:
 
 ## La base : assert, et rien d'autre
 
-Avec pytest, pas de `self.assertEqual` ni de classe à hériter — un
+Avec pytest, pas de `self.assertEqual` ni de classe à hériter - un
 `assert` natif suffit, et le rapport d'échec affiche les valeurs des deux
 côtés :
 
@@ -46,7 +46,7 @@ def test_un_bon_mot_de_passe_passe():
     check_password("Correct1Horse")   # ne doit pas lever
 ```
 
-Structurez chaque test en trois temps — *Arrange, Act, Assert* — et
+Structurez chaque test en trois temps - *Arrange, Act, Assert* - et
 donnez-lui un nom qui se lit comme une phrase : quand il échouera dans six
 mois, son nom sera la première (et parfois la seule) chose que vous lirez
 dans le rapport de CI.
@@ -65,7 +65,7 @@ def test_mot_de_passe_trop_court():
         check_password("Ab1")
 ```
 
-L'argument `match` (une regex) vérifie aussi le message — utile quand la
+L'argument `match` (une regex) vérifie aussi le message - utile quand la
 même exception couvre plusieurs règles, comme ici.
 
 ## L'arme principale : la paramétrisation
@@ -89,7 +89,7 @@ def test_mots_de_passe_refuses(password, raison):
 ```
 
 Trois cas, un seul corps de test. À l'exécution, pytest les traite comme
-**trois tests indépendants** — si un seul échoue, les deux autres
+**trois tests indépendants** - si un seul échoue, les deux autres
 tournent quand même, et l'option `ids` rend le rapport limpide :
 
 ```text
@@ -100,7 +100,7 @@ test_password.py::test_mots_de_passe_refuses[sans-chiffre] FAILED
 
 Deux raffinements à connaître :
 
-- **Empiler les décorateurs** produit le produit cartésien — pratique pour
+- **Empiler les décorateurs** produit le produit cartésien - pratique pour
   tester toutes les combinaisons de deux axes :
 
   ```python
@@ -134,7 +134,7 @@ def test_authentification(utilisateur):
 
 Trois propriétés en font bien plus qu'un `setUp()` :
 
-- **Le nettoyage par `yield`** — tout ce qui suit le `yield` s'exécute
+- **Le nettoyage par `yield`** - tout ce qui suit le `yield` s'exécute
   après le test, même s'il a échoué :
 
   ```python
@@ -146,10 +146,10 @@ Trois propriétés en font bien plus qu'un `setUp()` :
       conn.close()
   ```
 
-- **La portée** — `scope="session"` fabrique la ressource une fois pour
+- **La portée** - `scope="session"` fabrique la ressource une fois pour
   toute la suite (un conteneur Docker, un modèle chargé en mémoire) au
   lieu d'une fois par test.
-- **La composition** — une fixture peut en demander une autre :
+- **La composition** - une fixture peut en demander une autre :
   `utilisateur` peut dépendre de `connexion_db`, pytest résout le graphe.
 
 Placez les fixtures partagées dans un `conftest.py` : tous les tests du
@@ -161,7 +161,7 @@ pytest embarque des fixtures prêtes à l'emploi ; deux d'entre elles
 éliminent les pires causes de tests fragiles.
 
 **`tmp_path`** fournit un répertoire temporaire unique, nettoyé
-automatiquement — fini les tests qui écrivent dans le répertoire courant :
+automatiquement - fini les tests qui écrivent dans le répertoire courant :
 
 ```python
 def test_export_csv(tmp_path):
@@ -184,7 +184,7 @@ def test_generation_sans_hasard(monkeypatch):
     assert generer_jeton() == "aaaaaaaaaaaaaaaa"
 ```
 
-C'est souvent plus lisible qu'un `unittest.mock.patch` en décorateur — et
+C'est souvent plus lisible qu'un `unittest.mock.patch` en décorateur - et
 pour les vrais doublures avec vérification d'appels, `mocker` (du plugin
 `pytest-mock`) offre la même API que `unittest.mock` avec le nettoyage
 automatique en plus.
@@ -197,7 +197,7 @@ automatique en plus.
 assert prix_ttc(10.0) == pytest.approx(12.0, rel=1e-6)
 ```
 
-**Les marqueurs** organisent la suite — déclarez-les dans la config pour
+**Les marqueurs** organisent la suite - déclarez-les dans la config pour
 éviter les fautes de frappe silencieuses :
 
 ```toml {filename="pyproject.toml"}

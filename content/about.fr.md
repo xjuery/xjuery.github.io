@@ -16,6 +16,6 @@ de ce qui se retrouve ici a commencé comme une note personnelle après avoir
 résolu le même problème deux fois.
 
 Je pousse actuellement ces patterns plus loin dans de vrais systèmes en
-production, et j'utilise vim au quotidien — même si j'admets volontiers
+production, et j'utilise vim au quotidien - même si j'admets volontiers
 qu'Emacs est probablement le meilleur éditeur. Je n'ai simplement pas trouvé
 le courage de quitter le mode <kbd>insert</kbd>.

@@ -9,7 +9,7 @@ summary: "Ordre des couches, .dockerignore, multi-stage builds, cache mounts, ut
 ---
 
 Tout Dockerfile commence pareil : `FROM`, `COPY . .`, `RUN` l'installation,
-`CMD` — et ça marche. Puis un jour, on remarque que chaque build retélécharge
+`CMD` - et ça marche. Puis un jour, on remarque que chaque build retélécharge
 toutes les dépendances, que l'image fait 1,2 Go, qu'elle tourne en root et pire, que des secrets ont été stockés dans une couche.
 Cet article passe en revue les astuces qui corrigent tout ça, de la plus
 simple à la plus avancée.
@@ -24,10 +24,10 @@ CMD ["java", "-jar", "target/app.jar"]
 ```
 
 Quatre lignes, cinq problèmes : cache inefficace, image obèse, outils de
-build embarqués en production, exécution en root, et tout le répertoire —
-`.git` compris — copié dans l'image. Corrigeons dans l'ordre.
+build embarqués en production, exécution en root, et tout le répertoire -
+`.git` compris - copié dans l'image. Corrigeons dans l'ordre.
 
-## Astuce 1 — ordonner les couches du stable vers le volatile
+## Astuce 1 - ordonner les couches du stable vers le volatile
 
 Docker met en cache chaque instruction sous forme de couche, et **invalide
 tout ce qui suit la première couche modifiée**. La conséquence pratique :
@@ -48,7 +48,7 @@ COPY . .
 Sur un projet réel, c'est la différence entre un rebuild de 4 minutes et
 un rebuild de 8 secondes. La même logique vaut pour Maven ( avec son `pom.xml`), npm (avec `package*.json`) ou Go (avec `go.mod` et `go.sum`).
 
-## Astuce 2 — .dockerignore, le fichier qu'on oublie toujours
+## Astuce 2 - .dockerignore, le fichier qu'on oublie toujours
 
 `COPY . .` envoie tout le contexte au démon Docker : `.git`, les
 `node_modules` locaux, les artefacts de build, vos fichiers `.env`. Un
@@ -68,7 +68,7 @@ Astuce dans l'astuce (pour vous montrer l'importance de contrôler les fichiers 
 (qui modifie `.git/`) invalide le cache de `COPY . .` alors qu'aucun
 fichier source n'a changé.
 
-## Astuce 3 — le multi-stage build
+## Astuce 3 - le multi-stage build
 
 La technique qui change tout : **compiler dans une image outillée, ne
 livrer que le résultat dans une image minimale**.
@@ -110,10 +110,10 @@ CMD ["python", "-m", "src.main"]
 ```
 
 Bonus : `docker build --target build .` permet de ne construire que la
-première étape — pratique pour lancer les tests en CI dans l'image
+première étape - pratique pour lancer les tests en CI dans l'image
 outillée, tout en publiant l'image légère.
 
-## Astuce 4 — les cache mounts de BuildKit
+## Astuce 4 - les cache mounts de BuildKit
 
 Le multi-stage protège l'image finale, mais chaque build repart de zéro
 côté téléchargements dès que le descripteur de dépendances change. Les
@@ -143,10 +143,10 @@ RUN --mount=type=secret,id=pip_token \
 docker build --secret id=pip_token,src=.pip_token .
 ```
 
-C'est LA bonne réponse au réflexe dangereux du `ARG TOKEN` — les `ARG`
+C'est LA bonne réponse au réflexe dangereux du `ARG TOKEN` - les `ARG`
 restent visibles dans `docker history` ainsi un secret positionné dans un `ARG` est un secret de que vous donnés aux futurs utilisateurs de votre image.
 
-## Astuce 5 — ne pas tourner en root
+## Astuce 5 - ne pas tourner en root
 
 Par défaut, le processus du conteneur tourne en root. Une évasion de
 conteneur ou une faille applicative devient nettement moins grave avec un
@@ -161,14 +161,14 @@ Placez le `USER` après les `RUN` d'installation (qui ont besoin des
 droits), avant le `ENTRYPOINT`. Si l'application écrit quelque part,
 préparez le répertoire : `RUN mkdir /data && chown app:app /data`.
 
-## Astuce 6 — ENTRYPOINT, CMD et le signal qui n'arrive jamais
+## Astuce 6 - ENTRYPOINT, CMD et le signal qui n'arrive jamais
 
 Deux règles évitent 90 % des surprises :
 
 - **Toujours la forme exec** (`["java", "-jar", "app.jar"]`), jamais la
   forme shell (`java -jar app.jar`). En forme shell, c'est `/bin/sh` qui
   a le PID 1 : votre application ne reçoit jamais le `SIGTERM` de
-  `docker stop`, et se fait tuer brutalement après 10 secondes —
+  `docker stop`, et se fait tuer brutalement après 10 secondes -
   adieu l'arrêt propre.
 - **`ENTRYPOINT` pour l'exécutable, `CMD` pour les arguments par
   défaut** :
@@ -180,10 +180,10 @@ Deux règles évitent 90 % des surprises :
 
   `docker run mon-image --port 9000` remplace alors juste les arguments.
 
-## Astuce 7 — les détails qui montrent un Dockerfile soigné
+## Astuce 7 - les détails qui montrent un Dockerfile soigné
 
 - **Épingler les versions de base** : `python:3.12-slim`, n'utilisez pas de
-  `python:latest` — si vous voulez un build reproductible (et je vous garanti que vous le voulez), c'est la clé.
+  `python:latest` - si vous voulez un build reproductible (et je vous garanti que vous le voulez), c'est la clé.
 - **`COPY` plutôt que `ADD`**, sauf besoin explicite d'extraire une
   archive ; `ADD` avec une URL télécharge sans vérification ni cache.
 - **Fusionner les `apt-get`** pour ne pas figer les index de paquets dans
@@ -195,7 +195,7 @@ Deux règles évitent 90 % des surprises :
   ```
 
 - **`HEALTHCHECK`** pour que l'orchestrateur sache si l'application est
-  vivante — pas seulement le processus :
+  vivante - pas seulement le processus :
 
   ```dockerfile
   HEALTHCHECK --interval=30s --timeout=3s \
@@ -229,5 +229,5 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 > Un bon Dockerfile se reconnaît à trois choses : il se reconstruit en
 > secondes (couches ordonnées, cache mounts), il livre une image minimale
 > (multi-stage, base slim épinglée), et il tourne sans droits superflus
-> (USER dédié, forme exec, healthcheck). Tout le reste est du détail —
+> (USER dédié, forme exec, healthcheck). Tout le reste est du détail -
 > que hadolint vérifiera pour vous.

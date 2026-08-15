@@ -4,26 +4,26 @@ date: 2026-08-30T11:42:17+02:00
 tags: [architecture]
 featured: false
 draft: true
-summary: "Le grand livre bleu d'Eric Evans en un article : langage omniprésent, bounded contexts et briques tactiques — et pourquoi c'est la moitié stratégique qui rapporte."
+summary: "Le grand livre bleu d'Eric Evans en un article : langage omniprésent, bounded contexts et briques tactiques - et pourquoi c'est la moitié stratégique qui rapporte."
 ---
 
 En 2003, Eric Evans publie *Domain-Driven Design: Tackling Complexity in
-the Heart of Software* — le « grand livre bleu ». Sa thèse est simple et
+the Heart of Software* - le « grand livre bleu ». Sa thèse est simple et
 toujours aussi radicale : dans la plupart des logiciels, le plus difficile
-n'est pas la technique, c'est le *domaine* — les règles métier, le
+n'est pas la technique, c'est le *domaine* - les règles métier, le
 vocabulaire, les cas limites que les experts portent dans leur tête. C'est
 donc le domaine qui doit piloter la conception, et le code qui doit suivre.
 
 Vingt ans plus tard, le DDD est souvent réduit à une arborescence de
 dossiers et à un sac de patterns. Les patterns comptent, mais ils sont la
-seconde moitié du livre. La première — le langage et les frontières — est
+seconde moitié du livre. La première - le langage et les frontières - est
 celle qui a de la valeur.
 
 ## Le langage omniprésent : un seul vocabulaire, partout
 
 Le fondement du DDD n'est pas un diagramme, c'est un *glossaire*. Les
-experts métier et les développeurs s'accordent sur un langage commun — le
-**langage omniprésent** (*ubiquitous language*) — et l'utilisent partout :
+experts métier et les développeurs s'accordent sur un langage commun - le
+**langage omniprésent** (*ubiquitous language*) - et l'utilisent partout :
 dans les conversations, dans les documents, dans les tests, et dans le code
 lui-même.
 
@@ -35,7 +35,7 @@ voix haute devant un expert métier. Si vous devez traduire en cours de
 route, votre modèle a dérivé.
 
 > Quand le langage du code s'écarte du langage du métier, chaque
-> conversation devient une traduction — et chaque traduction perd de
+> conversation devient une traduction - et chaque traduction perd de
 > l'information.
 
 ## Les bounded contexts : un seul modèle ne peut pas tout régner
@@ -46,22 +46,22 @@ et du support. On finit avec quarante champs, et plus personne n'ose y
 toucher.
 
 La réponse du DDD, c'est le **bounded context** : une frontière explicite à
-l'intérieur de laquelle un modèle — et son langage omniprésent — reste
+l'intérieur de laquelle un modèle - et son langage omniprésent - reste
 cohérent. Le même concept du monde réel peut, et doit, être modélisé
 différemment dans chaque contexte :
 
-| Contexte     | « Client » signifie…                                 |
+| Contexte     | « Client » signifie...                                 |
 |--------------|------------------------------------------------------|
 | Ventes       | Un prospect avec une étape de pipeline et un commercial |
 | Facturation  | Une entité légale avec un numéro de TVA et des conditions de paiement |
 | Livraison    | Un nom et une adresse de livraison validée           |
 | Support      | Un historique de tickets et un niveau de SLA         |
 
-Les contextes communiquent entre eux par des relations explicites — un
+Les contextes communiquent entre eux par des relations explicites - un
 noyau partagé, une relation client/fournisseur, ou le plus souvent une
 **couche anticorruption** : une couche de traduction qui empêche le modèle
 d'un autre contexte (ou d'un système legacy) de contaminer le vôtre.
-Dessiner les contextes et leurs relations donne une **context map** — le
+Dessiner les contextes et leurs relations donne une **context map** - le
 diagramme d'architecture le plus utile que la plupart des équipes ne
 dessinent jamais.
 
@@ -74,7 +74,7 @@ le modèle.
 
 Une **entité** a une identité qui survit au changement : la commande
 `Order #42` reste la même commande après correction de son adresse. Un
-**objet-valeur** (*value object*) n'a pas d'identité — il *est* ses
+**objet-valeur** (*value object*) n'a pas d'identité - il *est* ses
 attributs : deux `Money(10, EUR)` sont interchangeables, immuables et
 copiés librement.
 
@@ -121,7 +121,7 @@ class Money:
 Un **agrégat** est un groupe d'entités et de valeurs qui change comme un
 tout, gardé par un point d'entrée unique : la **racine d'agrégat**. Le code
 extérieur ne détient une référence que vers la racine, et toute
-modification passe par elle — c'est ainsi qu'elle peut faire respecter les
+modification passe par elle - c'est ainsi qu'elle peut faire respecter les
 invariants.
 
 {{< codetabs >}}
@@ -133,7 +133,7 @@ public class Order { // racine d'agrégat
     private final List<OrderLine> lines = new ArrayList<>();
     private Money total;
 
-    // addLine est le seul moyen de faire grossir la commande —
+    // addLine est le seul moyen de faire grossir la commande -
     // l'invariant « le total correspond aux lignes » ne peut pas être contourné.
     public void addLine(Product product, int quantity) {
         if (quantity <= 0) {
@@ -155,7 +155,7 @@ class Order:  # racine d'agrégat
         self._lines: list[OrderLine] = []
         self._total = Money(0, currency)
 
-    # add_line est le seul moyen de faire grossir la commande —
+    # add_line est le seul moyen de faire grossir la commande -
     # l'invariant « le total correspond aux lignes » ne peut pas être contourné.
     def add_line(self, product: Product, quantity: int) -> None:
         if quantity <= 0:
@@ -170,16 +170,16 @@ class Order:  # racine d'agrégat
 La règle de conception qui en découle : **gardez les agrégats petits**, et
 référencez les autres agrégats par leur identifiant, pas par objet. Un
 agrégat = une transaction ; si vous devez modifier deux agrégats de façon
-atomique, vos frontières sont probablement mal placées — ou il vous faut un
+atomique, vos frontières sont probablement mal placées - ou il vous faut un
 événement de domaine.
 
 ### Repositories, services de domaine, événements de domaine
 
 - Les **repositories** donnent l'illusion d'une collection en mémoire
   d'agrégats (`orders.findById(id)`, `orders.save(order)`), en cachant la base
-  de données. Un repository par racine d'agrégat — pas par table.
+  de données. Un repository par racine d'agrégat - pas par table.
 - Les **services de domaine** portent la logique métier qui n'appartient à
-  aucune entité en particulier — une politique de tarification qui pèse le
+  aucune entité en particulier - une politique de tarification qui pèse le
   client, le panier et la saison. S'il est sans état et parle un langage
   purement métier, c'est un service de domaine ; s'il parle à la base de
   données, ce n'en est pas un.
@@ -190,7 +190,7 @@ atomique, vos frontières sont probablement mal placées — ou il vous faut un
 
 ## Le DDD et les diagrammes d'architecture
 
-Le DDD ne dit rien des cercles ni des hexagones — il est antérieur à la
+Le DDD ne dit rien des cercles ni des hexagones - il est antérieur à la
 célébrité de ces deux diagrammes et s'y insère naturellement. En termes
 d'[architecture hexagonale](/fr/posts/hexagonal-architecture/), le modèle
 de domaine vit à l'intérieur de l'hexagone ; en termes de
@@ -203,7 +203,7 @@ protègent le modèle ; le DDD s'occupe de ce que le modèle *raconte*.
 
 - **Le DDD purement tactique.** Adopter des classes de base `Entity`,
   `ValueObject` et `Repository` en sautant le langage omniprésent et les
-  bounded contexts. On obtient le cérémonial sans la compréhension — les
+  bounded contexts. On obtient le cérémonial sans la compréhension - les
   patterns existent pour servir le modèle, pas l'inverse.
 - **Le modèle de domaine anémique.** Des entités réduites à des sacs de
   getters et de setters, avec toute la logique dans des classes
@@ -213,10 +213,10 @@ protègent le modèle ; le DDD s'occupe de ce que le modèle *raconte*.
 - **Le DDD partout.** Evans est explicite : le DDD est rentable dans le
   *domaine cœur* (*core domain*), là où votre métier se différencie
   vraiment. Les écrans d'administration CRUD et les sous-domaines
-  génériques n'ont pas besoin d'agrégats — achetez-les, générez-les, ou
+  génériques n'ont pas besoin d'agrégats - achetez-les, générez-les, ou
   gardez-les ennuyeux.
 
-> Le Domain-Driven Design n'est pas un plan de couches à recopier — c'est
+> Le Domain-Driven Design n'est pas un plan de couches à recopier - c'est
 > une discipline : laisser ceux qui connaissent le métier façonner le
 > modèle, donner une frontière à chaque modèle, et faire parler au code la
 > même langue qu'au domaine. Le métier prend le volant ; le code suit.

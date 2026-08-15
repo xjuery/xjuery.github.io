@@ -6,7 +6,7 @@ banner: /images/posts/vim-cheatsheet/banner.png
 bannerAlt: "A Vim banner"
 featured: false
 draft: false
-summary: "Essential Vim commands for daily use — modes, motions, editing, macros — plus the power techniques (visual block, :g, dot-repeat) that make it all click."
+summary: "Essential Vim commands for daily use - modes, motions, editing, macros - plus the power techniques (visual block, :g, dot-repeat) that make it all click."
 ---
 
 Every few months I watch someone open Vim on a server, panic, and reach for
@@ -40,7 +40,7 @@ commands).
 | `Esc` | Return to **Normal** mode |
 | `:` | Enter **Command-line** mode |
 
-> When in doubt, hit `Esc`. Normal mode is home base — every workflow below
+> When in doubt, hit `Esc`. Normal mode is home base - every workflow below
 > starts there.
 
 ## Moving around
@@ -186,8 +186,8 @@ are views onto them, *tabs* are collections of windows.
 | `` `a `` | Jump to mark **a** (exact) |
 | `'a` | Jump to mark **a** (line) |
 | ` `` ` | Jump to previous position |
-| `Ctrl`+`o` | Jump list — older |
-| `Ctrl`+`i` | Jump list — newer |
+| `Ctrl`+`o` | Jump list - older |
+| `Ctrl`+`i` | Jump list - newer |
 | `:marks` | List all marks |
 
 ## Macros & registers
@@ -208,7 +208,7 @@ are views onto them, *tabs* are collections of windows.
 ## Text objects
 
 Text objects are why `ciw` feels like magic: they describe *what* to operate
-on (inner word, inside quotes…), independent of where the cursor sits within
+on (inner word, inside quotes...), independent of where the cursor sits within
 it.
 
 | Key | Action |
@@ -239,7 +239,7 @@ it.
 
 ## Useful Ex commands
 
-The command line (`:`) is a full editor language of its own — and `q:` even
+The command line (`:`) is a full editor language of its own - and `q:` even
 opens a searchable history of everything you've typed there.
 
 ![Vim's command-line window showing a history of previously run Ex commands](/images/posts/vim-cheatsheet/vim-command-history.png)
@@ -259,30 +259,30 @@ opens a searchable history of everything you've typed there.
 
 ## Power techniques
 
-The tables above are the vocabulary. Here is the grammar — the combinations
+The tables above are the vocabulary. Here is the grammar - the combinations
 that pay for the learning curve.
 
 ### Comment a block of lines with Visual Block
 
-For `#` comments (Python / Bash / YAML) — works the same for `//` or `--`:
+For `#` comments (Python / Bash / YAML) - works the same for `//` or `--`:
 
 1. Move to the **first line** to comment, in the first column.
 2. Enter Visual Block mode: `Ctrl`+`v`.
 3. Select down to the **last line** with `j` (or a count like `9j`).
-4. Press `I` (capital i — *insert at block start*).
-5. Type `#`, then press `Esc` — the `#` appears on every selected line.
+4. Press `I` (capital i - *insert at block start*).
+5. Type `#`, then press `Esc` - the `#` appears on every selected line.
 
 To uncomment: put the cursor on the `#` of the first line, `Ctrl`+`v`,
-select down with `j`, then `x` — the whole column of `#` disappears at once.
+select down with `j`, then `x` - the whole column of `#` disappears at once.
 
 ### Comment a range with `:norm`
 
 1. Visually select lines (with `V`) **or** use a line range like `:5,20`.
-2. Run `:'<,'>norm I#` — inserts `#` at the start of each line.
-3. To uncomment: `:'<,'>norm ^x` — jumps to the first non-blank char and deletes it.
+2. Run `:'<,'>norm I#` - inserts `#` at the start of each line.
+3. To uncomment: `:'<,'>norm ^x` - jumps to the first non-blank char and deletes it.
 
 > `:norm` replays any Normal-mode keystrokes on every line of a range. Pair
-> it with anything — it's bulk editing without recording a macro.
+> it with anything - it's bulk editing without recording a macro.
 
 ### Append text to the end of multiple lines
 
@@ -290,43 +290,43 @@ select down with `j`, then `x` — the whole column of `#` disappears at once.
 2. Press `$` to extend the selection to each line's end.
 3. Press `A`, type your text, press `Esc`.
 
-Example: append a comma to 10 lines for a quick CSV fix —
+Example: append a comma to 10 lines for a quick CSV fix -
 `Ctrl+v` → `9j` → `$` → `A` → `,` → `Esc`.
 
 ### Increment numbers in a column
 
 1. Visual Block: `Ctrl`+`v`, select the number column.
-2. `g` `Ctrl`+`a` — sequentially increments each number (1, 2, 3…);
+2. `g` `Ctrl`+`a` - sequentially increments each number (1, 2, 3...);
    `Ctrl`+`a` alone increments all by 1.
-3. `g` `Ctrl`+`x` — sequentially decrements.
+3. `g` `Ctrl`+`x` - sequentially decrements.
 
 ### Global search and execute
 
-- `:g/TODO/d` — delete every line containing **TODO**.
-- `:g/def /norm O# ---` — insert a banner before every Python function.
-- `:v/import/d` — keep *only* lines matching **import** (inverse global).
+- `:g/TODO/d` - delete every line containing **TODO**.
+- `:g/def /norm O# ---` - insert a banner before every Python function.
+- `:v/import/d` - keep *only* lines matching **import** (inverse global).
 
 ### Dot-repeat a change across the file
 
 1. Make the change once (e.g. `ciw` → type replacement → `Esc`).
 2. Jump to the next target with `n`.
-3. Repeat with `.` — iterate `n` `.` `n` `.` through the file.
+3. Repeat with `.` - iterate `n` `.` `n` `.` through the file.
 
-> More surgical than `:%s///g` — you eyeball each occurrence before
+> More surgical than `:%s///g` - you eyeball each occurrence before
 > applying.
 
 ### Sort and deduplicate
 
-- `:sort` — sort selected lines alphabetically; `:sort!` reverses.
-- `:sort u` — sort and remove duplicates.
-- `:sort n` — sort numerically.
+- `:sort` - sort selected lines alphabetically; `:sort!` reverses.
+- `:sort u` - sort and remove duplicates.
+- `:sort n` - sort numerically.
 
 ### Run a macro on every matching line
 
-1. Record the macro into register **q**: `qq` … `q`.
-2. Run `:g/pattern/norm @q` — executes it on every matching line.
+1. Record the macro into register **q**: `qq` ... `q`.
+2. Run `:g/pattern/norm @q` - executes it on every matching line.
 
-`:wq` — *write. quit. ship it.*
+`:wq` - *write. quit. ship it.*
 
 ---
 
@@ -334,4 +334,4 @@ Example: append a comma to 10 lines for a quick CSV fix —
 (GPL) and [Vim modes diagram](https://commons.wikimedia.org/wiki/File:Vim_modes.svg)
 by Harp (CC BY-SA 4.0); [split-window screenshot](https://commons.wikimedia.org/wiki/File:Vim-(logiciel)-console.png)
 (GPL) and [command-history screenshot](https://commons.wikimedia.org/wiki/File:Vim-commands-history.png)
-by Vitaly Zdanevich (CC0) — all via Wikimedia Commons.*
+by Vitaly Zdanevich (CC0) - all via Wikimedia Commons.*

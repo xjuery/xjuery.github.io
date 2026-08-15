@@ -10,12 +10,12 @@ summary: "Le pattern ports & adapters d'Alistair Cockburn, sans les buzzwords : 
 Les frameworks passent. Les bases de données se remplacent. L'API REST que
 vous exposez aujourd'hui deviendra un service gRPC, puis un consommateur
 d'événements. La seule partie de votre application qui mérite de survivre à
-tout cela, c'est la logique métier — et dans la plupart des bases de code,
+tout cela, c'est la logique métier - et dans la plupart des bases de code,
 c'est précisément celle qui ne peut pas bouger, parce qu'elle est soudée
 aux contrôleurs, à l'ORM et à une demi-douzaine de SDK.
 
-L'architecture hexagonale — formalisée par Alistair Cockburn vers 2005, et
-aussi appelée **ports & adapters** — est le modèle mental le plus simple
+L'architecture hexagonale - formalisée par Alistair Cockburn vers 2005, et
+aussi appelée **ports & adapters** - est le modèle mental le plus simple
 que je connaisse pour éviter ce piège.
 
 ## Le problème qu'elle résout
@@ -35,7 +35,7 @@ parle).
 ## L'idée : un intérieur, un extérieur, une frontière
 
 Imaginez le cœur de l'application comme un hexagone. À l'intérieur : le
-domaine — entités, règles, cas d'usage. Rien d'autre. À l'extérieur :
+domaine - entités, règles, cas d'usage. Rien d'autre. À l'extérieur :
 l'interface utilisateur, la base de données, le bus de messages, le
 harnais de test, la CLI. Sur la frontière se trouvent les **ports**, et
 chaque élément du monde extérieur se branche sur un port via un
@@ -44,13 +44,13 @@ chaque élément du monde extérieur se branche sur un port via un
 ![Diagramme d'architecture hexagonale : le cœur de l'application entouré de ses ports, avec des adaptateurs UI, base de données, notification et CLI branchés depuis l'extérieur](/images/posts/hexagonal-architecture/hexagonal-architecture.svg)
 {width="440"}
 
-Le nombre de côtés ne veut rien dire, au passage — Cockburn a choisi un
+Le nombre de côtés ne veut rien dire, au passage - Cockburn a choisi un
 hexagone pour avoir la place d'y dessiner plusieurs ports. Ç'aurait pu être
 un octogone.
 
 ## Les ports : qui pilote qui
 
-Un **port** est une interface définie par — et appartenant au — cœur. Il en
+Un **port** est une interface définie par - et appartenant au - cœur. Il en
 existe deux familles :
 
 | Famille | Aussi appelée | Qui a l'initiative | Exemples |
@@ -65,7 +65,7 @@ JSON en appel de cas d'usage).
 
 ## Un exemple concret
 
-Le cœur définit un cas d'usage et *déclare* ce dont il a besoin — une
+Le cœur définit un cas d'usage et *déclare* ce dont il a besoin - une
 interface. Il n'importe rien d'aucun framework, quel que soit le langage :
 
 {{< codetabs >}}
@@ -133,7 +133,7 @@ class SubscribeUseCase:
 {{< /tab >}}
 {{< /codetabs >}}
 
-Les adaptateurs vivent à la périphérie et dépendent du cœur — jamais
+Les adaptateurs vivent à la périphérie et dépendent du cœur - jamais
 l'inverse :
 
 {{< codetabs >}}
@@ -240,7 +240,7 @@ def test_subscribe_rejects_duplicates():
 {{< /codetabs >}}
 
 Pas de conteneur de base de données, pas de serveur HTTP, pas de framework
-de mocks — des tests en millisecondes sur exactement le code qui porte le
+de mocks - des tests en millisecondes sur exactement le code qui porte le
 risque métier. Et le test lui-même n'est qu'un adaptateur pilotant de plus,
 ce qui est précisément l'idée : pour le cœur, un test et un contrôleur REST
 sont indiscernables.
@@ -253,7 +253,7 @@ sont indiscernables.
   du domaine (`Exists`, `Reserve`, `Publish`), pas celle de
   l'infrastructure.
 - **Elle n'interdit pas les frameworks.** Elle les confine. Utilisez l'ORM
-  le plus lourd qui vous plaît — à l'intérieur d'un adaptateur.
+  le plus lourd qui vous plaît - à l'intérieur d'un adaptateur.
 - **Elle n'est pas gratuite.** Les petits outils et les scripts jetables ne
   rembourseront jamais la taxe des interfaces. Le pattern devient rentable
   quand le domaine est l'actif et l'infrastructure un détail.

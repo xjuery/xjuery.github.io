@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" font-family="-apple-system, 'Segoe UI', Roboto, sans-serif">
+  <rect x="0" y="0" width="800" height="320" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">Multi-stage build : compiler dans une image, livrer dans une autre</text>
+
+  <!-- Build stage -->
+  <rect x="40" y="70" width="300" height="190" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="190" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#92400e">Étape « build »</text>
+  <text x="190" y="116" text-anchor="middle" font-size="11" fill="#92400e">maven:3-eclipse-temurin-21</text>
+
+  <rect x="65" y="130" width="250" height="26" rx="5" fill="#ffffff" stroke="#d97706"/>
+  <text x="190" y="147" text-anchor="middle" font-size="11" fill="#92400e">JDK + Maven + dépendances</text>
+  <rect x="65" y="164" width="250" height="26" rx="5" fill="#ffffff" stroke="#d97706"/>
+  <text x="190" y="181" text-anchor="middle" font-size="11" fill="#92400e">Code source + cache de build</text>
+  <rect x="65" y="198" width="250" height="26" rx="5" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="190" y="215" text-anchor="middle" font-size="11" font-weight="600" fill="#14532d">app.jar</text>
+
+  <text x="190" y="248" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">~ 750 Mo — jetée après le build</text>
+
+  <!-- Final stage -->
+  <rect x="460" y="70" width="300" height="190" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="610" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#14532d">Image finale</text>
+  <text x="610" y="116" text-anchor="middle" font-size="11" fill="#14532d">eclipse-temurin:21-jre-alpine</text>
+
+  <rect x="485" y="150" width="250" height="26" rx="5" fill="#ffffff" stroke="#16a34a"/>
+  <text x="610" y="167" text-anchor="middle" font-size="11" fill="#14532d">JRE minimal</text>
+  <rect x="485" y="184" width="250" height="26" rx="5" fill="#ffffff" stroke="#16a34a"/>
+  <text x="610" y="201" text-anchor="middle" font-size="11" font-weight="600" fill="#14532d">app.jar (et rien d'autre)</text>
+
+  <text x="610" y="248" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d">~ 180 Mo — celle qu'on déploie</text>
+
+  <!-- Arrow -->
+  <line x1="340" y1="211" x2="479" y2="197" stroke="#475569" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="405" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">COPY --from=build</text>
+
+  <text x="400" y="295" text-anchor="middle" font-size="12" fill="#64748b">Outils de compilation, sources et secrets de build ne quittent jamais la première étape</text>
+</svg>

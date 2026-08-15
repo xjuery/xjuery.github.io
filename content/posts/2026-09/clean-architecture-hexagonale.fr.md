@@ -10,7 +10,7 @@ summary: "Clean Architecture et architecture hexagonale ne s'opposent pas : la p
 *« Faut-il choisir entre Clean Architecture et architecture hexagonale ? »*
 Mauvaise question : les deux disent la même chose avec un vocabulaire
 différent, et elles se combinent très bien. Cet article le montre sur un
-exemple complet — un service de commandes — en Java et en Python.
+exemple complet - un service de commandes - en Java et en Python.
 
 Si les deux modèles ne vous sont pas familiers, commencez par les articles
 dédiés : [l'architecture hexagonale](/fr/posts/hexagonal-architecture/) et
@@ -44,7 +44,7 @@ l'intérieur de l'hexagone, les ports et adaptateurs structurent son bord.**
 ## L'exemple : passer une commande
 
 Le cas d'utilisation est classique : *passer une commande*. La règle métier
-tient en trois lignes — une commande a des lignes, elle calcule son total,
+tient en trois lignes - une commande a des lignes, elle calcule son total,
 et au-delà de 100 € la livraison est offerte. Une fois la commande
 enregistrée, on notifie le client.
 
@@ -59,7 +59,7 @@ Ce qu'il nous faut :
 
 ### L'arborescence
 
-L'arborescence raconte l'architecture toute seule — c'est un bon test :
+L'arborescence raconte l'architecture toute seule - c'est un bon test :
 
 {{< codetabs >}}
 {{< tab >}}
@@ -259,7 +259,7 @@ class PlaceOrder:
 {{< /codetabs >}}
 
 Toujours aucun import technique. Ce cas d'utilisation se teste avec deux
-doublures en mémoire — pas de base, pas de conteneur, pas de mock
+doublures en mémoire - pas de base, pas de conteneur, pas de mock
 framework si on n'en veut pas.
 
 ## Le bord : les adaptateurs
@@ -308,7 +308,7 @@ class SqlOrderRepository:
 
 Notez le motif récurrent : l'adaptateur **traduit** entre le modèle du
 domaine (`Order`) et son modèle technique (`OrderJpaEntity`, `OrderRow`).
-Ce mapping a un coût, c'est le prix de l'isolation — et il reste bien plus
+Ce mapping a un coût, c'est le prix de l'isolation - et il reste bien plus
 faible que le coût d'un domaine truffé d'annotations.
 
 À gauche (entrant), le contrôleur HTTP n'est qu'un traducteur lui aussi :
@@ -345,7 +345,7 @@ def create_order(body: PlaceOrderRequest,
 
 ## Le branchement final
 
-Reste à assembler le tout au démarrage — le *composition root*. C'est le
+Reste à assembler le tout au démarrage - le *composition root*. C'est le
 seul endroit qui connaît à la fois les ports et leurs implémentations :
 
 {{< codetabs >}}
@@ -377,11 +377,11 @@ def get_place_order() -> PlaceOrder:
 C'est là que l'investissement paye. Trois niveaux de test, chacun avec un
 périmètre net :
 
-- **Domaine** : tests unitaires purs sur `Order` — instantanés, sans
+- **Domaine** : tests unitaires purs sur `Order` - instantanés, sans
   doublure.
 - **Application** : tests du cas d'utilisation avec des adaptateurs en
   mémoire (`InMemoryOrderRepository`, une liste Python fait l'affaire).
-- **Adaptateurs** : quelques tests d'intégration ciblés — le repository
+- **Adaptateurs** : quelques tests d'intégration ciblés - le repository
   contre une vraie base (Testcontainers), le contrôleur contre le cas
   d'utilisation doublé.
 
@@ -404,4 +404,4 @@ se battre contre elle.
 > sur un menu : l'une décrit l'intérieur (entités, cas d'utilisation),
 > l'autre le bord (ports, adaptateurs). Utilisez le vocabulaire de
 > l'hexagonale pour vos frontières, les cercles de Clean pour organiser le
-> cœur — et la règle de dépendance, commune aux deux, comme seul dogme.
+> cœur - et la règle de dépendance, commune aux deux, comme seul dogme.

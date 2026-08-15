@@ -6,7 +6,7 @@ banner: /images/posts/vim-cheatsheet/banner.png
 bannerAlt: "Une banniere sur Vim"
 featured: false
 draft: false
-summary: "Les commandes Vim essentielles au quotidien — modes, déplacements, édition, macros — plus les techniques avancées (bloc visuel, :g, répétition avec .) qui font tout basculer."
+summary: "Les commandes Vim essentielles au quotidien - modes, déplacements, édition, macros - plus les techniques avancées (bloc visuel, :g, répétition avec .) qui font tout basculer."
 ---
 
 De temps en temps, je vois quelqu'un ouvrir Vim sur un serveur,
@@ -40,7 +40,7 @@ agir), **Insertion** (taper du texte), **Visuel** (sélectionner) et
 | `Esc` | Revenir en mode **Normal** |
 | `:` | Entrer en mode **Ligne de commande** |
 
-> En cas de doute, appuyez sur `Esc`. Le mode Normal est le camp de base —
+> En cas de doute, appuyez sur `Esc`. Le mode Normal est le camp de base -
 > tous les workflows ci-dessous partent de là.
 
 ## Se déplacer
@@ -188,8 +188,8 @@ des ensembles de fenêtres.
 | `` `a `` | Sauter à la marque **a** (position exacte) |
 | `'a` | Sauter à la marque **a** (ligne) |
 | ` `` ` | Revenir à la position précédente |
-| `Ctrl`+`o` | Liste de sauts — plus ancien |
-| `Ctrl`+`i` | Liste de sauts — plus récent |
+| `Ctrl`+`o` | Liste de sauts - plus ancien |
+| `Ctrl`+`i` | Liste de sauts - plus récent |
 | `:marks` | Lister toutes les marques |
 
 ## Macros & registres
@@ -210,7 +210,7 @@ des ensembles de fenêtres.
 ## Objets textuels
 
 Les objets textuels sont la raison pour laquelle `ciw` semble magique : ils
-décrivent *sur quoi* agir (mot entier, intérieur des guillemets…),
+décrivent *sur quoi* agir (mot entier, intérieur des guillemets...),
 indépendamment de la position du curseur à l'intérieur.
 
 | Touche | Action |
@@ -241,7 +241,7 @@ indépendamment de la position du curseur à l'intérieur.
 
 ## Commandes Ex utiles
 
-La ligne de commande (`:`) est un langage d'édition à part entière — et
+La ligne de commande (`:`) est un langage d'édition à part entière - et
 `q:` ouvre même un historique consultable de tout ce qu'on y a tapé.
 
 ![La fenêtre de ligne de commande de Vim affichant l'historique des commandes Ex exécutées](/images/posts/vim-cheatsheet/vim-command-history.png)
@@ -261,36 +261,36 @@ La ligne de commande (`:`) est un langage d'édition à part entière — et
 
 ## Techniques avancées
 
-Les tableaux ci-dessus sont le vocabulaire. Voici la grammaire — les
+Les tableaux ci-dessus sont le vocabulaire. Voici la grammaire - les
 combinaisons qui justifient la courbe d'apprentissage.
 
 ### Commenter un bloc de lignes avec le bloc visuel
 
-Pour les commentaires `#` (Python / Bash / YAML) — identique pour `//` ou
+Pour les commentaires `#` (Python / Bash / YAML) - identique pour `//` ou
 `--` :
 
 1. Placez-vous sur la **première ligne** à commenter, en première colonne.
 2. Entrez en mode Visuel Bloc : `Ctrl`+`v`.
 3. Sélectionnez jusqu'à la **dernière ligne** avec `j` (ou un compteur
    comme `9j`).
-4. Appuyez sur `I` (i majuscule — *insertion en début de bloc*).
-5. Tapez `#`, puis `Esc` — le `#` apparaît sur toutes les lignes
+4. Appuyez sur `I` (i majuscule - *insertion en début de bloc*).
+5. Tapez `#`, puis `Esc` - le `#` apparaît sur toutes les lignes
    sélectionnées.
 
 Pour décommenter : placez le curseur sur le `#` de la première ligne,
-`Ctrl`+`v`, descendez avec `j`, puis `x` — toute la colonne de `#`
+`Ctrl`+`v`, descendez avec `j`, puis `x` - toute la colonne de `#`
 disparaît d'un coup.
 
 ### Commenter une plage avec `:norm`
 
 1. Sélectionnez les lignes visuellement (avec `V`) **ou** utilisez une
    plage comme `:5,20`.
-2. Lancez `:'<,'>norm I#` — insère `#` en début de chaque ligne.
-3. Pour décommenter : `:'<,'>norm ^x` — va au premier caractère non blanc
+2. Lancez `:'<,'>norm I#` - insère `#` en début de chaque ligne.
+3. Pour décommenter : `:'<,'>norm ^x` - va au premier caractère non blanc
    et le supprime.
 
 > `:norm` rejoue n'importe quelle séquence de touches du mode Normal sur
-> chaque ligne d'une plage. Combinez-la avec ce que vous voulez — c'est de
+> chaque ligne d'une plage. Combinez-la avec ce que vous voulez - c'est de
 > l'édition en masse sans enregistrer de macro.
 
 ### Ajouter du texte en fin de plusieurs lignes
@@ -300,22 +300,22 @@ disparaît d'un coup.
    ligne.
 3. Appuyez sur `A`, tapez votre texte, puis `Esc`.
 
-Exemple : ajouter une virgule à 10 lignes pour corriger un CSV —
+Exemple : ajouter une virgule à 10 lignes pour corriger un CSV -
 `Ctrl+v` → `9j` → `$` → `A` → `,` → `Esc`.
 
 ### Incrémenter des nombres en colonne
 
 1. Visuel Bloc : `Ctrl`+`v`, sélectionnez la colonne de nombres.
-2. `g` `Ctrl`+`a` — incrémente chaque nombre séquentiellement (1, 2, 3…) ;
+2. `g` `Ctrl`+`a` - incrémente chaque nombre séquentiellement (1, 2, 3...) ;
    `Ctrl`+`a` seul incrémente tout de 1.
-3. `g` `Ctrl`+`x` — décrémente séquentiellement.
+3. `g` `Ctrl`+`x` - décrémente séquentiellement.
 
 ### Recherche globale et exécution
 
-- `:g/TODO/d` — supprime toutes les lignes contenant **TODO**.
-- `:g/def /norm O# ---` — insère une bannière avant chaque fonction
+- `:g/TODO/d` - supprime toutes les lignes contenant **TODO**.
+- `:g/def /norm O# ---` - insère une bannière avant chaque fonction
   Python.
-- `:v/import/d` — ne garde *que* les lignes contenant **import** (global
+- `:v/import/d` - ne garde *que* les lignes contenant **import** (global
   inversé).
 
 ### Répéter un changement dans tout le fichier avec `.`
@@ -323,25 +323,25 @@ Exemple : ajouter une virgule à 10 lignes pour corriger un CSV —
 1. Faites le changement une fois (p. ex. `ciw` → tapez le remplacement →
    `Esc`).
 2. Sautez à la cible suivante avec `n`.
-3. Répétez avec `.` — enchaînez `n` `.` `n` `.` à travers le fichier.
+3. Répétez avec `.` - enchaînez `n` `.` `n` `.` à travers le fichier.
 
-> Plus chirurgical que `:%s///g` — vous vérifiez chaque occurrence avant
+> Plus chirurgical que `:%s///g` - vous vérifiez chaque occurrence avant
 > d'appliquer.
 
 ### Trier et dédupliquer
 
-- `:sort` — trie les lignes sélectionnées alphabétiquement ; `:sort!`
+- `:sort` - trie les lignes sélectionnées alphabétiquement ; `:sort!`
   inverse l'ordre.
-- `:sort u` — trie et supprime les doublons.
-- `:sort n` — trie numériquement.
+- `:sort u` - trie et supprime les doublons.
+- `:sort n` - trie numériquement.
 
 ### Lancer une macro sur chaque ligne correspondante
 
-1. Enregistrez la macro dans le registre **q** : `qq` … `q`.
-2. Lancez `:g/pattern/norm @q` — elle s'exécute sur chaque ligne
+1. Enregistrez la macro dans le registre **q** : `qq` ... `q`.
+2. Lancez `:g/pattern/norm @q` - elle s'exécute sur chaque ligne
    correspondant au motif.
 
-`:wq` — *écrire. quitter. livrer.*
+`:wq` - *écrire. quitter. livrer.*
 
 ---
 
@@ -349,4 +349,4 @@ Exemple : ajouter une virgule à 10 lignes pour corriger un CSV —
 (GPL) et [diagramme des modes de Vim](https://commons.wikimedia.org/wiki/File:Vim_modes.svg)
 par Harp (CC BY-SA 4.0) ; [capture d'écran des fenêtres scindées](https://commons.wikimedia.org/wiki/File:Vim-(logiciel)-console.png)
 (GPL) et [capture de l'historique des commandes](https://commons.wikimedia.org/wiki/File:Vim-commands-history.png)
-par Vitaly Zdanevich (CC0) — toutes via Wikimedia Commons.*
+par Vitaly Zdanevich (CC0) - toutes via Wikimedia Commons.*
