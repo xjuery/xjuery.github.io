@@ -3,12 +3,12 @@ title: "Astuces Docker Compose : services, healthchecks et démarrages qui tienn
 date: 2026-08-02T09:40:00+02:00
 tags: [docker, astuces]
 banner: /images/posts/astuces-docker-compose/banner.png
-featured: true
+featured: false
 draft: false
-summary: "depends_on ne suffit pas, les healthchecks changent tout : le tour des astuces Compose qui rendent une stack de dev fiable — ordre de démarrage, profils, overrides et tags !override, include, ancres YAML, watch mode, lifecycle hooks, stacks parallèles et bases de test en tmpfs."
+summary: "depends_on ne suffit pas, les healthchecks changent tout : le tour des astuces Compose qui rendent une stack de dev fiable - ordre de démarrage, profils, overrides et tags !override, include, ancres YAML, watch mode, lifecycle hooks, stacks parallèles et bases de test en tmpfs."
 ---
 
-Docker Compose a l'air simple — quelques services dans un YAML, `up`, et
+Docker Compose a l'air simple - quelques services dans un YAML, `up`, et
 la stack démarre. Puis viennent les vrais problèmes : l'API qui crashe
 parce que PostgreSQL n'était « pas encore prêt », le fichier qui gonfle à
 300 lignes de copier-coller, la config de dev qui contamine la prod. Tour
@@ -17,7 +17,7 @@ d'horizon des astuces qui règlent chacun de ces maux.
 ## Penser « services », pas « conteneurs »
 
 Un service Compose n'est pas un conteneur : c'est la **déclaration** d'un
-composant de la stack — image, réseau, volumes, dépendances. Cette nuance
+composant de la stack - image, réseau, volumes, dépendances. Cette nuance
 guide tout le reste : chaque service doit avoir une responsabilité claire,
 son propre cycle de vie, et communiquer avec les autres **par leur nom** afin de garantir un certain découplage.
 Compose fournit le DNS interne : dans l'exemple ci-dessous, depuis `api`, la base est joignable à
@@ -41,7 +41,7 @@ volumes:
 ```
 
 Autre astuce : n'exposez avec `ports:` que ce que vous *devez* joindre
-depuis l'hôte. Entre services, le réseau interne suffit — la base de
+depuis l'hôte. Entre services, le réseau interne suffit - la base de
 données n'a aucune raison d'être publiée sur `5432` de votre machine.
 
 ## Le duo depends_on + healthcheck
@@ -84,7 +84,7 @@ services:
 Petites explications :
 
 - `interval` : fréquence du test **après** le premier succès ;
-- `start_period` : période de grâce au démarrage — les échecs pendant
+- `start_period` : période de grâce au démarrage - les échecs pendant
   cette fenêtre ne comptent pas dans `retries` ;
 - `retries` : nombre d'échecs consécutifs avant de marquer le service
   `unhealthy`.
@@ -96,7 +96,7 @@ retry artisanale dans le code de démarrage.
 Deux compléments utiles :
 
 - `condition: service_completed_successfully` attend la **fin** d'un
-  service — parfait pour un conteneur de migration qui doit tourner entre
+  service - parfait pour un conteneur de migration qui doit tourner entre
   la base et l'API :
 
   ```yaml
@@ -112,7 +112,7 @@ Deux compléments utiles :
         condition: service_completed_successfully
   ```
 
-- En cas de doute `docker compose ps` affiche l'état de santé (`healthy`, `starting`…) —
+- En cas de doute `docker compose ps` affiche l'état de santé (`healthy`, `starting`...) -
   premier réflexe quand « ça ne démarre pas ».
 
 ## Les profils : une stack, plusieurs configurations
@@ -167,7 +167,7 @@ Petit réflexe à avoir : le fichier de base doit fonctionner seul. Les override
 ajoutent, ils ne réparent pas.
 
 Un piège de la fusion : par défaut elle **ajoute**. Les listes (`ports`,
-`volumes`…) sont concaténées, jamais remplacées. Les versions récentes de
+`volumes`...) sont concaténées, jamais remplacées. Les versions récentes de
 Compose (2.24+) fournissent deux tags YAML pour en reprendre le contrôle :
 
 ```yaml {filename="compose.override.yml"}
@@ -179,13 +179,13 @@ services:
 ```
 
 Sans `!override`, le `8000:8000` du fichier de base resterait publié *en
-plus* du 9000 — source classique de « pourquoi ce port est encore
+plus* du 9000 - source classique de « pourquoi ce port est encore
 ouvert ? ».
 
 ## include : composer des stacks entières
 
 Depuis Compose 2.20, `include:` importe un fichier Compose complet comme
-une brique — la stack d'une autre équipe, un socle de monitoring partagé, très utile si vous voulez factoriser vos services :
+une brique - la stack d'une autre équipe, un socle de monitoring partagé, très utile si vous voulez factoriser vos services :
 
 ```yaml {filename="compose.yml"}
 include:
@@ -200,7 +200,7 @@ services:
 ```
 
 La différence avec `-f fichier1 -f fichier2` (qui fusionne tout dans
-votre contexte) : chaque fichier inclus reste autonome — ses chemins
+votre contexte) : chaque fichier inclus reste autonome - ses chemins
 relatifs et son `.env` (par exemple) sont résolus par rapport à *lui*, pas à vous.
 C'est le mécanisme propre pour dépendre de la stack d'un autre projet
 sans la copier-coller.
@@ -245,7 +245,7 @@ explicite au lieu d'une chaîne vide silencieuse :
 
 ```yaml
 environment:
-  API_KEY: ${API_KEY:?API_KEY manquante — voir .env.example}
+  API_KEY: ${API_KEY:?API_KEY manquante - voir .env.example}
 ```
 
 Et pour vérifier ce que Compose a réellement résolu après fusion des
@@ -254,7 +254,7 @@ fichiers et substitution des variables : `docker compose config`.
 ## develop/watch : le rechargement sans volume
 
 Depuis Compose 2.22, le mode *watch* remplace avantageusement les volumes
-de code pour le développement — il synchronise les fichiers, voire
+de code pour le développement - il synchronise les fichiers, voire
 reconstruit l'image quand les dépendances changent :
 
 ```yaml
@@ -281,7 +281,7 @@ et la reconstruction sur changement de dépendances est automatique.
 ## post_start / pre_stop : la fin des entrypoints bricolés
 
 Depuis Compose 2.30, les [*lifecycle hooks*](https://docs.docker.com/compose/how-tos/lifecycle/) exécutent des commandes autour
-du cycle de vie du conteneur — y compris en `root` alors que le service
+du cycle de vie du conteneur - y compris en `root` alors que le service
 tourne, lui, sans privilèges :
 
 ```yaml
@@ -306,7 +306,7 @@ documente l'opération là où on la cherche : dans le YAML.
 ## docker compose run : les services comme outils
 
 `run` démarre un conteneur **ponctuel** à partir d'un service, avec ses
-volumes, son réseau et ses dépendances — parfait pour les tâches à la
+volumes, son réseau et ses dépendances - parfait pour les tâches à la
 demande :
 
 ```bash
@@ -317,11 +317,11 @@ docker compose run --rm --no-deps api bash          # shell, sans réveiller la 
 `--rm` supprime le conteneur en sortant, `--no-deps` saute le démarrage
 des dépendances quand elles sont inutiles. À savoir : `run` ne publie
 pas les `ports:` du service (pour éviter les conflits avec la stack qui
-tourne) — `--service-ports` les restaure si besoin.
+tourne) - `--service-ports` les restaure si besoin.
 
 ## Deux stacks en parallèle avec -p
 
-Compose isole tout — conteneurs, réseaux, volumes — par **nom de
+Compose isole tout - conteneurs, réseaux, volumes - par **nom de
 projet**, qui est par défaut le nom du dossier. En le changeant, la même
 stack tourne en plusieurs exemplaires côte à côte : tester la branche
 d'un collègue sans arrêter la vôtre.
@@ -345,7 +345,7 @@ attribué.
 ## tmpfs : des bases de test jetables et rapides
 
 Dans un pipeline de CI, comme pour les tests locaux, persister les données d'une base de
-test n'a aucun intérêt — autant les mettre en RAM. Sur une suite de
+test n'a aucun intérêt - autant les mettre en RAM. Sur une suite de
 tests intensive en écriture, le gain est massif :
 
 ```yaml {filename="compose.test.yml"}
@@ -356,7 +356,7 @@ services:
 ```
 
 La base démarre plus vite, écrit plus vite, et disparaît avec le
-conteneur — plus de volume orphelin ni d'état résiduel entre deux runs. Je vous garantis que le mainteneur de 
+conteneur - plus de volume orphelin ni d'état résiduel entre deux runs. Je vous garantis que le mainteneur de 
 votre infrastructure CI vous en remerciera.
 
 ## La panoplie du quotidien
@@ -377,13 +377,13 @@ Le `--wait` mérite d'être connu : combiné aux healthchecks, il fait de
 en une ligne.
 
 Dernière petite astuce : un service bavard qui noie les logs de `up` peut
-être mis en sourdine avec `attach: false` dans sa définition — il tourne,
+être mis en sourdine avec `attach: false` dans sa définition - il tourne,
 mais ses logs ne s'affichent qu'à la demande via `logs`.
 
 > Une stack Compose fiable repose sur trois piliers : des healthchecks
 > partout où un service met du temps à être prêt (avec `depends_on:
 > condition: service_healthy`), une séparation socle/override pour que le
 > même fichier de base serve à tous les environnements, et les profils
-> pour embarquer l'outillage sans l'imposer. Le reste — ancres, `include`,
-> `watch`, `run --rm`, stacks parallèles, tmpfs, `--wait` — est du confort
+> pour embarquer l'outillage sans l'imposer. Le reste - ancres, `include`,
+> `watch`, `run --rm`, stacks parallèles, tmpfs, `--wait` - est du confort
 > à ne pas sous-estimer car, si vous les adoptez, pourront simplifier un peu votre vie de developpeur.

@@ -15,5 +15,5 @@ infrastructure replaceable. Most of what shows up here started as a
 note-to-self after solving the same problem twice.
 
 Currently pushing these patterns further in real production systems, and
-daily-driving vim — though I'll happily admit Emacs is probably the better
+daily-driving vim - though I'll happily admit Emacs is probably the better
 editor. I just haven't found the courage to leave <kbd>insert</kbd> mode.

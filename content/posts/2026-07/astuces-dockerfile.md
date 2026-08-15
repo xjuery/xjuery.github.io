@@ -9,7 +9,7 @@ summary: "Layer ordering, .dockerignore, multi-stage builds, cache mounts, non-r
 ---
 
 Every Dockerfile starts the same way: `FROM`, `COPY . .`, `RUN` the install,
-`CMD` — and it works. Then one day, you notice that every build re-downloads
+`CMD` - and it works. Then one day, you notice that every build re-downloads
 every dependency, that the image weighs in at 1.2 GB, that it runs as root,
 and worse, that secrets have ended up baked into a layer.
 This article walks through the tips & tricks that fix all of that, from the
@@ -26,10 +26,10 @@ CMD ["java", "-jar", "target/app.jar"]
 
 Four lines, five problems: an inefficient cache, a bloated image, build
 tools shipped into production, running as root, and the entire
-directory — `.git` included — copied into the image. Let's fix them in
+directory - `.git` included - copied into the image. Let's fix them in
 order.
 
-## Tip 1 — order layers from stable to volatile
+## Tip 1 - order layers from stable to volatile
 
 Docker caches every instruction as a layer, and **invalidates everything
 that follows the first modified layer**. The practical consequence:
@@ -52,7 +52,7 @@ an 8-second rebuild. The same logic applies to Maven (with its
 `pom.xml`), npm (with `package*.json`), or Go (with `go.mod` and
 `go.sum`).
 
-## Tip 2 — .dockerignore, the file everyone forgets
+## Tip 2 - .dockerignore, the file everyone forgets
 
 `COPY . .` sends the entire build context to the Docker daemon: `.git`,
 local `node_modules`, build artifacts, your `.env` files. A
@@ -74,7 +74,7 @@ what ends up in your layers): without a `.dockerignore`, a simple
 `git commit` (which changes `.git/`) invalidates the `COPY . .` cache
 even though no source file has changed.
 
-## Tip 3 — the multi-stage build
+## Tip 3 - the multi-stage build
 
 The technique that changes everything: **compile in a fully-tooled
 image, ship only the result in a minimal image**.
@@ -117,10 +117,10 @@ CMD ["python", "-m", "src.main"]
 ```
 
 Bonus: `docker build --target build .` lets you build only the first
-stage — handy for running tests in CI against the fully-tooled image,
+stage - handy for running tests in CI against the fully-tooled image,
 while still publishing the lightweight one.
 
-## Tip 4 — BuildKit cache mounts
+## Tip 4 - BuildKit cache mounts
 
 Multi-stage protects the final image, but every build still starts from
 scratch on downloads as soon as the dependency descriptor changes.
@@ -150,12 +150,12 @@ RUN --mount=type=secret,id=pip_token \
 docker build --secret id=pip_token,src=.pip_token .
 ```
 
-This is THE right answer to the dangerous reflex of `ARG TOKEN` —
+This is THE right answer to the dangerous reflex of `ARG TOKEN` -
 `ARG` values remain visible in `docker history`, so a secret set
 through an `ARG` is a secret you've just handed to every future user of
 your image.
 
-## Tip 5 — don't run as root
+## Tip 5 - don't run as root
 
 By default, the container process runs as root. A container escape or
 an application flaw becomes noticeably less severe with a dedicated
@@ -171,14 +171,14 @@ privileges), and before `ENTRYPOINT`. If the application writes
 somewhere, prepare the directory ahead of time:
 `RUN mkdir /data && chown app:app /data`.
 
-## Tip 6 — ENTRYPOINT, CMD, and the signal that never arrives
+## Tip 6 - ENTRYPOINT, CMD, and the signal that never arrives
 
 Two rules avoid 90% of the surprises:
 
 - **Always use the exec form** (`["java", "-jar", "app.jar"]`), never the
   shell form (`java -jar app.jar`). In shell form, `/bin/sh` holds PID 1:
   your application never receives the `SIGTERM` from `docker stop`, and
-  gets killed outright after 10 seconds — no graceful shutdown.
+  gets killed outright after 10 seconds - no graceful shutdown.
 - **`ENTRYPOINT` for the executable, `CMD` for the default
   arguments**:
 
@@ -189,10 +189,10 @@ Two rules avoid 90% of the surprises:
 
   `docker run my-image --port 9000` then simply overrides the arguments.
 
-## Tip 7 — the details of a Dockerfile crafted with care
+## Tip 7 - the details of a Dockerfile crafted with care
 
 - **Pin the base image versions**: `python:3.12-slim`, never
-  `python:latest` — if you want a reproducible build (and I guarantee
+  `python:latest` - if you want a reproducible build (and I guarantee
   you do), this is the key.
 - **`COPY` rather than `ADD`**, unless you explicitly need to extract an
   archive; `ADD` with a URL downloads without verification or caching.
@@ -205,7 +205,7 @@ Two rules avoid 90% of the surprises:
   ```
 
 - **`HEALTHCHECK`** so the orchestrator knows whether the application is
-  alive — not just the process:
+  alive - not just the process:
 
   ```dockerfile
   HEALTHCHECK --interval=30s --timeout=3s \
@@ -240,4 +240,4 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 > seconds (ordered layers, cache mounts), it ships a minimal image
 > (multi-stage, pinned slim base), and it runs without excess
 > privileges (dedicated USER, exec form, healthcheck). Everything else
-> is a detail — one that hadolint will happily check for you.
+> is a detail - one that hadolint will happily check for you.

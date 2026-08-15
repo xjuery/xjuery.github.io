@@ -3,12 +3,12 @@ title: "Docker Compose Tips: Services, Healthchecks, and Reliable Startups"
 date: 2026-08-02T09:40:00+02:00
 tags: [docker, tips]
 banner: /images/posts/astuces-docker-compose/banner.png
-featured: true
+featured: false
 draft: false
-summary: "depends_on alone is not enough — healthchecks change everything: a tour of the Compose tricks that make a dev stack reliable — startup order, profiles, overrides and the !override tag, include, YAML anchors, watch mode, lifecycle hooks, parallel stacks, and tmpfs test databases."
+summary: "depends_on alone is not enough - healthchecks change everything: a tour of the Compose tricks that make a dev stack reliable - startup order, profiles, overrides and the !override tag, include, YAML anchors, watch mode, lifecycle hooks, parallel stacks, and tmpfs test databases."
 ---
 
-Docker Compose looks simple — a few services in a YAML file, `up`, and the
+Docker Compose looks simple - a few services in a YAML file, `up`, and the
 stack starts. Then the real problems arrive: the API that crashes because
 PostgreSQL wasn't "ready yet", the file that bloats to 300 lines of
 copy-paste, the dev config that leaks into prod. Here's a tour of the tips & tricks that
@@ -17,7 +17,7 @@ fix each of these issues.
 ## Think "services", not "containers"
 
 A Compose service is not a container: it is the **declaration** of a stack
-component — image, network, volumes, dependencies. This distinction guides
+component - image, network, volumes, dependencies. This distinction guides
 everything else: each service should have a clear responsibility, its own
 lifecycle, and communicate with others **by their name** to ensure a degree
 of decoupling.
@@ -43,7 +43,7 @@ volumes:
 ```
 
 Another tip: only expose with `ports:` what you *actually need* to reach from
-the host. Between services, the internal network is enough — there is no
+the host. Between services, the internal network is enough - there is no
 reason to publish the database on port `5432` on your machine.
 
 ## The depends_on + healthcheck duo
@@ -86,7 +86,7 @@ services:
 A few notes:
 
 - `interval`: frequency of the test **after** the first success;
-- `start_period`: grace period at startup — failures during this window do not
+- `start_period`: grace period at startup - failures during this window do not
   count toward `retries`;
 - `retries`: number of consecutive failures before marking the service
   `unhealthy`.
@@ -98,7 +98,7 @@ retry loop in the startup code.
 Two useful additions:
 
 - `condition: service_completed_successfully` waits for a service to **finish**
-  — perfect for a migration container that must run between the database and
+  - perfect for a migration container that must run between the database and
   the API:
 
   ```yaml
@@ -115,7 +115,7 @@ Two useful additions:
   ```
 
 - When in doubt, `docker compose ps` shows the health status (`healthy`,
-  `starting`…) — the first reflex when "it won't start".
+  `starting`...) - the first reflex when "it won't start".
 
 ## Profiles: one stack, multiple configurations
 
@@ -167,7 +167,7 @@ docker compose -f compose.yml -f compose.staging.yml up -d
 Good habit: the base file should work on its own. Overrides add, they don't
 fix.
 
-A merging pitfall: by default it **appends**. Lists (`ports`, `volumes`…) are
+A merging pitfall: by default it **appends**. Lists (`ports`, `volumes`...) are
 concatenated, never replaced. Recent versions of Compose (2.24+) provide two
 YAML tags to take back control:
 
@@ -180,12 +180,12 @@ services:
 ```
 
 Without `!override`, the `8000:8000` from the base file would remain published
-*in addition to* 9000 — the classic source of "why is that port still open?".
+*in addition to* 9000 - the classic source of "why is that port still open?".
 
 ## include: composing entire stacks
 
 Since Compose 2.20, `include:` imports a complete Compose file as a building
-block — another team's stack, a shared monitoring base, very useful for
+block - another team's stack, a shared monitoring base, very useful for
 factoring out shared services:
 
 ```yaml {filename="compose.yml"}
@@ -201,7 +201,7 @@ services:
 ```
 
 The difference from `-f file1 -f file2` (which merges everything into your
-context): each included file remains autonomous — its relative paths and its
+context): each included file remains autonomous - its relative paths and its
 `.env` (for example) are resolved relative to *it*, not to you.
 This is the clean mechanism for depending on another project's stack without
 copy-pasting it.
@@ -246,7 +246,7 @@ instead of a silent empty string:
 
 ```yaml
 environment:
-  API_KEY: ${API_KEY:?API_KEY missing — see .env.example}
+  API_KEY: ${API_KEY:?API_KEY missing - see .env.example}
 ```
 
 And to check what Compose actually resolved after merging files and
@@ -255,7 +255,7 @@ substituting variables: `docker compose config`.
 ## develop/watch: hot reload without volumes
 
 Since Compose 2.22, *watch* mode advantageously replaces code volumes for
-development — it syncs files, and even rebuilds the image when dependencies
+development - it syncs files, and even rebuilds the image when dependencies
 change:
 
 ```yaml
@@ -282,7 +282,7 @@ dependency changes are automatic.
 ## post_start / pre_stop: the end of hacked entrypoints
 
 Since Compose 2.30, [*lifecycle hooks*](https://docs.docker.com/compose/how-tos/lifecycle/) execute commands around the
-container lifecycle — including as `root` while the service itself runs without
+container lifecycle - including as `root` while the service itself runs without
 privileges:
 
 ```yaml
@@ -307,7 +307,7 @@ operation where you'd look for it: in the YAML.
 ## docker compose run: services as tools
 
 `run` starts a **one-off** container from a service, with its volumes, network,
-and dependencies — perfect for on-demand tasks:
+and dependencies - perfect for on-demand tasks:
 
 ```bash
 docker compose run --rm api alembic upgrade head    # one-shot migration
@@ -316,12 +316,12 @@ docker compose run --rm --no-deps api bash          # shell, without waking up t
 
 `--rm` removes the container on exit, `--no-deps` skips starting dependencies
 when they're not needed. Note: `run` does not publish the service's `ports:`
-(to avoid conflicts with the running stack) — `--service-ports` restores them
+(to avoid conflicts with the running stack) - `--service-ports` restores them
 if needed.
 
 ## Two stacks in parallel with -p
 
-Compose isolates everything — containers, networks, volumes — by **project
+Compose isolates everything - containers, networks, volumes - by **project
 name**, which defaults to the folder name. By changing it, the same stack runs
 in multiple instances side by side: test a colleague's branch without stopping
 yours.
@@ -344,7 +344,7 @@ ports:
 ## tmpfs: fast, disposable test databases
 
 In a CI pipeline, as with local tests, persisting test database data serves no
-purpose — you might as well put it in RAM. On a write-intensive test suite, the
+purpose - you might as well put it in RAM. On a write-intensive test suite, the
 gain is massive:
 
 ```yaml {filename="compose.test.yml"}
@@ -354,7 +354,7 @@ services:
       - /var/lib/postgresql/data
 ```
 
-The database starts faster, writes faster, and disappears with the container —
+The database starts faster, writes faster, and disappears with the container -
 no more orphaned volumes or residual state between runs. Your CI infrastructure
 maintainer will thank you.
 
@@ -376,13 +376,13 @@ A selection of useful commands:
 line.
 
 One last tip: a chatty service flooding the `up` logs can be silenced with
-`attach: false` in its definition — it runs, but its logs only appear on demand
+`attach: false` in its definition - it runs, but its logs only appear on demand
 via `logs`.
 
 > A reliable Compose stack rests on three pillars: healthchecks wherever a
 > service takes time to be ready (with `depends_on: condition: service_healthy`),
 > a base/override separation so the same base file serves all environments, and
-> profiles to bundle tooling without imposing it. The rest — anchors, `include`,
-> `watch`, `run --rm`, parallel stacks, tmpfs, `--wait` — is comfort not to be
+> profiles to bundle tooling without imposing it. The rest - anchors, `include`,
+> `watch`, `run --rm`, parallel stacks, tmpfs, `--wait` - is comfort not to be
 > underestimated: if you adopt them, they can simplify your developer life a
 > little.

@@ -11,7 +11,7 @@ summary: "A Java stacktrace is 40 lines long; misconfigured, Filebeat turns it i
 Open Kibana on a Java project freshly hooked up to Filebeat, search for
 an error, and you will often find this sight: the first line of the
 exception in one document, then forty orphan documents each containing a
-lonely `at com.example...`. The stacktrace is there, but scattered —
+lonely `at com.example...`. The stacktrace is there, but scattered -
 impossible to read, impossible to count errors, impossible to alert on.
 
 The cause is usually simple: **Filebeat reads line by line, but a Java
@@ -84,7 +84,7 @@ With a classic Logback pattern:
 </configuration>
 ```
 
-The resulting file looks like this — note that **only the first line
+The resulting file looks like this - note that **only the first line
 starts with a date**:
 
 ```text {filename="app.log"}
@@ -101,7 +101,7 @@ Caused by: java.sql.SQLException: Connection refused: connect
 That is the property we are going to exploit: *a line that does not
 start with a timestamp belongs to the previous message*.
 
-## Step 1 — Filebeat's multiline parser
+## Step 1 - Filebeat's multiline parser
 
 Since Filebeat 7.16, the recommended input is `filestream`, and multiline
 grouping is declared in the `parsers` list:
@@ -131,7 +131,7 @@ The three options read together and are worth decoding once and for all:
   a `YYYY-MM-DD` date).
 - `negate: true` + `match: after` means: "any line that does *not* look
   like the start of an event is attached *after* the previous line".
-  That is the combination to remember for Java application logs — the
+  That is the combination to remember for Java application logs - the
   `at ...`, `Caused by:` and `... N common frames omitted` lines never
   start with a date, so they get absorbed.
 - `max_lines` (500 by default): beyond that, lines are dropped. 200 is
@@ -142,7 +142,7 @@ Two classic pitfalls at this stage:
 - **Anchor the pattern.** Without `^`, a date in the middle of a message
   ("import of 2026-07-01 failed") would trigger a bogus split.
 - **The `timeout`**: if the application writes its stacktrace slowly
-  (buffering, GC…), Filebeat waits for up to 5 s of silence before
+  (buffering, GC...), Filebeat waits for up to 5 s of silence before
   shipping the event. No need to touch it, but it explains the slight
   delay before errors show up.
 
@@ -150,7 +150,7 @@ After restarting Filebeat, each error lands in Elasticsearch as **a
 single document**: the `message` field contains all 40 lines, complete
 stacktrace included. First goal achieved.
 
-## Step 2 — extract the fields that make the document usable
+## Step 2 - extract the fields that make the document usable
 
 A big blob of text in `message` is readable but not queryable. To filter
 on `log.level: ERROR` or aggregate by exception class, the first line
@@ -195,7 +195,7 @@ has to be split into fields. Without Logstash, an Elasticsearch
 The second `grok`, flagged with `ignore_failure`, only applies to
 messages that actually contain a stacktrace: it isolates the exception
 class in `error.type`, its message in `error.message` and the stack in
-`error.stack_trace` — the standard ECS field names, the ones Kibana and
+`error.stack_trace` - the standard ECS field names, the ones Kibana and
 alerting rules already know.
 
 All that remains is to tell Filebeat to send documents through this
@@ -207,7 +207,7 @@ output.elasticsearch:
   pipeline: java-logs
 ```
 
-## Step 3 — verify the result
+## Step 3 - verify the result
 
 Before waiting on Kibana, test the pipeline with the `_simulate` API by
 pasting a multiline event exactly as Filebeat sends it:
@@ -241,7 +241,7 @@ beginning:
 log.level: "ERROR" and error.type: "java.lang.IllegalStateException"
 ```
 
-And above all, build a "top 10 `error.type` over 24 h" visualization —
+And above all, build a "top 10 `error.type` over 24 h" visualization -
 the dashboard that reveals at a glance which exception is drowning the
 logs.
 
@@ -258,7 +258,7 @@ of thought is to produce JSON directly with
 </appender>
 ```
 
-Each event becomes a single JSON line — stacktrace included, escaped in
+Each event becomes a single JSON line - stacktrace included, escaped in
 the `error.stack_trace` field. On the Filebeat side, no more multiline
 or grok, just a simple `ndjson` parser:
 
@@ -272,7 +272,7 @@ parsers:
 If you own the application (its code), this is the best option: zero
 regex, zero risk of a pattern breaking at the next log format change.
 The multiline configuration remains essential for everything you don't
-control — third-party applications, legacy systems, application server
+control - third-party applications, legacy systems, application server
 logs.
 
 > A stacktrace scattered across 40 documents helps no one. The trio of a
