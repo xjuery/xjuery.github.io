@@ -1,0 +1,40 @@
+{{- /*
+  Nota bene callout: an aside for remarks worth flagging without
+  interrupting the prose. Same chrome as the featured card — colored
+  side bar, mono uppercase label — in a compact, tinted box.
+  Siblings with a fixed color: {{< warning >}} and {{< attention >}}.
+
+  Params (positional or named):
+    color — one of the theme palette names (blue, green, yellow, purple,
+            red, orange, coral, pink, magenta, indigo, cyan, teal, mint,
+            lime, brown, gray); defaults to the accent color.
+    title — label text; defaults to the localized "Nota bene".
+            "none" hides the label entirely.
+
+  The body is markdown:
+
+  {{< nb >}}
+  Remember to restart the service after changing this value.
+  {{< /nb >}}
+
+  {{< nb color="green" title="Tip" >}} ... {{< /nb >}}
+  {{< nb title="none" >}} ... {{< /nb >}}
+*/ -}}
+{{- $color := "" -}}
+{{- $title := "" -}}
+{{- if .IsNamedParams -}}
+  {{- $color = .Get "color" | default "" -}}
+  {{- $title = .Get "title" | default "" -}}
+{{- else -}}
+  {{- $color = .Get 0 | default "" -}}
+  {{- $title = .Get 1 | default "" -}}
+{{- end -}}
+{{- $palette := slice "blue" "green" "yellow" "purple" "red" "orange" "coral" "pink"
+    "magenta" "indigo" "cyan" "teal" "mint" "lime" "brown" "gray" -}}
+{{- if and $color (not (in $palette $color)) -}}
+  {{- errorf "nb: unknown color %q, expected one of %s (%s)" $color (delimit $palette ", ") .Position -}}
+{{- end -}}
+{{- partial "callout.html" (dict
+    "color" $color
+    "label" (cond (eq $title "none") "" (or $title (i18n "notaBene")))
+    "content" (trim .InnerDeindent "\r\n" | .Page.RenderString (dict "display" "block"))) -}}

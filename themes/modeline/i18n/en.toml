@@ -49,6 +49,15 @@ other = "Post navigation"
 [codeLanguages]
 other = "Code languages"
 
+[notaBene]
+other = "Nota bene"
+
+[warning]
+other = "Warning"
+
+[attention]
+other = "Attention"
+
 [browseByTag]
 other = "Browse by tag"
 

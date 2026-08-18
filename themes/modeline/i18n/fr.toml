@@ -49,6 +49,15 @@ other = "Navigation entre articles"
 [codeLanguages]
 other = "Langages du code"
 
+[notaBene]
+other = "Nota bene"
+
+[warning]
+other = "Avertissement"
+
+[attention]
+other = "Attention"
+
 [browseByTag]
 other = "Parcourir par tag"
 

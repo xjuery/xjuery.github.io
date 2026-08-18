@@ -1,0 +1,24 @@
+{{- /*
+  Warning callout: the yellow sibling of {{< nb >}}, for things that
+  can bite — deprecations, footguns, easy-to-miss caveats.
+
+  Params (positional or named):
+    title — label text; defaults to the localized "Warning".
+            "none" hides the label entirely.
+
+  The body is markdown:
+
+  {{< warning >}}
+  This flag is removed in v2 — pin the image tag before upgrading.
+  {{< /warning >}}
+*/ -}}
+{{- $title := "" -}}
+{{- if .IsNamedParams -}}
+  {{- $title = .Get "title" | default "" -}}
+{{- else -}}
+  {{- $title = .Get 0 | default "" -}}
+{{- end -}}
+{{- partial "callout.html" (dict
+    "color" "yellow"
+    "label" (cond (eq $title "none") "" (or $title (i18n "warning")))
+    "content" (trim .InnerDeindent "\r\n" | .Page.RenderString (dict "display" "block"))) -}}
