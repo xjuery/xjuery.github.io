@@ -69,7 +69,7 @@ one = "{{ .Count }} post"
 other = "{{ .Count }} posts"
 
 [taggedWith]
-other = "tagged "{{ . }}""
+other = "tagged \"{{ . }}\""
 
 [allTags]
 other = "all tags"
