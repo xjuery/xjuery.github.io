@@ -1,6 +1,6 @@
 # juery.fr
 
-Personal blog about software architecture, patterns, and tools — built with
+Personal blog about software architecture, patterns, and tools - built with
 [Hugo](https://gohugo.io/) and the custom `modeline` theme, deployed to
 GitHub Pages.
 

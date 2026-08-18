@@ -30,7 +30,7 @@ Follow the conventions in @docs/writing-a-post.md. Steps:
 3. **Fill in the French front matter** in `content/posts/<YYYY-MM>/<slug>.md`:
    - `title`: proper French title (title case not required, match the
      existing posts' style).
-   - `tags`: pick 1–2 fitting tags; prefer existing ones (check
+   - `tags`: pick 1-2 fitting tags; prefer existing ones (check
      `[params.tagColors]` in `hugo.toml` and the tags used by posts in
      `content/posts/`).
    - `summary`: one or two sentences, same tone as existing posts.

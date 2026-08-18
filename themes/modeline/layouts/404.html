@@ -1,4 +1,21 @@
 {{ define "main" }}
+{{/* GitHub Pages only serves the root (default-language) 404.html, even for
+     misses under another language's prefix. Hand those off to that
+     language's own 404 page. */}}
+{{ $defaultLang := site.Sites.Default.Language.Lang }}
+{{ if eq .Language.Lang $defaultLang }}
+<script>
+  (function () {
+    var langs = [{{ range site.Languages }}{{ if ne .Lang $defaultLang }}{{ .Lang }},{{ end }}{{ end }}];
+    for (var i = 0; i < langs.length; i++) {
+      if (location.pathname.indexOf('/' + langs[i] + '/') === 0) {
+        location.replace('/' + langs[i] + '/404.html');
+        return;
+      }
+    }
+  })();
+</script>
+{{ end }}
 <div class="wrap notfound">
   <p class="notfound-code">404</p>
   <p class="notfound-error">E486: Pattern not found</p>

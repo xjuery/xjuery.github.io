@@ -1,5 +1,5 @@
 /* ============================================================
-   Modeline — an editorial developer-blog theme for Hugo
+   Modeline - an editorial developer-blog theme for Hugo
    JetBrains Mono display · Inter body · dark & light palettes
    ============================================================ */
 
@@ -617,6 +617,48 @@ a.pill:hover { text-decoration: none; filter: brightness(1.15); }
   line-height: 1.6;
 }
 
+/* nota bene callout ({{< nb >}}) */
+.nb {
+  --nb-color: var(--accent);
+  --nb-tint: var(--accent-tint);
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--border-2);
+  border-radius: 12px;
+  background: var(--nb-tint);
+}
+.nb-bar { width: 4px; flex-shrink: 0; background: var(--nb-color); }
+.nb-body { padding: 14px 18px; flex: 1; min-width: 0; }
+.nb-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nb-color);
+  margin-bottom: 6px;
+}
+.nb-content { font-size: 14.5px; line-height: 1.65; }
+.nb-content > * + * { margin-top: 10px; }
+.nb-content > :last-child { margin-bottom: 0; }
+
+.nb--blue    { --nb-color: var(--c-blue);    --nb-tint: var(--c-blue-tint); }
+.nb--green   { --nb-color: var(--c-green);   --nb-tint: var(--c-green-tint); }
+.nb--yellow  { --nb-color: var(--c-yellow);  --nb-tint: var(--c-yellow-tint); }
+.nb--purple  { --nb-color: var(--c-purple);  --nb-tint: var(--c-purple-tint); }
+.nb--red     { --nb-color: var(--c-red);     --nb-tint: var(--c-red-tint); }
+.nb--orange  { --nb-color: var(--c-orange);  --nb-tint: var(--c-orange-tint); }
+.nb--coral   { --nb-color: var(--c-coral);   --nb-tint: var(--c-coral-tint); }
+.nb--pink    { --nb-color: var(--c-pink);    --nb-tint: var(--c-pink-tint); }
+.nb--magenta { --nb-color: var(--c-magenta); --nb-tint: var(--c-magenta-tint); }
+.nb--indigo  { --nb-color: var(--c-indigo);  --nb-tint: var(--c-indigo-tint); }
+.nb--cyan    { --nb-color: var(--c-cyan);    --nb-tint: var(--c-cyan-tint); }
+.nb--teal    { --nb-color: var(--c-teal);    --nb-tint: var(--c-teal-tint); }
+.nb--mint    { --nb-color: var(--c-mint);    --nb-tint: var(--c-mint-tint); }
+.nb--lime    { --nb-color: var(--c-lime);    --nb-tint: var(--c-lime-tint); }
+.nb--brown   { --nb-color: var(--c-brown);   --nb-tint: var(--c-brown-tint); }
+.nb--gray    { --nb-color: var(--c-gray);    --nb-tint: var(--c-gray-tint); }
+
 .prose table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 14.5px; }
 .prose th, .prose td { border: 1px solid var(--border-2); padding: 8px 12px; text-align: left; }
 .prose th { font-family: var(--font-mono); font-size: 12.5px; background: var(--surface); color: var(--text); }
@@ -686,7 +728,7 @@ kbd {
   color: #c9d1d9;
 }
 
-/* code tabs — one snippet in several languages ({{< codetabs >}}) */
+/* code tabs - one snippet in several languages ({{< codetabs >}}) */
 .codetabs-head {
   padding-top: 0;
   padding-bottom: 0;

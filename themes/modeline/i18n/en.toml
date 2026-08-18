@@ -49,6 +49,15 @@ other = "Post navigation"
 [codeLanguages]
 other = "Code languages"
 
+[notaBene]
+other = "Nota bene"
+
+[warning]
+other = "Warning"
+
+[attention]
+other = "Attention"
+
 [browseByTag]
 other = "Browse by tag"
 
@@ -60,7 +69,7 @@ one = "{{ .Count }} post"
 other = "{{ .Count }} posts"
 
 [taggedWith]
-other = "tagged “{{ . }}”"
+other = "tagged "{{ . }}""
 
 [allTags]
 other = "all tags"
@@ -69,7 +78,7 @@ other = "all tags"
 other = "The buffer you're looking for isn't open. It may have been moved, deleted, or never written to disk."
 
 [backHome]
-other = "— back home"
+other = "- back home"
 
 [pagination]
 other = "Pagination"

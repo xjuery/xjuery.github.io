@@ -1,0 +1,18 @@
+{{- /*
+  Shared chrome for the callout shortcodes (nb, warning, attention):
+  colored side bar, mono uppercase label, tinted box.
+
+  Context (dict):
+    color   - palette modifier class suffix, or "" for the accent color.
+    label   - the rendered label text; "" renders no label at all.
+    content - the already-rendered body HTML.
+*/ -}}
+<aside class="nb{{ with .color }} nb--{{ . }}{{ end }}" role="note">
+  <span class="nb-bar" aria-hidden="true"></span>
+  <div class="nb-body">
+    {{ with .label }}<p class="nb-label">{{ . }}</p>{{ end }}
+    <div class="nb-content">
+      {{ .content }}
+    </div>
+  </div>
+</aside>

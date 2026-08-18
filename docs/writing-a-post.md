@@ -6,14 +6,14 @@ This guide walks through creating a post in English and adding its French
 translation.
 
 > **Shortcut**: in Claude Code, `/new-post <title or topic>` runs all the
-> steps below — it scaffolds the post and creates both the English and French
+> steps below - it scaffolds the post and creates both the English and French
 > drafts (see `.claude/commands/new-post.md`).
 
 ## 1. Scaffold the post
 
 Posts are organized in **monthly folders** named after their publication
 date: a post dated `2026-07-12T14:49:35+02:00` lives in
-`content/posts/2026-07/`. URLs are not affected — the `[permalinks]` config
+`content/posts/2026-07/`. URLs are not affected - the `[permalinks]` config
 in `hugo.toml` keeps every post at `/posts/<slug>/` regardless of the
 folder, so moving a post between months never breaks a link.
 
@@ -54,8 +54,8 @@ summary: ""
 
 Standard Markdown, with a few theme extras:
 
-- **Headings**: use `##` and `###` — they feed the table of contents
-  (configured for levels 2–3).
+- **Headings**: use `##` and `###` - they feed the table of contents
+  (configured for levels 2-3).
 - **Code blocks**: fenced blocks get syntax highlighting. An optional
   `filename` attribute renders a filename header:
 
@@ -86,8 +86,8 @@ Standard Markdown, with a few theme extras:
   ````
 
   Common languages get a pretty label automatically (`js` → JavaScript,
-  `py` → Python…); override it with `{{</* tab lang="js" label="Node.js" */>}}`.
-  The first tab is shown by default. Remember to translate nothing here —
+  `py` → Python...); override it with `{{</* tab lang="js" label="Node.js" */>}}`.
+  The first tab is shown by default. Remember to translate nothing here -
   code tabs work the same in the French file.
 - **Emoji**: shortcodes like `:wq:` work (`enableEmoji = true`).
 - **Raw HTML**: allowed (`unsafe = true` in the Goldmark config), e.g.
@@ -138,7 +138,7 @@ loading to every post image.
 Notes:
 
 - **Translations share the images.** Because the path is absolute, the same
-  reference works from both `<slug>.md` and `<slug>.fr.md` — no need to
+  reference works from both `<slug>.md` and `<slug>.fr.md` - no need to
   duplicate files. Do translate the alt text in the French version, though.
 - **Site-wide images** (logos, the about-page avatar) live one level up in
   `static/images/`, e.g. `static/images/face.jpg` → `/images/face.jpg`.
@@ -162,14 +162,14 @@ bannerAlt: "A skyline of terminal windows at dusk"
 ```
 
 - The banner is rendered full-width (cropped to at most 320 px tall via
-  `object-fit: cover`), so favor wide, landscape images — roughly 1400×400
+  `object-fit: cover`), so favor wide, landscape images - roughly 1400×400
   works well. The same size guidance as other images applies (< 200 KB).
 - `bannerAlt` is optional; without it the image is treated as decorative
   (empty `alt`). Set it whenever the image carries meaning.
 - It works on **every page kind**: posts, plain pages, the about page, and
   section list pages (set `banner` in `content/posts/_index.md` to decorate
   the post list).
-- Translations: like other images, the file is shared — repeat the same
+- Translations: like other images, the file is shared - repeat the same
   `banner` path in `<slug>.fr.md` (front matter is per-file) and translate
   `bannerAlt`.
 
@@ -192,7 +192,7 @@ content/posts/2026-07/my-post-title.fr.md   # French
 ```
 
 Copy the English file to `<slug>.fr.md` and translate the `title`, `summary`,
-and body. **Keep the same filename base** — that is how Hugo links the two
+and body. **Keep the same filename base** - that is how Hugo links the two
 pages as translations of each other, which powers:
 
 - the EN/FR switcher in the header linking directly to the translated post,
@@ -236,7 +236,7 @@ Your explicit choice via the EN/FR switcher is stored in `localStorage`
 ## 6. Publish
 
 1. Set `draft: false` (in **both** language files).
-2. Run `make check` — it fails on broken refs and template errors.
+2. Run `make check` - it fails on broken refs and template errors.
 3. Commit and merge to `master`; the GitHub Actions workflow
    (`.github/workflows/deploy.yml`) builds and deploys to GitHub Pages
    automatically.
