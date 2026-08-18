@@ -33,7 +33,7 @@ jobs:
           sudo dpkg -i ${{ runner.temp }}/hugo.deb
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           submodules: recursive   # pull the theme if it is a submodule
           fetch-depth: 0          # full history for .GitInfo / .Lastmod
@@ -52,7 +52,7 @@ jobs:
             --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./public
 
