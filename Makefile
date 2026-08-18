@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# juery.fr — Hugo site Makefile
+# juery.fr - Hugo site Makefile
 # Run `make` or `make help` to list every target.
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -25,7 +25,7 @@ SHELL        := bash
 
 .PHONY: help
 help: ## Show this help
-	@echo "juery.fr — available targets:"
+	@echo "juery.fr - available targets:"
 	@echo ""
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 		| sort \
@@ -106,7 +106,7 @@ update-theme: ## Pull the latest theme if it is a git submodule
 		git submodule update --remote --merge; \
 		echo "✓ submodules updated"; \
 	else \
-		echo "· $(THEME_DIR) is vendored (no submodule) — nothing to update"; \
+		echo "· $(THEME_DIR) is vendored (no submodule) - nothing to update"; \
 	fi
 
 .PHONY: stats

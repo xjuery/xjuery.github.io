@@ -33,7 +33,7 @@ defaultContentLanguageInSubdir = false
   [markup.goldmark.renderer]
     unsafe = true
   # Let a standalone image take an attribute list on the next line,
-  # e.g. {width="400"} — consumed by _markup/render-image.html.
+  # e.g. {width="400"} - consumed by _markup/render-image.html.
   [markup.goldmark.parser]
     wrapStandAloneImageWithinParagraph = false
     [markup.goldmark.parser.attribute]
@@ -82,7 +82,7 @@ defaultContentLanguageInSubdir = false
     [languages.en.params]
       description = "Everything I wish I'd known about building software, sooner."
       heroEyebrow = 'Software architect · writing weekly'
-      heroTitle = 'Software architecture, patterns, and tools — decoded.'
+      heroTitle = 'Software architecture, patterns, and tools - decoded.'
       heroText = "Everything I wish I'd known about building software, sooner. Notes from the rabbit holes of new technologies."
     [languages.en.menus]
       [[languages.en.menus.main]]
@@ -105,7 +105,7 @@ defaultContentLanguageInSubdir = false
     [languages.fr.params]
       description = "Tout ce que j'aurais aimé savoir plus tôt sur la création de logiciels."
       heroEyebrow = 'Architecte logiciel · un billet par semaine'
-      heroTitle = 'Architecture logicielle, patterns et outils — décodés.'
+      heroTitle = 'Architecture logicielle, patterns et outils - décodés.'
       heroText = "Tout ce que j'aurais aimé savoir plus tôt sur la création de logiciels. Notes tirées de mes plongées dans les nouvelles technologies."
     [languages.fr.menus]
       [[languages.fr.menus.main]]

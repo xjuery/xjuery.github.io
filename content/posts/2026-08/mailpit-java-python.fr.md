@@ -3,8 +3,8 @@ title: "Mailpit : testez vos e-mails en Java et en Python"
 date: 2026-08-23T15:21:41+02:00
 tags: [tools]
 banner: /images/posts/mailpit-java-python/banner.fr.png
-featured: true
-draft: false
+featured: false
+draft: true
 summary: "Un faux serveur SMTP avec une vraie boîte de réception : Mailpit capture les e-mails de votre appli au lieu de les délivrer. Configuration côté Java et Python, vérification à la main puis en CI grâce à son API REST."
 ---
 
@@ -23,7 +23,7 @@ capture**, accompagné d'une interface web et d'une API REST. Votre
 application lui parle comme à un vrai serveur de mail, il intercepte tout,
 et rien ne repart vers l'extérieur. 
 
-Et par rapport à notre principe d'immutabilité des packages, la différence entre les tests (avec mailpit) et la mise en production (avec un serveur smtp de production) se résument à un changement de configuration (comme si on avait affaire à des serveurs différents sur des environnements différents).
+Et par rapport à notre principe d'immutabilité des packages, la différence entre les tests (avec mailpit) et la mise en production (avec un serveur smtp de production) se résume à un changement de configuration (comme si on avait affaire à des serveurs différents sur des environnements différents).
 
 ## Un faux SMTP, une vraie boîte de réception
 
@@ -46,35 +46,34 @@ pas de quota d'envoi ni de clé d'API à gérer.
 
 ## Lancer Mailpit
 
-Mailpit est écrit en Go : c'est un binaire unique, sans dépendance. Via
+Mailpit est écrit en Go : c'est un binaire unique, sans dépendance. 
+
+Pour MacOS, cela se passe via
 Homebrew :
 
-```bash
+```Bash
 brew install mailpit
 mailpit
 ```
 
-(Pour les autres OS, vous pouvez téléchargez le binaire pour Linux ou Windows depuis les
-[releases GitHub](https://github.com/axllent/mailpit/releases).)
+Vous pouvez aussi passer par Docker, sans rien installer :
 
-Ou via Docker, sans rien installer :
-
-```bash
+```Bash
 docker run --rm \
   -p 127.0.0.1:8025:8025 \
   -p 127.0.0.1:1025:1025 \
   axllent/mailpit:v1.30.6
 ```
 
-Deux détails qui comptent dans cette commande. D'abord, le préfixe
-`127.0.0.1:` : sans lui, Docker publie ces ports sur **toutes les
-interfaces de l'hôte**, et vous exposez un serveur SMTP sans
-authentification à tout votre réseau local. Ensuite, l'étiquette de
-version : pour un projet réel, épinglez une release (`v1.30.6`) plutôt que de
-suivre silencieusement `latest`.
+{{<nb title="Nota bene">}}
+ Deux détails importants dans cette commande. D'abord, le préfixe `127.0.0.1:` : sans lui, Docker publie ces ports sur **toutes les interfaces de l'hôte**, et vous exposez un serveur SMTP sans authentification à tout votre réseau local. Ensuite, l'étiquette de version : pour un projet réel, épinglez une release (`v1.30.6`) plutôt que de suivre silencieusement `latest`.
+{{</nb>}}
 
-Ouvrez `http://localhost:8025` : la boîte de réception est vide et n'attend
-que vos bugs.
+Pour les autres OS, vous pouvez téléchargez le binaire pour Linux ou Windows depuis les
+[releases GitHub](https://github.com/axllent/mailpit/releases).
+
+Ensuite, ouvrez `http://localhost:8025` : la boîte de réception est vide et n'attend
+que vos emails de test.
 
 ## Envoyer un e-mail
 
@@ -85,18 +84,34 @@ code d'envoi habituel fonctionne tel quel. Il suffit de viser
 {{< codetabs >}}
 {{< tab >}}
 ```java
-Properties props = new Properties();
-props.put("mail.smtp.host", "localhost");
-props.put("mail.smtp.port", "1025");
+package fr.juery;
 
-Session session = Session.getInstance(props);
-MimeMessage message = new MimeMessage(session);
-message.setFrom("noreply@monapp.local");
-message.setRecipients(Message.RecipientType.TO, "alice@example.com");
-message.setSubject("Bienvenue !");
-message.setText("Votre compte est prêt.");
+import jakarta.mail.Message;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.MimeMessage;
 
-Transport.send(message);
+import java.util.Properties;
+
+public class Example01SendEmail {
+
+    public static void main(String[] args) throws Exception {
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "localhost");
+        props.put("mail.smtp.port", "1025");
+
+        Session session = Session.getInstance(props);
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom("noreply@monapp.local");
+        message.setRecipients(Message.RecipientType.TO, "alice@example.com");
+        message.setSubject("Welcome !");
+        message.setText("Your account is ready.");
+
+        Transport.send(message);
+
+        System.out.println("Example 1: email sent to Mailpit via localhost:1025");
+    }
+}
 ```
 {{< /tab >}}
 {{< tab >}}
@@ -178,13 +193,16 @@ services:
       - "127.0.0.1:8025:8025"
 ```
 
-Attention au piège classique : depuis le conteneur applicatif,
+{{<warning title="Attention au piège classique">}}
+Depuis le conteneur applicatif,
 `localhost:1025` désigne le conteneur applicatif lui-même. C'est le **nom
 du service** - `mailpit:1025` - qui joint Mailpit sur le réseau Compose.
 Du coup, le port SMTP n'a même pas besoin d'être publié sur l'hôte ; seule
 l'interface web l'est, et sur `127.0.0.1` uniquement. (Si une appli lancée
 hors Docker doit aussi envoyer des mails, ajoutez
 `"127.0.0.1:1025:1025"`.)
+{{</warning>}}
+
 
 Un `docker compose up -d` et toute la stack de dev - base, cache, faux
 SMTP - démarre d'un coup. Le nouveau venu clone le dépôt, lance Compose, et
@@ -259,7 +277,8 @@ côté pytest) au lieu de coder quoi que ce soit en dur - et cela vaut aussi
 pour l'API, d'où le `mailpitApi()` côté Java et le `get_base_api_url()`
 côté Python.
 
-Une mise en garde enfin. Le conteneur est `static` (et la fixture pytest
+{{<warning title="Petite mise en garde">}}
+Le conteneur est `static` (et la fixture pytest
 de portée `session`) : la même instance sert **tous** les tests, et
 l'intégration JUnit 5 de Testcontainers n'est de toute façon pas prévue
 pour l'exécution parallèle. La boîte de réception est donc une ressource
@@ -267,6 +286,7 @@ partagée : ne supposez ni qu'elle est vide, ni que vos messages y sont
 seuls, ni dans quel ordre ils arrivent. La parade tient dans des
 identifiants uniques par test - c'est justement l'objet de la section
 suivante.
+{{</warning>}}
 
 ## Vérifier les e-mails - à la main, puis en CI
 

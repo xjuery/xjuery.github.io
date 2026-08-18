@@ -1,5 +1,5 @@
 /* ============================================================
-   Modeline — an editorial developer-blog theme for Hugo
+   Modeline - an editorial developer-blog theme for Hugo
    JetBrains Mono display · Inter body · dark & light palettes
    ============================================================ */
 
@@ -728,7 +728,7 @@ kbd {
   color: #c9d1d9;
 }
 
-/* code tabs — one snippet in several languages ({{< codetabs >}}) */
+/* code tabs - one snippet in several languages ({{< codetabs >}}) */
 .codetabs-head {
   padding-top: 0;
   padding-bottom: 0;

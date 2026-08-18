@@ -78,7 +78,7 @@ other = "tous les tags"
 other = "Le buffer que vous cherchez n'est pas ouvert. Il a peut-être été déplacé, supprimé, ou jamais écrit sur le disque."
 
 [backHome]
-other = "— retour à l'accueil"
+other = "- retour à l'accueil"
 
 [pagination]
 other = "Pagination"

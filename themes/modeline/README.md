@@ -10,20 +10,20 @@ Requires Hugo **0.146.0+** (standard edition is fine).
 
 ## Features
 
-- **Dark / light toggle** — respects `prefers-color-scheme`, remembers the
+- **Dark / light toggle** - respects `prefers-color-scheme`, remembers the
   choice in `localStorage`, no flash of the wrong theme, and degrades to the
   system preference without JavaScript.
-- **Home page** — hero, featured post card with a color bar, and a card grid
+- **Home page** - hero, featured post card with a color bar, and a card grid
   of recent posts. Feature a post with `featured: true` in front matter
   (falls back to the latest post).
-- **Article layout** — sticky table of contents with scrollspy, reading
+- **Article layout** - sticky table of contents with scrollspy, reading
   time, tag pills, and `<<` / `>>` previous/next links.
-- **Terminal code blocks** — every fenced block gets window chrome with a
+- **Terminal code blocks** - every fenced block gets window chrome with a
   filename caption: <code>```go {filename="main.go"}</code>. Syntax colors
   stay dark in both themes.
-- **Tag pills** — each tag gets a stable color derived from its name; pin
+- **Tag pills** - each tag gets a stable color derived from its name; pin
   specific tags in config (see below).
-- **Search** — a tiny dependency-free client-side search over a generated
+- **Search** - a tiny dependency-free client-side search over a generated
   JSON index. Press <kbd>/</kbd> anywhere to focus it; arrow keys navigate
   results.
 - Accessible: skip link, focus-visible outlines, `aria-current` navigation,
