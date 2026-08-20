@@ -10,13 +10,13 @@ summary: "Un faux serveur SMTP avec une vraie boîte de réception : Mailpit cap
 
 *« Spammez sans remords : ici, aucun e-mail n'atteint de vrai destinataire. »*
 
-Beaucoup de projets finissent par envoyer des e-mails - inscription, mot de passe
-oublié, facture. L'email reste le moyen le plus commun de notifier ses utilisateurs.
+Beaucoup de projets finissent par envoyer des e-mails (inscription, mot de passe
+oublié, facture, etc.). L'e-mail reste le moyen le plus commun de notifier ses utilisateurs.
 Et tout développeur finit par se poser la même question :
 comment tester ça sans arroser de vrais utilisateurs ? Les réponses
 classiques sont toutes mauvaises : commenter l'appel d'envoi, rediriger vers
 sa propre boîte Gmail à coups d'alias `+test`, ou pire, croiser les doigts
-et regarder les logs. Mauvaises, car elles ne respectent pas un principe fondamental : on ne modifie pas un package entre les tests et la mise en production. Ce qui a été validé doit être ce qui est déployé (certains reconnaitront le principe d'immutabilité des packages, aussi résumé par "Build once, deploy anywhere").
+et regarder les logs. Mauvaises, car elles ne respectent pas un principe fondamental : on ne modifie pas un package entre les tests et la mise en production. Ce qui a été validé doit être ce qui est déployé (certains reconnaîtront le principe d'immutabilité des packages, aussi résumé par "Build once, deploy anywhere").
 
 Mailpit règle le problème avec une idée simple : un **serveur SMTP de
 capture**, accompagné d'une interface web et d'une API REST. Votre
@@ -29,10 +29,10 @@ Et par rapport à notre principe d'immutabilité des packages, la différence en
 
 Mailpit écoute sur deux ports :
 
-- **1025** - le serveur SMTP. Pointez-y votre application ; dans sa
+- **1025** : le serveur SMTP. Pointez-y votre application ; dans sa
   configuration par défaut, il n'exige ni authentification ni chiffrement
   (les deux existent en option si vous voulez tester ce chemin-là aussi).
-- **8025** - l'interface web et l'API REST. Chaque e-mail capturé y
+- **8025** : l'interface web et l'API REST. Chaque e-mail capturé y
   apparaît en temps réel, avec son rendu HTML, sa version texte, ses
   en-têtes et ses pièces jointes.
 
@@ -69,11 +69,11 @@ docker run --rm \
  Deux détails importants dans cette commande. D'abord, le préfixe `127.0.0.1:` : sans lui, Docker publie ces ports sur **toutes les interfaces de l'hôte**, et vous exposez un serveur SMTP sans authentification à tout votre réseau local. Ensuite, l'étiquette de version : pour un projet réel, épinglez une release (`v1.30.6`) plutôt que de suivre silencieusement `latest`.
 {{</nb>}}
 
-Pour les autres OS, vous pouvez téléchargez le binaire pour Linux ou Windows depuis les
+Pour les autres OS, vous pouvez télécharger le binaire pour Linux ou Windows depuis les
 [releases GitHub](https://github.com/axllent/mailpit/releases).
 
 Ensuite, ouvrez `http://localhost:8025` : la boîte de réception est vide et n'attend
-que vos emails de test.
+que vos e-mails de test.
 
 ## Envoyer un e-mail
 
@@ -109,7 +109,7 @@ public class Example01SendEmail {
 
         Transport.send(message);
 
-        System.out.println("Example 1: email sent to Mailpit via localhost:1025");
+        System.out.println("Example 1: e-mail sent to Mailpit via localhost:1025");
     }
 }
 ```
@@ -350,18 +350,18 @@ n'est pas protégée par authentification, comme dans la configuration par
 défaut.)
 
 ```bash
-# List the emails received by MailPit
+# List the e-mails received by MailPit
 curl http://localhost:8025/api/v1/messages
 
-# Search for emails
+# Search for e-mails
 curl "http://localhost:8025/api/v1/search?query=to:alice@example.com"
 
 # Empty the inbox
 curl -X DELETE http://localhost:8025/api/v1/messages
 ```
 
-Grâce à cette API REST, nous pouvons alors écrire un test qui envoie un email à un destinataire, puis fait une
-Recherche ciblée de l'email avec une attente (à laquelle on adjoint un timeout, pour ne pas attendre l'email indéfiniment).
+Grâce à cette API REST, nous pouvons alors écrire un test qui envoie un e-mail à un destinataire, puis fait une
+Recherche ciblée de l'e-mail avec une attente (à laquelle on adjoint un timeout, pour ne pas attendre l'e-mail indéfiniment).
 
 {{< codetabs >}}
 {{< tab >}}
