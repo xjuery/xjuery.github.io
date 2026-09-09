@@ -1,36 +1,33 @@
 ---
 title: "Les fondamentaux du Domain-Driven Design : quand le métier prend le volant"
-date: 2026-08-30T11:42:17+02:00
+date: 2026-09-06T11:42:17+02:00
 tags: [architecture]
-featured: false
-draft: true
+banner: /images/posts/domain-driven-design-fundamentals/banner.jpg
+featured: true
+draft: false
 summary: "Le grand livre bleu d'Eric Evans en un article : langage omniprésent, bounded contexts et briques tactiques - et pourquoi c'est la moitié stratégique qui rapporte."
 ---
 
 En 2003, Eric Evans publie *Domain-Driven Design: Tackling Complexity in
-the Heart of Software* - le « grand livre bleu ». Sa thèse est simple et
-toujours aussi radicale : dans la plupart des logiciels, le plus difficile
-n'est pas la technique, c'est le *domaine* - les règles métier, le
-vocabulaire, les cas limites que les experts portent dans leur tête. C'est
-donc le domaine qui doit piloter la conception, et le code qui doit suivre.
+the Heart of Software*, le « livre bleu ».
+Sa thèse est simple et toujours aussi radicale : pour les logiciels complexes, la difficulté essentielle n'est pas nécessairement la technique, mais la complexité du *domaine* : ses règles, ses concepts, ses relations et les connaissances que les experts portent dans leur tête.
+C'est donc le domaine qui doit piloter la conception, et le code qui doit suivre.
 
-Vingt ans plus tard, le DDD est souvent réduit à une arborescence de
-dossiers et à un sac de patterns. Les patterns comptent, mais ils sont la
-seconde moitié du livre. La première - le langage et les frontières - est
-celle qui a de la valeur.
+Il y a une phrase que je reprends régulièrement pendant la phase de design des diverses applications ou 
+platformes que j'ai été, ou que je suis, amené à construire: "Le logiciel est là pour être au service du Métier, et non l'inverse".
 
-## Le langage omniprésent : un seul vocabulaire, partout
+Un peu plus de vingt ans plus tard, le DDD est souvent réduit à une arborescence de
+dossiers et à un sac de patterns. Les patterns sont importants, certes, mais ils ne devraient pas être la priorité n°1.
+Si vous voulez que votre application (ou autre) soit au service du Métier votre première priorité doit être le Domaine, le langage et les différentes frontières existantes dans le Métier. 
+C'est là que réside la valeur. Et c'est ce sur quoi je vous propose de nous pencher aujourd'hui.
 
-Le fondement du DDD n'est pas un diagramme, c'est un *glossaire*. Les
-experts métier et les développeurs s'accordent sur un langage commun - le
-**langage omniprésent** (*ubiquitous language*) - et l'utilisent partout :
-dans les conversations, dans les documents, dans les tests, et dans le code
-lui-même.
+## Le langage omniprésent (*ubiquitous language* selon Eric Evans) : un seul vocabulaire, partout
 
+Le fondement du DDD n'est pas un diagramme, c'est un *langage commun*. Ce langage omniprésent n'est donc pas simplement un glossaire : c'est le langage partagé autour du modèle, utilisé dans les conversations, les documents, les diagrammes, les tests et le code.
 Si le métier dit *police*, la classe s'appelle `Policy`, pas
-`InsuranceContractRecord`. Si le métier distingue un *devis* d'une
-*commande*, le code a deux types, pas un seul `Order` avec un champ
-`status`. Le test est brutal et très utile : lisez un cas d'utilisation à
+`InsuranceContractRecord`. 
+Autre exemple, si le métier distingue réellement un devis d'une commande et que cette distinction porte des règles ou des comportements différents, le modèle doit être capable de l'exprimer clairement; éventuellement avec deux types plutôt qu'un Order encombré d'un simple champ status.
+Le test est brutal et très utile : lisez un cas d'utilisation à
 voix haute devant un expert métier. Si vous devez traduire en cours de
 route, votre modèle a dérivé.
 
@@ -47,7 +44,7 @@ toucher.
 
 La réponse du DDD, c'est le **bounded context** : une frontière explicite à
 l'intérieur de laquelle un modèle - et son langage omniprésent - reste
-cohérent. Le même concept du monde réel peut, et doit, être modélisé
+cohérent. Le même concept du monde réel peut être modélisé
 différemment dans chaque contexte :
 
 | Contexte     | « Client » signifie...                                 |
@@ -57,11 +54,11 @@ différemment dans chaque contexte :
 | Livraison    | Un nom et une adresse de livraison validée           |
 | Support      | Un historique de tickets et un niveau de SLA         |
 
-Les contextes communiquent entre eux par des relations explicites - un
-noyau partagé, une relation client/fournisseur, ou le plus souvent une
-**couche anticorruption** : une couche de traduction qui empêche le modèle
-d'un autre contexte (ou d'un système legacy) de contaminer le vôtre.
-Dessiner les contextes et leurs relations donne une **context map** - le
+Les contextes communiquent entre eux par des relations explicites : noyau partagé, relation client/fournisseur, conformisme, couche anticorruption, chemins séparés, service hôte ouvert, etc.
+Une couche anticorruption est particulièrement utile lorsqu'on veut protéger son modèle d'un autre modèle, notamment d'un système legacy.
+
+
+Dessiner les contextes et leurs relations donne une **context map**: C'est, d'ailleurs, le
 diagramme d'architecture le plus utile que la plupart des équipes ne
 dessinent jamais.
 
@@ -73,10 +70,8 @@ le modèle.
 ### Entités et objets-valeurs
 
 Une **entité** a une identité qui survit au changement : la commande
-`Order #42` reste la même commande après correction de son adresse. Un
-**objet-valeur** (*value object*) n'a pas d'identité - il *est* ses
-attributs : deux `Money(10, EUR)` sont interchangeables, immuables et
-copiés librement.
+`Order #42` reste la même commande après correction de son adresse. 
+Un **objet-valeur** n'a pas d'identité : il est défini par ses attributs. Deux `Money(10, EUR)` sont donc équivalents. Les objets-valeurs sont généralement immuables, ce qui permet notamment de les partager sans risque.
 
 La plupart des bases de code ont beaucoup trop d'entités et beaucoup trop
 peu d'objets-valeurs. Montants, plages de dates, adresses, quantités : les
@@ -167,11 +162,7 @@ class Order:  # racine d'agrégat
 {{< /tab >}}
 {{< /codetabs >}}
 
-La règle de conception qui en découle : **gardez les agrégats petits**, et
-référencez les autres agrégats par leur identifiant, pas par objet. Un
-agrégat = une transaction ; si vous devez modifier deux agrégats de façon
-atomique, vos frontières sont probablement mal placées - ou il vous faut un
-événement de domaine.
+La règle de conception qui en découle : **gardez les agrégats petits**, et référencez les autres agrégats par leur identifiant, pas par objet. Un agrégat est avant tout une frontière de cohérence, pas simplement une unité transactionnelle ; si vous devez modifier deux agrégats de façon atomique, vos frontières sont probablement mal placées. Si l'atomicité n'est pas nécessaire, un événement de domaine peut au contraire permettre de coordonner les changements entre agrégats de manière découplée.
 
 ### Repositories, services de domaine, événements de domaine
 
@@ -183,10 +174,15 @@ atomique, vos frontières sont probablement mal placées - ou il vous faut un
   client, le panier et la saison. S'il est sans état et parle un langage
   purement métier, c'est un service de domaine ; s'il parle à la base de
   données, ce n'en est pas un.
-- Les **événements de domaine** enregistrent que *quelque chose s'est
-  produit*, au passé : `OrderPlaced`, `PaymentReceived`. Ils découplent les
+- Les **événements de domaine** ne font pas partie des blocs de construction centraux présentés par Evans dans le livre bleu, mais ils sont aujourd'hui un concept courant du DDD. Ils représentent le fait qu'un événement métier s'est produit : OrderPlaced, PaymentReceived. Ils découplent les
   agrégats entre eux et offrent aux bounded contexts un moyen naturel de
   communiquer.
+
+{{<nb title="Nota bene">}}
+Cet article ne couvre volontairement pas deux autres briques importantes du DDD tactique : les Factories et les Modules. Elles mériteraient à elles seules quelques explications et exemples pour être correctement abordées.
+
+Ce sera peut-être l'occasion d'y consacrer un prochain article. 😉
+{{</nb>}}
 
 ## Le DDD et les diagrammes d'architecture
 
@@ -210,11 +206,13 @@ protègent le modèle ; le DDD s'occupe de ce que le modèle *raconte*.
   « service ». C'est un modèle de données avec des étapes en plus ; tout
   l'intérêt est justement que `order.addLine(...)` fasse respecter les
   règles elle-même.
+  
 - **Le DDD partout.** Evans est explicite : le DDD est rentable dans le
   *domaine cœur* (*core domain*), là où votre métier se différencie
   vraiment. Les écrans d'administration CRUD et les sous-domaines
   génériques n'ont pas besoin d'agrégats - achetez-les, générez-les, ou
   gardez-les ennuyeux.
+- **Le DDD partout.** Evans insiste surtout sur la nécessité de concentrer l'effort de conception sur le Coeur de Domaine, là où le système porte les connaissances qui différencient réellement l'entreprise. Les sous-domaines génériques peuvent être isolés, réutilisés, achetés ou traités avec beaucoup moins d'investissement. Toutes les parties d'une application ne méritent pas le même niveau de sophistication. Les écrans CRUD sans logique métier significative peuvent rester simples, tout comme les sous-domaines génériques peuvent être achetés, réutilisés ou implémentés de façon pragmatique.
 
 > Le Domain-Driven Design n'est pas un plan de couches à recopier - c'est
 > une discipline : laisser ceux qui connaissent le métier façonner le
